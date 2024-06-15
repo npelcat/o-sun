@@ -10,7 +10,7 @@ export default function Home() {
       <Head>
         <title>
           {" "}
-          0&apos;Sun ~ Voix Animale ~ Communication animale, Magnétisme,
+          0&apos;Sun ~ Voix Animale ~ Communication animale, Soin énergétique
           Guidance.
         </title>
         <meta
