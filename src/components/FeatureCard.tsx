@@ -1,15 +1,18 @@
 import Image from "next/image";
+import Link from "next/link";
 
 interface FeatureCardInterface {
   title: string;
   description: string;
   image: string;
+  lien: string;
 }
 
 export const FeatureCard: React.FC<FeatureCardInterface> = ({
   title,
   description,
   image,
+  lien,
 }) => {
   return (
     <section className="flex flex-col bg-beige p-4 rounded-lg items-center w-full">
@@ -39,7 +42,8 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
             className="h-10 px-6 font-semibold rounded-full bg-dark-green text-white transition duration-300 ease-in-out hover:bg-white hover:text-dark-green"
             type="submit"
           >
-            En savoir plus
+            {" "}
+            <Link href={lien}>En savoir plus</Link>
           </button>
         </div>
       </div>

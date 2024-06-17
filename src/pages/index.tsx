@@ -10,12 +10,12 @@ export default function Home() {
       <Head>
         <title>
           {" "}
-          0&apos;Sun ~ Voix Animale ~ Communication animale, Soin énergétique
-          Guidance.
+          0&apos;Sun ~ Voix Animale ~ Communication animale, Soins énergétiques,
+          services aux gardiens.
         </title>
         <meta
           name="description"
-          content="mots clés, localisation, services un peu détaillés avec adjectifs."
+          content="Communication animale, soins énergétiques, services aux gardiens : guidances, tirage de cartes. Basée dans le sud du 77 (Nangis, Fontainebleau, Melun, Montereau-Fault-Yonne), j'interviens sur la France entière et pays francophones à distance."
         />
       </Head>
       <main>
@@ -49,19 +49,22 @@ export default function Home() {
               description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
               fugiat sit. Optio amet mollitia iusto!"
               image="/img/oceane/oce-dogs/312806563_1244487349726046_1342959404907481300_n.jpg"
+              lien="/services"
             />
 
             <FeatureCard
-              title="Les séances énergétiques"
+              title="Les soins énergétiques"
               description=" Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
               fugiat sit. Optio amet mollitia iusto!"
               image="/img/oceane/oce-horse/IMG_7529.jpg"
+              lien="/services/energy-care"
             />
             <FeatureCard
-              title="Les guidances"
+              title="Pour les gardiens"
               description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
               fugiat sit. Optio amet mollitia iusto!"
               image="/img/logos_and_free_pics/istockphoto-1385750847-612x612.jpg"
+              lien="/services/guardians"
             />
           </div>
         </section>
