@@ -8,8 +8,8 @@ export default function Home() {
   return (
     <>
       <Head>
+        <link rel="icon" href="/o-sun-logo02.ico" />
         <title>
-          {" "}
           0&apos;Sun ~ Voix Animale ~ Communication animale, Soins énergétiques,
           services aux gardiens.
         </title>
@@ -48,7 +48,7 @@ export default function Home() {
               title="La communication animale"
               description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
               fugiat sit. Optio amet mollitia iusto!"
-              image="/img/oceane/oce-dogs/312806563_1244487349726046_1342959404907481300_n.jpg"
+              image="/img/dogs/IMG_7056.jpg"
               lien="/services"
             />
 
@@ -72,7 +72,7 @@ export default function Home() {
           <div className="relative">
             <Image
               className="w-full h-56 object-cover my-24"
-              src="/img/logos_and_free_pics/forest-56930_1280.jpg"
+              src="/img/oceane/oce-dogs/312806563_1244487349726046_1342959404907481300_n.jpg"
               alt="feuillage"
               width={960}
               height={1280}
