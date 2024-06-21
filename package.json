@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/nodemailer": "^6.4.15",
     "next": "^14.2.4",
+    "nodemailer": "^6.9.14",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-email": "^2.1.4",
+    "react-hook-form": "^7.52.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
