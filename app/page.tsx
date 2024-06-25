@@ -27,9 +27,9 @@ export default function Home() {
       </section>
 
       <section className="text-center mt-4">
-        <h3 className="text-3xl pt-16 pb-5 font-subtitle font-bold">
+        <h2 className="text-3xl pt-16 pb-5 font-subtitle font-bold">
           Mes Services
-        </h3>
+        </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
           <FeatureCard
             title="La communication animale"
@@ -37,6 +37,7 @@ export default function Home() {
             fugiat sit. Optio amet mollitia iusto!"
             image="/img/dogs/IMG_7056.jpg"
             lien="/services"
+            titleButton="En savoir plus"
           />
           <FeatureCard
             title="Les soins énergétiques"
@@ -44,6 +45,7 @@ export default function Home() {
             fugiat sit. Optio amet mollitia iusto!"
             image="/img/oceane/oce-horse/IMG_7529.jpg"
             lien="/services/energy-care"
+            titleButton="En savoir plus"
           />
           <FeatureCard
             title="Pour les gardiens"
@@ -51,6 +53,7 @@ export default function Home() {
             fugiat sit. Optio amet mollitia iusto!"
             image="/img/logos_and_free_pics/istockphoto-1385750847-612x612.jpg"
             lien="/services/guardians"
+            titleButton="En savoir plus"
           />
         </div>
       </section>

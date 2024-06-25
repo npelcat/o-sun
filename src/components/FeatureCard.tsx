@@ -6,6 +6,7 @@ interface FeatureCardInterface {
   description: string;
   image: string;
   lien: string;
+  titleButton: string;
 }
 
 export const FeatureCard: React.FC<FeatureCardInterface> = ({
@@ -13,13 +14,14 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
   description,
   image,
   lien,
+  titleButton,
 }) => {
   return (
     <section className="flex flex-col bg-beige p-4 rounded-lg items-center w-full">
       <div className="relative w-full h-56 flex flex-col items-center justify-center">
-        <h4 className="absolute bottom-2 z-50 text-2xl text-dark-green bg-white font-subtitle bg-opacity-70 rounded-lg p-2 text-center">
+        <h3 className="absolute bottom-2 z-50 text-2xl text-dark-green bg-white font-subtitle bg-opacity-70 rounded-lg p-2 text-center">
           {title}
-        </h4>
+        </h3>
 
         <Image
           className="absolute inset-0 w-full h-full object-cover rounded-lg"
@@ -43,7 +45,7 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
             type="submit"
           >
             {" "}
-            <Link href={lien}>En savoir plus</Link>
+            <Link href={lien}>{titleButton}</Link>
           </button>
         </div>
       </div>
