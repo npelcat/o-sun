@@ -39,7 +39,7 @@ export const Header: React.FC = () => {
 
         <Image
           className="absolute inset-0 w-full h-full object-cover"
-          src="/img/oceane/oce-dogs/IMG_6808.jpg"
+          src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719403241/IMG_6808_i2woft.jpg"
           width={6000}
           height={4000}
           alt="Océane et (nom du toutou)"
@@ -55,7 +55,7 @@ export const Header: React.FC = () => {
             </h2>
             <Image
               className="w-48 h-24 md:w-64 md:h-32 lg:w-72 lg:h-36 rounded-lg object-cover mt-4 md:mt-0 md:ml-4"
-              src="/img/oceane/oce-dogs/280859275_1460786831038584_3178236038909394168_n.jpg"
+              src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402555/280859275_1460786831038584_3178236038909394168_n_jb1nb4.jpg"
               width={6000}
               height={4000}
               alt="Océane et sa famille de chiens"

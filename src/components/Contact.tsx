@@ -29,58 +29,52 @@ const Contact: FC = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <div className="flex justify-center w-full">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full md:w-4/5 lg:w-3/5"
+      >
         <div className="mb-5">
-          <label
-            htmlFor="name"
-            className="mb-3 block text-base font-medium text-black"
-          >
+          <label htmlFor="name" className="mb-3 block font-bold">
             Ton nom
           </label>
           <input
             type="text"
-            placeholder="Nom Prénom"
-            className="w-full rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-dark-green focus:shadow-md"
+            placeholder="Jane Doe"
+            className="w-full rounded-md border border-gray-300 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
             {...register("name", { required: true })}
           />
         </div>
         <div className="mb-5">
-          <label
-            htmlFor="email"
-            className="mb-3 block text-base font-medium text-black"
-          >
+          <label htmlFor="email" className="mb-3 block font-bold">
             Ton adresse e-mail
           </label>
           <input
             type="email"
-            placeholder="example@domain.com"
-            className="w-full rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-dark-green focus:shadow-md"
+            placeholder="exemple@domaine.com"
+            className="w-full rounded-md border border-gray-300 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
             {...register("email", { required: true })}
           />
         </div>
         <div className="mb-5">
-          <label
-            htmlFor="message"
-            className="mb-3 block text-base font-medium text-black"
-          >
-            Message
+          <label htmlFor="message" className="mb-3 block font-bold">
+            Ton message
           </label>
           <textarea
             rows={4}
-            placeholder="Ecris ton message"
-            className="w-full resize-none rounded-md border border-gray-300 bg-white py-3 px-6 text-base font-medium text-gray-700 outline-none focus:border-dark-green focus:shadow-md"
+            placeholder="Ecris ici ton message"
+            className="w-full resize-none rounded-md border border-gray-300 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
             {...register("message", { required: true })}
           ></textarea>
         </div>
-        <div>
-          <button className="hover:shadow-form rounded-md bg-dark-green py-3 px-8 text-base font-semibold text-white outline-none">
+        <div className="flex justify-center">
+          <button className="text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-dark-green">
             Envoyer
           </button>
         </div>
       </form>
       {confirmationMessage && (
-        <p className="mt-10 text-black bg-dark-beige bg-opacity-20 p-2 rounded-lg">
+        <p className="mt-10 bg-dark-beige bg-opacity-20 p-2 rounded-lg">
           {confirmationMessage}
         </p>
       )}

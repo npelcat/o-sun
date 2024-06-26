@@ -14,7 +14,7 @@ const ServicesIndex: NextPage = () => {
         <div className=" py-8 w-full md:w-3/5 px-4">
           <CardTitlePhoto
             title="Qu'est-ce que c'est ?"
-            image="/img/oceane/oce-dogs/IMG_6702.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402554/IMG_6702_f4snyr.jpg"
           />
           <p className="pt-8">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
@@ -38,7 +38,7 @@ const ServicesIndex: NextPage = () => {
         <div className=" py-8 w-full md:w-3/5  px-4">
           <CardTitlePhoto
             title="A quoi ça sert ?"
-            image="/img/horse/DSC03447.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402549/DSC03447_qlifqp.jpg"
           />
           <p className="pt-8">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
@@ -62,7 +62,7 @@ const ServicesIndex: NextPage = () => {
         <div className=" py-8 w-full md:w-3/5  px-4">
           <CardTitlePhoto
             title="Infos pratiques"
-            image="/img/dogs/IMG_7041.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402553/IMG_7041_u1eddf.jpg"
           />
           <div>
             <Accordion

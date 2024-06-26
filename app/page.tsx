@@ -10,17 +10,17 @@ export default function Home() {
         <div className="flex flex-col md:flex-row flex-wrap items-center justify-center mt-16">
           <HomeCTA
             titleButton="Qui suis-je ?"
-            image="/img/oceane/oce-horse/IMG_7558.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402553/IMG_7558_ylvtta.jpg"
             lien="/about"
           />
           <HomeCTA
             titleButton="Mon éthique"
-            image="/img/cat/IMG_1522.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402555/IMG_1522_oad6fy.jpg"
             lien="/about/ethics"
           />
           <HomeCTA
             titleButton="Réservation"
-            image="/img/oceane/oce-dogs/IMG_67278.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402553/IMG_67278_cxplew.jpg"
             lien="/contact/booking"
           />
         </div>
@@ -35,7 +35,7 @@ export default function Home() {
             title="La communication animale"
             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
             fugiat sit. Optio amet mollitia iusto!"
-            image="/img/dogs/IMG_7056.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402554/IMG_7056_n0wsq0.jpg"
             lien="/services"
             titleButton="En savoir plus"
           />
@@ -43,7 +43,7 @@ export default function Home() {
             title="Les soins énergétiques"
             description=" Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
             fugiat sit. Optio amet mollitia iusto!"
-            image="/img/oceane/oce-horse/IMG_7529.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402549/IMG_7529_dc85ib.jpg"
             lien="/services/energy-care"
             titleButton="En savoir plus"
           />
@@ -51,7 +51,7 @@ export default function Home() {
             title="Pour les gardiens"
             description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
             fugiat sit. Optio amet mollitia iusto!"
-            image="/img/logos_and_free_pics/istockphoto-1385750847-612x612.jpg"
+            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719403682/fortune-telling-4896472_1920_bxgeo8.jpg"
             lien="/services/guardians"
             titleButton="En savoir plus"
           />
@@ -62,7 +62,7 @@ export default function Home() {
         <div className="relative">
           <Image
             className="w-full h-56 object-cover my-24"
-            src="/img/oceane/oce-dogs/312806563_1244487349726046_1342959404907481300_n.jpg"
+            src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402555/312806563_1244487349726046_1342959404907481300_n_cx8q4j.jpg"
             alt="feuillage"
             width={960}
             height={1280}
