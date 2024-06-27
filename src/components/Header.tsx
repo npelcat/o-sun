@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import DropdownMenu from "./DropdownMenu";
 
 export const Header: React.FC = () => {
   return (
@@ -17,16 +18,33 @@ export const Header: React.FC = () => {
             />{" "}
           </Link>
         </div>
-        <div className="navbar-end">
-          <div className="p-3 font-subtitle transition duration-300 ease-in-out hover:bg-beige hover:bg-opacity-30 hover:rounded-lg">
-            <Link href="/about">A propos</Link>
-          </div>
-          <div className="p-3 font-subtitle transition duration-300 ease-in-out hover:bg-beige hover:bg-opacity-30 hover:rounded-lg">
-            <Link href="/services">Services</Link>
-          </div>
-          <div className="p-3 font-subtitle transition duration-300 ease-in-out hover:bg-beige hover:bg-opacity-30 hover:rounded-lg">
-            <Link href="/contact">Contact</Link>
-          </div>
+        <div className="navbar-end flex">
+          <DropdownMenu
+            title="A propos"
+            items={[
+              { label: "Qui suis-je ?", href: "/about" },
+              { label: "Mon éthique", href: "/about/ethics" },
+              { label: "Témoignages", href: "/about/testimonials" },
+            ]}
+          />
+          <DropdownMenu
+            title="Services"
+            items={[
+              { label: "La communication animale", href: "/services" },
+              {
+                label: "Les soins énergétiques",
+                href: "/services/energy-care",
+              },
+              { label: "Pour les gardiens", href: "/services/guardians" },
+            ]}
+          />
+          <DropdownMenu
+            title="Réservation"
+            items={[
+              { label: "Réservation", href: "/contact/booking" },
+              { label: "Me contacter", href: "/contact" },
+            ]}
+          />
         </div>
       </div>
 
