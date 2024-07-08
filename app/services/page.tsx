@@ -6,9 +6,9 @@ import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 const ServicesIndex: NextPage = () => {
   return (
     <div className="text-center py-16 space-y-12">
-      <h1 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
+      <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
         La communication animale
-      </h1>
+      </h2>
 
       <div className="flex justify-center bg-beige">
         <div className=" py-8 w-full md:w-3/5 px-4">
@@ -66,12 +66,12 @@ const ServicesIndex: NextPage = () => {
           />
           <div>
             <Accordion
-              title="Une séance en pratique"
-              content="Contenu détaillé de comment se passe une séance (Combien de temps ça te prends, ton approche de l'animal, les différentes étapes pour l'animal et pour toi... Si besoin n'hésite pas à renvoyer vers l'onglet 'éthique' et je ferai un lien)."
-            />
-            <Accordion
               title="Avec qui puis-je communiquer ?"
               content="Contenu détaillé de à qui s'adresse la communication animale (animaux de compagnie, espèces, animaux sauvages, animaux défunts...)."
+            />
+            <Accordion
+              title="Une séance en pratique"
+              content="Contenu détaillé de comment se passe une séance (Combien de temps ça te prends, ton approche de l'animal, les différentes étapes pour l'animal et pour toi... Si besoin n'hésite pas à renvoyer vers l'onglet 'éthique' et je ferai un lien)."
             />
             <Accordion
               title="Types de séance et tarifs"
