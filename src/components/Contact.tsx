@@ -72,12 +72,12 @@ const Contact: FC = () => {
             Envoyer
           </button>
         </div>
+        {confirmationMessage && (
+          <p className="mt-10 bg-dark-beige bg-opacity-20 p-2 rounded-lg text-center w-full">
+            {confirmationMessage}
+          </p>
+        )}
       </form>
-      {confirmationMessage && (
-        <p className="mt-10 bg-dark-beige bg-opacity-20 p-2 rounded-lg">
-          {confirmationMessage}
-        </p>
-      )}
     </div>
   );
 };
