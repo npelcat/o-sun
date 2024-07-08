@@ -43,7 +43,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, items }) => {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-3 font-subtitle transition duration-300 ease-in-out hover:bg-beige hover:bg-opacity-30 hover:rounded-lg"
+        className="p-3 font-subtitle transition duration-300 ease-in-out hover:bg-beige hover:bg-opacity-30 hover:rounded-lg lg:mx-8 lg:text-xl"
       >
         {title}
       </button>
@@ -54,7 +54,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, items }) => {
               <Link
                 key={index}
                 href={item.href}
-                className="block px-4 py-2 hover:bg-dark-beige hover: bg-opacity-30 rounded-lg focus:font-bold"
+                className="block px-4 py-2 hover:bg-dark-beige hover: bg-opacity-30 hover:font-bold rounded-lg focus:text-white"
                 onClick={() => setIsOpen(false)}
               >
                 {item.label}

@@ -6,7 +6,7 @@ export const Header: React.FC = () => {
   return (
     <header>
       <div className="navbar">
-        <div className="navbar-start px-3">
+        <div className="navbar-start">
           <Link href="/">
             {" "}
             <Image
