@@ -28,7 +28,7 @@ const Accordion: FC<AccordionProps> = ({ title, content }) => {
         />
         {title}
       </h3>
-      {isOpen && <p className="mt-2">{content}</p>}
+      {isOpen && <p className="m-2 bg-white rounded-lg p-4">{content}</p>}
     </div>
   );
 };
