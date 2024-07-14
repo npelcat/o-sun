@@ -1,5 +1,3 @@
-import Link from "next/link";
-import Image from "next/image";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import Accordion from "@/src/components/Accordion";
