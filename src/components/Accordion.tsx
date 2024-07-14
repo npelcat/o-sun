@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, FC } from "react";
+import Link from "next/link";
+import { useState, FC, ReactNode } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "@/src/components/Button";
 
 interface AccordionProps {
   title: string;
   content: string;
+  button?: ReactNode;
 }
 
-const Accordion: FC<AccordionProps> = ({ title, content }) => {
+const Accordion: FC<AccordionProps> = ({ title, content, button }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -28,7 +31,12 @@ const Accordion: FC<AccordionProps> = ({ title, content }) => {
         />
         {title}
       </h3>
-      {isOpen && <p className="m-2 bg-white rounded-lg p-4">{content}</p>}
+      {isOpen && (
+        <div>
+          <p className="m-2 bg-white rounded-lg p-4">{content}</p>{" "}
+          {button && <div className="mt-4">{button}</div>}
+        </div>
+      )}
     </div>
   );
 };
