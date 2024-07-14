@@ -1,10 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState, FC, ReactNode } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@/src/components/Button";
 
 interface AccordionProps {
   title: string;

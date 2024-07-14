@@ -17,6 +17,8 @@ const ServicesIndex: NextPage = () => {
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402554/IMG_6702_f4snyr.jpg"
           />
           <p className="pt-8">
+            <strong>Explication générale de la communication animale</strong>{" "}
+            <br />
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
             risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing
             nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas
