@@ -6,11 +6,11 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 interface AccordionProps {
   title: string;
-  content: string;
+  children: ReactNode;
   button?: ReactNode;
 }
 
-const Accordion: FC<AccordionProps> = ({ title, content, button }) => {
+const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -31,7 +31,7 @@ const Accordion: FC<AccordionProps> = ({ title, content, button }) => {
       </h3>
       {isOpen && (
         <div>
-          <p className="m-2 bg-white rounded-lg p-4">{content}</p>{" "}
+          <div className="m-2 bg-white rounded-lg p-4">{children}</div>
           {button && <div className="mt-4">{button}</div>}
         </div>
       )}
