@@ -68,8 +68,8 @@ export const Header: React.FC = () => {
         <div className="flex-col md:flex-row bg-dark-green bg-opacity-50 p-5 items-center mx-auto">
           <div className="w-full flex flex-col md:flex-row items-center justify-center md:px-16">
             <h2 className="pb-3 text-center">
-              Suspendisse lectus tortor, dignissim sit amet, adipiscing nec,
-              ultricies sed, dolor. Cras elementum ultrices diam.
+              Citation ou phrase que tu aimes particulièrement et qui te
+              reprèsente bien !
             </h2>
             <Image
               className="w-48 h-24 md:w-64 md:h-32 lg:w-72 lg:h-36 rounded-lg object-cover mt-4 md:mt-0 md:ml-4"

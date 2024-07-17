@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Button } from "@/src/components/Button";
 import Accordion from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
+import Link from "next/link";
+import { GiButterfly } from "react-icons/gi";
 
 const Ethics: React.FC = () => {
   return (
@@ -17,15 +19,97 @@ const Ethics: React.FC = () => {
               title="Ma façon de travailler"
               image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402550/IMG_7142_oybyym.jpg"
             />
-            <p className="pt-8">
-              Ta façon de travailler en quelques lignes, de façon général :
-              <br /> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Sed non risus. Suspendisse lectus tortor, dignissim sit amet,
-              adipiscing nec, ultricies sed, dolor. Cras elementum ultrices
-              diam. Maecenas ligula massa, varius a, semper congue, euismod non,
-              mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend
-              mi, non fermentum diam nisl sit amet erat.
-            </p>
+            <section className="py-8 text-justify">
+              <div className="py-8">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <GiButterfly />
+                  </span>
+                  <h3 className="font-subtitle pb-4">
+                    Avant toute chose, un point très important :
+                  </h3>
+                </div>
+                <p className="pb-10">
+                  Une communication animale ou une séance énergétique ne posent
+                  pas de diagnostic médical et ne remplacent pas l’avis des
+                  divers professionnels de santé liés aux problèmes que vous
+                  pouvez rencontrer avec votre animal. Si selon moi, ce que vous
+                  me demandez nécessite au préalable un avis vétérinaire, je me
+                  permettrais donc de vous rediriger vers un professionnel plus
+                  adapté. (Mes années d&apos;expériences en tant qu&apos;
+                  <Link
+                    href="/about"
+                    className="bg-white rounded-lg hover:text-dark-green hover:bg-beige hover:drop-shadow-lg"
+                  >
+                    infirmière vétérinaire
+                  </Link>{" "}
+                  me sont d&apos;une grande aide sur ce point.)
+                </p>
+              </div>
+              <div className="flex">
+                <span className="text-2xl pr-2">
+                  <GiButterfly />
+                </span>
+                <p className="pb-4">
+                  Ces prestations n’ont pas non plus pour but de résoudre les
+                  dits problèmes, elles apportent de la compréhension et peuvent
+                  guider vers des solutions. Cela reste à vous, en tant que
+                  gardien, de faire le nécessaire en amont et en aval de la
+                  communication ou du soin énergétique.
+                </p>
+              </div>
+              <div className="flex">
+                <span className="text-2xl pr-2">
+                  <GiButterfly />
+                </span>
+                <p className="pb-4">
+                  Je ne communique pas si je suis malade, inhabituellement
+                  fatiguée ou émotionnellement non-disponible (ou tout autre
+                  évènement indépendant de ma volonté), afin de ne pas
+                  transmettre à votre animal quelque chose de négatif. Vous
+                  serez bien évidemment prévenu au préalable si tel était le
+                  cas, et la communication sera alors reportée. Via les CGV qui
+                  vous serons transmises lors de votre réservation, vous
+                  acceptez que la prestation puisse être retardée sur un délai
+                  de 15 jours.
+                </p>
+              </div>
+              <div className="py-8">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <GiButterfly />
+                  </span>
+                  <h3 className="font-subtitle pb-4">Pour conclure :</h3>
+                </div>
+                <p className="pb-10">
+                  Chacun est libre de pratiquer la communication animale de la
+                  manière qui lui convient, il n’y a pas de règle. J’ai modelé
+                  mon éthique avec celle apprise aux côtés d’
+                  <Link
+                    href="https://www.anteluxia.com/"
+                    className="bg-white rounded-lg hover:text-dark-green hover:bg-beige hover:drop-shadow-lg"
+                  >
+                    Anteluxia{" "}
+                  </Link>{" "}
+                  au cours de mes différentes formations pratiquées avec son
+                  encadrement car ces principes me correspondent. Et j’espère
+                  que cela vous conviendra également.
+                </p>
+                <h3 className="font-subtitle py-4 text-center">
+                  Au plaisir d&apos;échanger avec vous et vos animaux !
+                </h3>
+              </div>
+              <div className="flex justify-center py-8">
+                <Image
+                  className="w-1/2 h-full md:w-1/6 item-center object-cover"
+                  loading="lazy"
+                  src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720859313/dog-1532627_1920_soflbg.png"
+                  alt="chien et chat"
+                  width="1920"
+                  height="1180"
+                />
+              </div>
+            </section>
             <div className="bg-dark-beige rounded-lg my-8 p-2">
               <h3 className="font-bold mt-8 bg-white bg-opacity-50 rounded-lg p-2">
                 Les détails de ma pratique pour chaque discipline :
@@ -33,37 +117,42 @@ const Ethics: React.FC = () => {
               <div className="p-2">
                 <div>
                   <Accordion title="Communication Animale">
-                    <p>
-                      Ton éthique pour la com animale, ta façon de faire, ce que
-                      tu fais et ce que tu ne fais pas... (exemple: animaux
-                      perdus, guérison, etc)
+                    <p className="text-justify">
+                      • La communication animale ne sert pas à réprimander et/ou
+                      culpabiliser votre animal. <br /> <br />• Ce n’est pas non
+                      plus dans l’optique de vous culpabiliser vous. Votre
+                      démarche est pleine d’amour et de bienveillance, et vous
+                      faîtes au mieux. Vous continuerez de faire au mieux avec
+                      ce qui vous aura été délivré de la part de votre animal.{" "}
+                      <br />
+                      <br /> • Je n’impose pas un nombre de problématiques à
+                      aborder dans la communication défunt et dans la
+                      communication exploration, mais cela doit rester dans la
+                      mesure du raisonnable et en fonction de l’ampleur des
+                      problématiques à soumettre à votre animal.
                     </p>
                   </Accordion>
                   <Accordion title="Soins énergétiques">
-                    <p>
-                      Ton éthique pour les soins énergétiques, ta façon de
-                      faire, ce que ça permet de faire et ce que ça ne fait
-                      pas...
+                    <p className="text-justify">
+                      • Une séance énergétique ne remplace pas un avis, un
+                      diagnostic, ni un acte vétérinaire, ou de tout autres
+                      professionnels liés aux problèmes que peuvent rencontrer
+                      votre animal. Encore une fois c’est un complément, une
+                      aide supplémentaire. <br />
+                      <br /> • Votre animal n’est d’ailleurs pas obligé d’avoir
+                      de problèmes spécifiques pour recevoir une séance, cela
+                      peut tout simplement être un moment d’apaisement et de
+                      bien être à lui offrir.
                     </p>
                   </Accordion>
                   <Accordion title="Pour les gardiens">
-                    <p>
+                    <p className="text-justify">
                       Ton éthique pour les guidances, oracles et autres
                       services, ta façon de faire, ce que ça permet ou non...
                     </p>
                   </Accordion>
                 </div>
               </div>
-            </div>
-            <div className="flex justify-center py-8">
-              <Image
-                className="w-1/2 h-full md:w-1/6 item-center object-cover"
-                loading="lazy"
-                src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720859313/dog-1532627_1920_soflbg.png"
-                alt="chien et chat"
-                width="1920"
-                height="1180"
-              />
             </div>
           </div>
         </div>
