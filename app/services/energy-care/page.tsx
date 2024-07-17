@@ -65,18 +65,23 @@ const EnergyCare: React.FC = () => {
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402552/IMG_7047_tmezot.jpg"
           />
           <div>
-            <Accordion
-              title="A qui s'adresse mes soins énergétiques ?"
-              content="Contenu détaillé de à qui s'adresse tes soins énergétiques (animaux, autre... ?)."
-            />
-            <Accordion
-              title="Une séance en pratique"
-              content="Contenu détaillé de comment se passe une séance (Combien de temps ça te prends, ton approche, les différentes étapes pour l'animal et pour toi... Si besoin n'hésite pas à renvoyer vers l'onglet 'éthique' et je ferai un lien)."
-            />
-            <Accordion
-              title="Types de séance et tarifs"
-              content="Les séances possibles (intitulé) et leur tarifs."
-            />
+            <Accordion title="A qui s'adresse mes soins énergétiques ?">
+              <p>
+                Contenu détaillé de à qui s&apos;adresse tes soins énergétiques
+                (animaux, autre... ?).
+              </p>
+            </Accordion>
+            <Accordion title="Une séance en pratique">
+              <p>
+                Contenu détaillé de comment se passe une séance (Combien de
+                temps ça te prends, ton approche, les différentes étapes pour
+                l&apos;animal et pour toi... Si besoin n&apos;hésite pas à
+                renvoyer vers l&apos;onglet éthique et je ferai un lien).
+              </p>
+            </Accordion>
+            <Accordion title="Types de séance et tarifs">
+              <p>Les séances possibles (intitulé) et leur tarifs.</p>
+            </Accordion>
           </div>
         </div>
       </div>

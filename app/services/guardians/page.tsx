@@ -75,14 +75,17 @@ const Guardians: React.FC = () => {
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720966610/tarot-8834477_1920_xgbuyu.jpg"
           />
           <div>
-            <Accordion
-              title="Une séance en pratique"
-              content="Contenu détaillé de comment se passe une séance (Combien de temps ça te prends, ton approche, les différentes étapes pour le ou la gardien.ne et pour toi... Si besoin n'hésite pas à renvoyer vers l'onglet 'éthique' et je ferai un lien)."
-            />
-            <Accordion
-              title="Types de séance et tarifs"
-              content="Les séances possibles (intitulé) et leur tarifs."
-            />
+            <Accordion title="Une séance en pratique">
+              <p>
+                Contenu détaillé de comment se passe une séance (Combien de
+                temps ça te prends, ton approche, les différentes étapes pour le
+                ou la gardien.ne et pour toi... Si besoin n&apos;hésite pas à
+                renvoyer vers l&apos;onglet éthique et je ferai un lien).
+              </p>
+            </Accordion>
+            <Accordion title="Types de séance et tarifs">
+              Les séances possibles (intitulé) et leur tarifs.
+            </Accordion>
           </div>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/src/components/Button";
 import Accordion from "@/src/components/Accordion";
@@ -33,18 +32,26 @@ const Ethics: React.FC = () => {
               </h3>
               <div className="p-2">
                 <div>
-                  <Accordion
-                    title="Communication Animale"
-                    content="Ton éthique pour la com animale, ta façon de faire, ce que tu fais et ce que tu ne fais pas... (exemple: animaux perdus, guérison, etc)"
-                  />
-                  <Accordion
-                    title="Soins énergétiques"
-                    content="Ton éthique pour les soins énergétiques, ta façon de faire, ce que ça permet de faire et ce que ça ne fait pas..."
-                  />
-                  <Accordion
-                    title="Pour les gardiens"
-                    content="Ton éthique pour les guidances, oracles et autres services, ta façon de faire, ce que ça permet ou non..."
-                  />
+                  <Accordion title="Communication Animale">
+                    <p>
+                      Ton éthique pour la com animale, ta façon de faire, ce que
+                      tu fais et ce que tu ne fais pas... (exemple: animaux
+                      perdus, guérison, etc)
+                    </p>
+                  </Accordion>
+                  <Accordion title="Soins énergétiques">
+                    <p>
+                      Ton éthique pour les soins énergétiques, ta façon de
+                      faire, ce que ça permet de faire et ce que ça ne fait
+                      pas...
+                    </p>
+                  </Accordion>
+                  <Accordion title="Pour les gardiens">
+                    <p>
+                      Ton éthique pour les guidances, oracles et autres
+                      services, ta façon de faire, ce que ça permet ou non...
+                    </p>
+                  </Accordion>
                 </div>
               </div>
             </div>

@@ -38,34 +38,48 @@ const Booking: React.FC = () => {
                 <div>
                   <Accordion
                     title="Communication Animale"
-                    content="Modalités spécifiques à la com. Exemples : les précisions à apporter, les questions éventuelles pour l'animal, les photos, etc...)"
                     button={
                       <Button
                         titleButton="Réserver ce service"
                         lien="https://form.jotform.com/232924829211052"
                       />
                     }
-                  />
+                  >
+                    <p>
+                      Modalités spécifiques à la com. Exemples : les précisions
+                      à apporter, les questions éventuelles pour l&apos;animal,
+                      les photos, etc...)
+                    </p>
+                  </Accordion>
                   <Accordion
                     title="Soins énergétiques"
-                    content="Modalités spécifiques aux soins énergétiques. Exemples : pour quel animal, pour quel motif, les photos, etc..."
                     button={
                       <Button
                         titleButton="Réserver ce service"
                         lien="https://form.jotform.com/233515437828361"
                       />
                     }
-                  />
+                  >
+                    <p>
+                      Modalités spécifiques aux soins énergétiques. Exemples :
+                      pour quel animal, pour quel motif, les photos, etc...
+                    </p>
+                  </Accordion>
                   <Accordion
                     title="Pour les gardiens"
-                    content="Modalités spécifiques aux services pour les gardiens. Exemples : type de tirage souhaité, avec quel type d'oracle, la ou les questions, etc..."
                     button={
                       <Button
                         titleButton="Service en cours de création"
                         lien="#"
                       />
                     }
-                  />
+                  >
+                    <p>
+                      Modalités spécifiques aux services pour les gardiens.
+                      Exemples : type de tirage souhaité, avec quel type
+                      d&apos;oracle, la ou les questions, etc...
+                    </p>
+                  </Accordion>
                 </div>
               </div>
             </div>

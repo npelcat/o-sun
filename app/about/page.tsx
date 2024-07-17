@@ -53,23 +53,33 @@ const AboutIndex: NextPage = () => {
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402552/IMG_7198_r1dwqk.jpg"
           />
           <div>
-            <Accordion
-              title="Communication Animale"
-              content="Diplômes et/ou formations suivies en com animale, détails des modules, quelle formatrice..."
-            />
-            <Accordion
-              title="Soins énergétiques"
-              content="Diplômes et/ou formations suivies en soins énergétiques, ce qui s'en rapproche de près ou de loin et qui t'a aidé à développer ça."
-            />
-            <Accordion
-              title="Pour les gardiens"
-              content="Diplômes et/ou formations suivies en oracles, guidances, etc"
-            />
-            <Accordion
-              title="Mon ancienne vie"
-              content="Diplôme d'ASV, combien d'années, les compétences tranverses que ça peut t'apporter dans le cadre de ta nouvelle activité : 
-              Exemple : comprendre les propriétaires, pouvoir distinguer rapidement un problème qui nécessite une consultation vétérinaire... "
-            />
+            <Accordion title="Communication Animale">
+              <p>
+                Diplômes et/ou formations suivies en com animale, détails des
+                modules, quelle formatrice...
+              </p>
+            </Accordion>
+            <Accordion title="Soins énergétiques">
+              <p>
+                Diplômes et/ou formations suivies en soins énergétiques, ce qui
+                s&apos;en rapproche de près ou de loin et qui t&apos;a aidé à
+                développer ça.
+              </p>
+            </Accordion>
+            <Accordion title="Pour les gardiens">
+              <p>
+                Diplômes et/ou formations suivies en oracles, guidances, etc
+              </p>
+            </Accordion>
+            <Accordion title="Mon ancienne vie">
+              <p>
+                Diplôme d&apos;ASV, combien d&apos;années, les compétences
+                tranverses que ça peut t&apos;apporter dans le cadre de ta
+                nouvelle activité : Exemple : comprendre les propriétaires,
+                pouvoir distinguer rapidement un problème qui nécessite une
+                consultation vétérinaire...
+              </p>
+            </Accordion>
           </div>
         </div>
       </div>
