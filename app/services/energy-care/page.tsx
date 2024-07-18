@@ -5,6 +5,8 @@ import { GiUbisoftSun } from "react-icons/gi";
 import { IoIosArrowDropright } from "react-icons/io";
 import { PiHandHeartLight } from "react-icons/pi";
 import { GiFallingLeaf } from "react-icons/gi";
+import { HiOutlineBellAlert } from "react-icons/hi2";
+import Link from "next/link";
 
 const EnergyCare: React.FC = () => {
   return (
@@ -286,6 +288,37 @@ const EnergyCare: React.FC = () => {
                       • Compte-rendu oral et écrit de l’ensemble des
                       prestations.
                     </strong>
+                  </p>
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <HiOutlineBellAlert />
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Les Urgences ~ + 15€ au prix initial de la prestation
+                      demandée
+                    </h3>
+                  </div>
+                  <p className="pb-10">
+                    <h4>Réalisée dans les 24 à 48h suivant la demande.</h4>
+                    <strong>Dans quel cas :</strong> <br />
+                    • Message (35 + 15€) : Transmission en urgence d’un message
+                    concernant une situation. <br /> • Communication animale (65
+                    + 15€) : Aborder une situation d’urgence + état d’esprit et
+                    ressentis de votre animal. <br /> • Séance énergétique (50 +
+                    15€) <br />
+                    <h5 className="mt-8">
+                      POUR TOUTE URGENCE, ME CONTACTER DIRECTEMENT VIA LE
+                      <Link
+                        href="/contact"
+                        className="bg-dark-green bg-opacity-30 rounded-lg hover:text-dark-green hover:bg-beige hover:drop-shadow-lg"
+                      >
+                        {" "}
+                        FORMULAIRE DU SITE.
+                      </Link>
+                    </h5>
                   </p>
                 </div>
               </section>

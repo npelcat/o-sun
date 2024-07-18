@@ -8,6 +8,7 @@ import { CgDanger } from "react-icons/cg";
 import { GiFallingLeaf } from "react-icons/gi";
 import { HiOutlineBellAlert } from "react-icons/hi2";
 import { PiHandHeartLight } from "react-icons/pi";
+import Link from "next/link";
 
 const ServicesIndex: NextPage = () => {
   return (
@@ -428,10 +429,19 @@ const ServicesIndex: NextPage = () => {
                     concernant une situation. <br /> • Communication animale (65
                     + 15€) : Aborder une situation d’urgence + état d’esprit et
                     ressentis de votre animal. <br /> • Séance énergétique (50 +
-                    15€)
+                    15€) <br />
+                    <h5 className="mt-8">
+                      POUR TOUTE URGENCE, ME CONTACTER DIRECTEMENT VIA LE
+                      <Link
+                        href="/contact"
+                        className="bg-dark-green bg-opacity-30 rounded-lg hover:text-dark-green hover:bg-beige hover:drop-shadow-lg"
+                      >
+                        {" "}
+                        FORMULAIRE DU SITE.
+                      </Link>
+                    </h5>
                   </p>
                 </div>
-                <br />
               </section>
             </Accordion>
             <Accordion title="Les PACKS">
