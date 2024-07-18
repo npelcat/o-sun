@@ -74,7 +74,7 @@ const EnergyCare: React.FC = () => {
             une libération et un nettoyage, ainsi ne soyez pas surpris si
             diarrhée, vomissement, inflammation ou autres symptômes physiques,
             comportement/émotion un peu exacerbé(e), énergie boostée ou encore
-            fatigue émergent à la suite d’une séance.
+            fatigue émergeant à la suite d’une séance.
             <span className="flex justify-center my-4">
               <GiUbisoftSun />
             </span>
@@ -189,7 +189,7 @@ const EnergyCare: React.FC = () => {
                     Pour la séance, votre animal doit être au calme et au repos.
                     Il vaut mieux éviter qu&apos;il soit sollicité afin
                     qu&apos;il profite et s&apos;imprègne au mieux de la séance.
-                    C&apos;est pour cela que dans cette optique, je fixerez avec
+                    C&apos;est pour cela que dans cette optique, je fixerai avec
                     vous un rendez-vous plus précis que pour les réservations de
                     communication animale.
                   </p>

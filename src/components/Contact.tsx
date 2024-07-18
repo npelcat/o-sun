@@ -36,7 +36,7 @@ const Contact: FC = () => {
       >
         <div className="mb-5">
           <label htmlFor="name" className="mb-3 block font-bold">
-            Ton nom
+            Votre nom
           </label>
           <input
             type="text"
@@ -47,7 +47,7 @@ const Contact: FC = () => {
         </div>
         <div className="mb-5">
           <label htmlFor="email" className="mb-3 block font-bold">
-            Ton adresse e-mail
+            Votre adresse e-mail
           </label>
           <input
             type="email"
@@ -58,11 +58,11 @@ const Contact: FC = () => {
         </div>
         <div className="mb-5">
           <label htmlFor="message" className="mb-3 block font-bold">
-            Ton message
+            Votre message
           </label>
           <textarea
             rows={4}
-            placeholder="Ecris ici ton message"
+            placeholder="Ecrivez ici votre message"
             className="w-full resize-none rounded-md border border-gray-300 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
             {...register("message", { required: true })}
           ></textarea>

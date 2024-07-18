@@ -106,7 +106,7 @@ const ServicesIndex: NextPage = () => {
                   </span>
                   <p>
                     Dans la même optique, je ne communique pas avec des animaux
-                    de crique, zoo, poney club etc. De manière générale, avec
+                    de cirque, zoo, poney club etc. De manière générale, avec
                     aucun animal dont vous n’êtes pas le gardien.
                   </p>
                 </div>
@@ -126,7 +126,8 @@ const ServicesIndex: NextPage = () => {
                     <IoIosArrowDropright />
                   </span>
                   <p>
-                    Je communique avec toute espèce animale, vivant ou défunt.
+                    Je communique avec tout type d&apos;animal, quelque soit son
+                    espèce, vivant ou défunt.
                   </p>
                 </div>
                 <br />
@@ -160,7 +161,7 @@ const ServicesIndex: NextPage = () => {
                     communication, étant donné qu’elle est effectuée en fonction
                     de la disponibilité de votre animal. Je m&apos;adapte à lui,
                     et à moi. Elle sera faite sur la semaine où je vous aurais
-                    réservé une place et vous serez tenu au courant lorsqu’elle
+                    réservé une place et vous serez tenus au courant lorsqu’elle
                     sera conclue, afin que nous puissions prévoir un créneau
                     pour le compte rendu oral. Les comptes rendus
                     s&apos;effectuent donc plutôt en fin de semaine, vous êtes
@@ -222,8 +223,8 @@ const ServicesIndex: NextPage = () => {
                   </span>
                   <p>
                     La réservation sera effective uniquement après réception du
-                    paiement. Vous aurez un formulaire à remplir avec toute les
-                    informations nécessaire au bon déroulement de la
+                    paiement. Vous aurez un formulaire à remplir avec toutes les
+                    informations nécessaires au bon déroulement de la
                     communication à me transmettre. En réponse, je vous donnerai
                     mes prochaines disponibilités ainsi que le moyen de
                     règlement (RIB). Si cela vous convient, votre place sera
@@ -255,7 +256,7 @@ const ServicesIndex: NextPage = () => {
                     Des erreurs d’interprétation de ma part sont possibles,
                     c’est pourquoi le débrief entre vous et moi est important,
                     d’où mon choix de faire les comptes rendus à l’oral (visio
-                    ou téléphone). C’est en discutant ensemble que nous pourront
+                    ou téléphone). C’est en discutant ensemble que nous pourrons
                     exprimer au mieux les mots et les maux de votre animal. De
                     plus, par écrit, vous pouvez vous aussi mal interpréter
                     l’une de mes retranscriptions. Pour ne pas rester sur une
@@ -309,7 +310,7 @@ const ServicesIndex: NextPage = () => {
                     à venir, un départ en vacances/week end sans lui (pour lui
                     parler de la pension ou des proches qui vont le garder),
                     devoir prendre un transport inhabituel (avion, bateau,
-                    train, etc), et tout autre évènements pouvant chambouler le
+                    train, etc), et tout autre évènement pouvant chambouler le
                     quotidien de votre animal et/ou qui peut lui causer un
                     certain stress. <br /> <strong> En pratique : </strong>{" "}
                     <br /> • Libre écoute de votre animal <br /> • Message à lui

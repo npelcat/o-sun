@@ -44,7 +44,7 @@ export const Footer: React.FC = () => {
             Mentions légales
           </Link>
           <Link
-            href="#"
+            href="https://form.jotform.com/232924829211052"
             target="_blank"
             className="mb-2 p-2 font-semibold text-sm"
           >

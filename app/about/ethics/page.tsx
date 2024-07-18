@@ -126,7 +126,7 @@ const Ethics: React.FC = () => {
                       culpabiliser votre animal. <br /> <br />• Ce n’est pas non
                       plus dans l’optique de vous culpabiliser vous. Votre
                       démarche est pleine d’amour et de bienveillance, et vous
-                      faîtes au mieux. Vous continuerez de faire au mieux avec
+                      faites au mieux. Vous continuerez de faire au mieux avec
                       ce qui vous aura été délivré de la part de votre animal.{" "}
                       <br />
                       <br /> • Je n’impose pas un nombre de problématiques à
@@ -139,10 +139,10 @@ const Ethics: React.FC = () => {
                   <Accordion title="Soins énergétiques">
                     <p className="text-justify">
                       • Une séance énergétique ne remplace pas un avis, un
-                      diagnostic, ni un acte vétérinaire, ou de tout autres
-                      professionnels liés aux problèmes que peuvent rencontrer
-                      votre animal. Encore une fois c’est un complément, une
-                      aide supplémentaire. <br />
+                      diagnostic, ni un acte vétérinaire, ou de tout autre
+                      professionnel liés aux problèmes que peut rencontrer votre
+                      animal. Encore une fois c’est un complément, une aide
+                      supplémentaire. <br />
                       <br /> • Votre animal n’est d’ailleurs pas obligé d’avoir
                       de problèmes spécifiques pour recevoir une séance, cela
                       peut tout simplement être un moment d’apaisement et de
