@@ -3,6 +3,7 @@ import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { NextPage } from "next";
 import Image from "next/image";
+import { IoIosArrowDropright } from "react-icons/io";
 
 const AboutIndex: NextPage = () => {
   return (
@@ -53,32 +54,112 @@ const AboutIndex: NextPage = () => {
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402552/IMG_7198_r1dwqk.jpg"
           />
           <div>
-            <Accordion title="Communication Animale">
-              <p>
-                Diplômes et/ou formations suivies en com animale, détails des
-                modules, quelle formatrice...
-              </p>
+            <Accordion title="Ma formation en communication Animale">
+              <section className="text-justify">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>Module 1 : </strong>
+                    Diplômes et/ou formations suivies en com animale, détails
+                    des modules, quelle formatrice...
+                  </p>
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>Module 2 : </strong>
+                    Etc...
+                  </p>
+                </div>
+                <br />
+              </section>
             </Accordion>
-            <Accordion title="Soins énergétiques">
-              <p>
-                Diplômes et/ou formations suivies en soins énergétiques, ce qui
-                s&apos;en rapproche de près ou de loin et qui t&apos;a aidé à
-                développer ça.
-              </p>
+            <Accordion title="Ma formation en soins énergétiques">
+              <section className="text-justify">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>Formation 1 : </strong>
+                    Diplômes et/ou formations suivies en soins énergétiques, ce
+                    qui s&apos;en rapproche de près ou de loin et qui t&apos;a
+                    aidé à développer ça.
+                  </p>
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>Formation 2 : </strong>
+                    Etc...
+                  </p>
+                </div>
+                <br />
+              </section>
             </Accordion>
-            <Accordion title="Pour les gardiens">
-              <p>
-                Diplômes et/ou formations suivies en oracles, guidances, etc
-              </p>
+            <Accordion title="Ma formation pour les autres services">
+              <section className="text-justify">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>Formation 1 : </strong>
+                    Diplômes et/ou formations suivies en oracles, guidances, etc
+                  </p>
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>Formation 2 : </strong>
+                    Etc...
+                  </p>
+                </div>
+                <br />
+              </section>
             </Accordion>
             <Accordion title="Mon ancienne vie">
-              <p>
-                Diplôme d&apos;ASV, combien d&apos;années, les compétences
-                tranverses que ça peut t&apos;apporter dans le cadre de ta
-                nouvelle activité : Exemple : comprendre les propriétaires,
-                pouvoir distinguer rapidement un problème qui nécessite une
-                consultation vétérinaire...
-              </p>
+              <section className="text-justify">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>
+                      Formation d&apos;Auxiliaire Sépcialisée Vétérinaire ~
+                      Diplôme passé et obtenu en 2012 ?{" "}
+                    </strong>{" "}
+                    <br />
+                    Combien d&apos;années d&apos;expérience, les compétences
+                    tranverses que ça peut t&apos;apporter dans le cadre de ta
+                    nouvelle activité : Exemple : comprendre les propriétaires,
+                    pouvoir distinguer rapidement un problème qui nécessite une
+                    consultation vétérinaire...
+                  </p>
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    <strong>Formation 2 éventuelle : </strong>
+                    Etc...
+                  </p>
+                </div>
+                <br />
+              </section>
             </Accordion>
           </div>
         </div>

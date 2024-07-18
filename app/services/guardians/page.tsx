@@ -1,12 +1,11 @@
-import Link from "next/link";
-import Image from "next/image";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import Accordion from "@/src/components/Accordion";
+import { IoIosArrowDropright } from "react-icons/io";
 
 const Guardians: React.FC = () => {
   return (
-    <div className="text-center py-16 space-y-12">
+    <div className="text-center pt-16 space-y-12">
       <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
         Services aux gardiens
       </h2>
@@ -64,7 +63,10 @@ const Guardians: React.FC = () => {
             congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum
             bibendum augue.
           </p>
-          <Button titleButton="Réserver un service" lien="/contact/booking" />
+          <Button
+            titleButton="Services en cours de création"
+            lien="/contact/booking"
+          />
         </div>
       </div>
 
@@ -76,21 +78,39 @@ const Guardians: React.FC = () => {
           />
           <div>
             <Accordion title="Une séance en pratique">
-              <p>
-                Contenu détaillé de comment se passe une séance (Combien de
-                temps ça te prends, ton approche, les différentes étapes pour le
-                ou la gardien.ne et pour toi... Si besoin n&apos;hésite pas à
-                renvoyer vers l&apos;onglet éthique et je ferai un lien).
-              </p>
+              <section className="text-justify">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>
+                    Contenu détaillé de comment se passe une séance (Combien de
+                    temps ça te prends, ton approche, les différentes étapes
+                    pour le ou la gardien.ne et pour toi... Si besoin
+                    n&apos;hésite pas à renvoyer vers l&apos;onglet éthique et
+                    je ferai un lien).
+                  </p>
+                </div>
+              </section>
             </Accordion>
             <Accordion title="Types de séance et tarifs">
-              Les séances possibles (intitulé) et leur tarifs.
+              <section className="text-justify">
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright />
+                  </span>
+                  <p>Les séances possibles (intitulé) et leur tarifs.</p>
+                </div>
+              </section>
             </Accordion>
           </div>
         </div>
       </div>
       <div className="flex justify-center mt-16">
-        <Button titleButton="Réserver un service" lien="/contact/booking" />
+        <Button
+          titleButton="Services en cours de création"
+          lien="/contact/booking"
+        />
       </div>
     </div>
   );

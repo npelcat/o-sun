@@ -19,7 +19,7 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
   return (
     <section className="flex flex-col bg-beige p-4 rounded-lg items-center w-full">
       <div className="relative w-full h-56 flex flex-col items-center justify-center">
-        <h3 className="absolute bottom-2 z-50 text-2xl text-dark-green bg-white font-subtitle bg-opacity-70 rounded-lg p-2 text-center">
+        <h3 className="absolute bottom-2 z-50 text-2xl text-dark-green bg-white font-subtitle bg-opacity-75 w-full p-2 text-center">
           {title}
         </h3>
 

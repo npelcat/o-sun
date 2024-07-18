@@ -19,14 +19,14 @@ const Ethics: React.FC = () => {
               title="Ma façon de travailler"
               image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402550/IMG_7142_oybyym.jpg"
             />
-            <section className="py-8 text-justify">
-              <div className="py-8">
+            <section className="pt-8 text-justify">
+              <div className="pt-8">
                 <div className="flex">
                   <span className="text-2xl pr-2">
                     <GiButterfly />
                   </span>
                   <h3 className="font-subtitle pb-4">
-                    Avant toute chose, un point très important :
+                    Communication animale, énergétique et pathologies
                   </h3>
                 </div>
                 <p className="pb-10">
@@ -50,30 +50,34 @@ const Ethics: React.FC = () => {
                 <span className="text-2xl pr-2">
                   <GiButterfly />
                 </span>
-                <p className="pb-4">
-                  Ces prestations n’ont pas non plus pour but de résoudre les
-                  dits problèmes, elles apportent de la compréhension et peuvent
-                  guider vers des solutions. Cela reste à vous, en tant que
-                  gardien, de faire le nécessaire en amont et en aval de la
-                  communication ou du soin énergétique.
-                </p>
+                <h3 className="font-subtitle pb-4">Régler tous les soucis ?</h3>
               </div>
+              <p className="pb-4">
+                Ces prestations n’ont pas non plus pour but de résoudre lesdits
+                problèmes, elles apportent de la compréhension et peuvent guider
+                vers des solutions. Cela reste à vous, en tant que gardien, de
+                faire le nécessaire en amont et en aval de la communication ou
+                du soin énergétique.
+              </p>
+              <br />
               <div className="flex">
                 <span className="text-2xl pr-2">
                   <GiButterfly />
                 </span>
-                <p className="pb-4">
-                  Je ne communique pas si je suis malade, inhabituellement
-                  fatiguée ou émotionnellement non-disponible (ou tout autre
-                  évènement indépendant de ma volonté), afin de ne pas
-                  transmettre à votre animal quelque chose de négatif. Vous
-                  serez bien évidemment prévenu au préalable si tel était le
-                  cas, et la communication sera alors reportée. Via les CGV qui
-                  vous serons transmises lors de votre réservation, vous
-                  acceptez que la prestation puisse être retardée sur un délai
-                  de 15 jours.
-                </p>
+                <h3 className="font-subtitle pb-4">
+                  Tenir compte de vous...et de moi
+                </h3>
               </div>
+              <p className="pb-4">
+                Je ne communique pas si je suis malade, inhabituellement
+                fatiguée ou émotionnellement non-disponible (ou tout autre
+                évènement indépendant de ma volonté), afin de ne pas transmettre
+                à votre animal quelque chose de négatif. Vous serez bien
+                évidemment prévenu au préalable si tel était le cas, et la
+                communication serait alors reportée. Via les CGV qui vous serons
+                transmises lors de votre réservation, vous acceptez que la
+                prestation puisse être retardée sur un délai de 15 jours.
+              </p>
               <div className="py-8">
                 <div className="flex">
                   <span className="text-2xl pr-2">
@@ -147,7 +151,7 @@ const Ethics: React.FC = () => {
                   </Accordion>
                   <Accordion title="Pour les gardiens">
                     <p className="text-justify">
-                      Ton éthique pour les guidances, oracles et autres
+                      • Ton éthique pour les guidances, oracles et autres
                       services, ta façon de faire, ce que ça permet ou non...
                     </p>
                   </Accordion>
