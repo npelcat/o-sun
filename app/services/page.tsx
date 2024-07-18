@@ -7,7 +7,7 @@ import { IoIosArrowDropright } from "react-icons/io";
 import { CgDanger } from "react-icons/cg";
 import { GiFallingLeaf } from "react-icons/gi";
 import { HiOutlineBellAlert } from "react-icons/hi2";
-import { PiDotThin } from "react-icons/pi";
+import { PiHandHeartLight } from "react-icons/pi";
 
 const ServicesIndex: NextPage = () => {
   return (
@@ -73,7 +73,7 @@ const ServicesIndex: NextPage = () => {
           </p>
           <Button
             titleButton="Réserver une communication"
-            lien="/contact/booking"
+            lien="https://form.jotform.com/232924829211052"
           />
         </div>
       </div>
@@ -271,7 +271,7 @@ const ServicesIndex: NextPage = () => {
                     <span className="text-2xl pr-2">
                       <GiFallingLeaf />{" "}
                     </span>
-                    <h3 className="font-subtitle pb-4">
+                    <h3 className="font-subtitle font-bold pb-4">
                       Communication animale guidée par les cartes Oracles ~ 20 €
                     </h3>
                   </div>
@@ -295,7 +295,7 @@ const ServicesIndex: NextPage = () => {
                     <span className="text-2xl pr-2">
                       <GiFallingLeaf />{" "}
                     </span>
-                    <h3 className="font-subtitle pb-4">
+                    <h3 className="font-subtitle font-bold pb-4">
                       Communication animale message ~ 35 €
                     </h3>
                   </div>
@@ -325,7 +325,7 @@ const ServicesIndex: NextPage = () => {
                     <span className="text-2xl pr-2">
                       <GiFallingLeaf />{" "}
                     </span>
-                    <h3 className="font-subtitle pb-4">
+                    <h3 className="font-subtitle font-bold pb-4">
                       Communication animale ~ 65 €
                     </h3>
                   </div>
@@ -356,7 +356,7 @@ const ServicesIndex: NextPage = () => {
                     <span className="text-2xl pr-2">
                       <GiFallingLeaf />{" "}
                     </span>
-                    <h3 className="font-subtitle pb-4">
+                    <h3 className="font-subtitle font-bold pb-4">
                       Communication animale défunt ~ 65 €
                     </h3>
                   </div>
@@ -389,7 +389,7 @@ const ServicesIndex: NextPage = () => {
                     <span className="text-2xl pr-2">
                       <GiFallingLeaf />{" "}
                     </span>
-                    <h3 className="font-subtitle pb-4">
+                    <h3 className="font-subtitle font-bold pb-4">
                       Communication animale de suivi ~ 20 €
                     </h3>
                   </div>
@@ -416,7 +416,7 @@ const ServicesIndex: NextPage = () => {
                     <span className="text-2xl pr-2">
                       <HiOutlineBellAlert />
                     </span>
-                    <h3 className="font-subtitle pb-4">
+                    <h3 className="font-subtitle font-bold pb-4">
                       Les Urgences ~ + 15€ au prix initial de la prestation
                       demandée
                     </h3>
@@ -434,13 +434,75 @@ const ServicesIndex: NextPage = () => {
                 <br />
               </section>
             </Accordion>
+            <Accordion title="Les PACKS">
+              <section className="text-justify">
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <PiHandHeartLight />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Pack Accompagnement Profondeur – 115€
+                    </h3>
+                  </div>
+                  <p className="pb-10">
+                    <strong>• Communication animale :</strong> <br /> &gt; Libre
+                    écoute de votre animal <br /> &gt; Général ou spécifique
+                    (Problématique(s) / questionnement(s) spécifique(s)) <br />{" "}
+                    &gt; Scan physique, énergétique et état émotionnel du moment{" "}
+                    <br />
+                    &gt; Transmission des messages de votre animal <br /> &gt;
+                    Transmission de votre message de cœur <br /> <br />{" "}
+                    <strong>• Séance énergétique </strong> <br /> &gt; Apporter
+                    confort et bien-être <br /> &gt; Libérer des problématiques
+                    impactant l’énergétique, l’émotionnel ou le physique <br />{" "}
+                    <br />{" "}
+                    <strong>
+                      • Compte-rendu oral et écrit de l’ensemble des
+                      prestations.
+                    </strong>
+                  </p>
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <PiHandHeartLight />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Pack Accompagnement Fin de vie – 160€
+                    </h3>
+                  </div>
+                  <p className="pb-10">
+                    <strong>• 2 communications animales :</strong> <br /> &gt;
+                    Une à la prise de contact : soit lors d’une situation
+                    d’urgence, soit malheureusement parce que vous savez que
+                    votre animal n’a plus que quelques temps à passer à vos
+                    côtés. <br /> &gt; Permet de l’avertir, prendre ses
+                    ressentis, savoir ce qu’il souhaite, vous transmettre l’un
+                    et l’autre vos messages. <br />
+                    <br /> <strong>
+                      • Communication animale défunt :{" "}
+                    </strong>{" "}
+                    <br /> &gt; Environ 6 semaines après le départ de votre
+                    compagnon, je réalise une communication animale défunt.{" "}
+                    <br />
+                    <br />{" "}
+                    <strong>
+                      • Compte-rendu oral et écrit de l’ensemble des
+                      prestations.
+                    </strong>
+                  </p>
+                </div>
+              </section>
+            </Accordion>
           </div>
         </div>
       </div>
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une communication"
-          lien="/contact/booking"
+          lien="https://form.jotform.com/232924829211052"
         />
       </div>
     </div>
