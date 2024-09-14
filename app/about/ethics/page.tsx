@@ -92,6 +92,7 @@ const Ethics: React.FC = () => {
                   <Link
                     href="https://www.anteluxia.com/"
                     className="bg-white rounded-lg hover:text-dark-green hover:bg-beige hover:drop-shadow-lg"
+                    target="_blank"
                   >
                     Anteluxia{" "}
                   </Link>{" "}

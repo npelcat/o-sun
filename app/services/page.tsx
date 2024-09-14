@@ -75,6 +75,7 @@ const ServicesIndex: NextPage = () => {
           <Button
             titleButton="Réserver une communication"
             lien="https://form.jotform.com/232924829211052"
+            target="_blank"
           />
         </div>
       </div>
@@ -514,6 +515,7 @@ const ServicesIndex: NextPage = () => {
         <Button
           titleButton="Réserver une communication"
           lien="https://form.jotform.com/232924829211052"
+          target="_blank"
         />
       </div>
     </div>

@@ -55,16 +55,19 @@ const Booking: React.FC = () => {
                 <Button
                   titleButton="Réserver une communication animale"
                   lien="https://form.jotform.com/232924829211052"
+                  target="_blank"
                 />
                 <GiFeather className="my-4" />
                 <Button
                   titleButton="Réserver une séance énergétique"
                   lien="https://form.jotform.com/233515437828361"
+                  target="_blank"
                 />
                 <GiFeather className="my-4" />
                 <Button
                   titleButton="Réserver un service pour moi (gardien)"
                   lien="#"
+                  target="_blank"
                 />
                 <p>
                   <i>Service en cours de création</i>
@@ -73,6 +76,7 @@ const Booking: React.FC = () => {
                 <Button
                   titleButton="Réserver un Pack"
                   lien="https://form.jotform.com/232924829211052"
+                  target="_blank"
                 />
               </div>
             </div>
@@ -91,7 +95,11 @@ const Booking: React.FC = () => {
       </div>
 
       <div className="flex justify-center mt-16">
-        <Button titleButton="Une question ? > Me contacter" lien="/contact" />
+        <Button
+          titleButton="Une question ? > Me contacter"
+          lien="/contact"
+          target="_blank"
+        />
       </div>
     </div>
   );

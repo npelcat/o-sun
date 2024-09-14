@@ -9,7 +9,7 @@ const ContactIndex: NextPage = () => {
           Formulaire de contact
         </h2>
         <p className="text-center pb-10 px-4">
-          Une question, une demande d&apos;information, une urgence ?
+          Une question, une demande d&apos;information, une urgence ? <br />
           Contactez-moi via ce formulaire et je vous répondrai dans les
           meilleurs délais.
         </p>

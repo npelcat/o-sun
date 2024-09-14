@@ -1,3 +1,4 @@
+import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 
 const Testimonials: React.FC = () => {
@@ -113,6 +114,7 @@ const Testimonials: React.FC = () => {
           </div>
         </div>
       </div>
+      <Button titleButton="Réserver un service" lien="/contact/booking" />
     </div>
   );
 };

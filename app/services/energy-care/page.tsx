@@ -330,6 +330,7 @@ const EnergyCare: React.FC = () => {
         <Button
           titleButton="Réserver un soin"
           lien="https://form.jotform.com/233515437828361"
+          target="_blank"
         />
       </div>
     </div>
