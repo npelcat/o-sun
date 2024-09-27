@@ -7,6 +7,7 @@ Showcase site for services, contact form and call-to-action for booking one or m
 Currently functional on the site:
 - Home Page (index.tsx at the root of the Pages folder)
 - Routes to different pages
+- Contact form
 
 
 Projects for the future :
