@@ -7,10 +7,11 @@ Showcase site for services, contact form and call-to-action for booking one or m
 Currently functional on the site:
 - Home Page (index.tsx at the root of the Pages folder)
 - Routes to different pages
-- 8 pages left to create
+- Contact form
 
 
 Projects for the future :
+- Google reviews integrated
 - Possibility of booking services directly on the site
 - Possibility of logging in (management of customer accounts with Database)
 - Ability to pay via the site directly and view orders
