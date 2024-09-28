@@ -23,7 +23,10 @@ export const Footer: React.FC = () => {
                 alt="logo instagram"
               />{" "}
             </Link>
-            <Link href="#" target="_blank">
+            <Link
+              href="https://www.facebook.com/people/OSun-Voix-Animale/61551996179066/"
+              target="_blank"
+            >
               {" "}
               <Image
                 className="h-20 w-20 p-3 transition duration-300 ease-in-out hover:scale-125"
