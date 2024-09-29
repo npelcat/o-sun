@@ -1,7 +1,19 @@
+"use client";
+
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import Accordion from "@/src/components/Accordion";
 import { IoIosArrowDropright } from "react-icons/io";
+import WhatServices from "@/src/content/services/guardians/what-services.mdx";
+import ForWhat from "@/src/content/services/guardians/for-what.mdx";
+import dynamic from "next/dynamic";
+
+const PracticalSession = dynamic(
+  () => import("@/src/content/services/guardians/practical-session.mdx")
+);
+const TypeAndPrices = dynamic(
+  () => import("@/src/content/services/guardians/type-and-prices.mdx")
+);
 
 const Guardians: React.FC = () => {
   return (
@@ -16,23 +28,7 @@ const Guardians: React.FC = () => {
             title="Quels sont-ils ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720967009/tarot-8643585_1920_wjzdf2.png"
           />
-          <p className="pt-8">
-            <strong>
-              Explication générale des services aux humains que tu proposes,
-              organisés en bullet points ou autre, selon tes souhaits. (Les
-              photos de cette page seront à remplacer par les tiennes :) )
-            </strong>{" "}
-            <br />
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
-            risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing
-            nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas
-            ligula massa, varius a, semper congue, euismod non, mi. Proin
-            porttitor, orci nec nonummy molestie, enim est eleifend mi, non
-            fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa,
-            scelerisque vitae, consequat in, pretium a, enim. Pellentesque
-            congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum
-            bibendum augue.
-          </p>
+          <WhatServices />
           <Button
             titleButton="Ma façon de travailler et mon éthique"
             lien="/about/ethics"
@@ -46,23 +42,7 @@ const Guardians: React.FC = () => {
             title="A quoi ça sert ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720966614/tarot-5070107_1920_edpr5n.jpg"
           />
-          <p className="pt-8">
-            <strong>
-              Explications sur quel service pour quelle demande ou quel besoin
-              (possibilité de faire plusieurs paragraphes bien différenciés
-              selon tes souhaits !)
-            </strong>{" "}
-            <br />
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non
-            risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing
-            nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas
-            ligula massa, varius a, semper congue, euismod non, mi. Proin
-            porttitor, orci nec nonummy molestie, enim est eleifend mi, non
-            fermentum diam nisl sit amet erat. Duis semper. Duis arcu massa,
-            scelerisque vitae, consequat in, pretium a, enim. Pellentesque
-            congue. Ut in risus volutpat libero pharetra tempor. Cras vestibulum
-            bibendum augue.
-          </p>
+          <ForWhat />
           <Button
             titleButton="Services en cours de création"
             lien="/contact/booking"
@@ -79,28 +59,12 @@ const Guardians: React.FC = () => {
           <div>
             <Accordion title="Une séance en pratique">
               <section className="text-justify">
-                <div className="flex">
-                  <span className="text-2xl pr-2">
-                    <IoIosArrowDropright />
-                  </span>
-                  <p>
-                    Contenu détaillé de comment se passe une séance (Combien de
-                    temps ça te prends, ton approche, les différentes étapes
-                    pour le ou la gardien.ne et pour toi... Si besoin
-                    n&apos;hésite pas à renvoyer vers l&apos;onglet éthique et
-                    je ferai un lien).
-                  </p>
-                </div>
+                <PracticalSession />
               </section>
             </Accordion>
             <Accordion title="Types de séance et tarifs">
               <section className="text-justify">
-                <div className="flex">
-                  <span className="text-2xl pr-2">
-                    <IoIosArrowDropright />
-                  </span>
-                  <p>Les séances possibles (intitulé) et leur tarifs.</p>
-                </div>
+                <TypeAndPrices />
               </section>
             </Accordion>
           </div>

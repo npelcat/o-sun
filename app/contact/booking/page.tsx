@@ -1,8 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { GiFeather } from "react-icons/gi";
-import { LiaFeatherAltSolid } from "react-icons/lia";
+import GeneralBooking from "@/src/content/booking/general-booking.mdx";
 
 const Booking: React.FC = () => {
   return (
@@ -10,7 +12,6 @@ const Booking: React.FC = () => {
       <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
         Réservations
       </h2>
-
       <div className="flex justify-center bg-beige">
         <div className="py-8 w-full md:w-3/5  px-4">
           <div>
@@ -18,35 +19,7 @@ const Booking: React.FC = () => {
               title="Pour réserver un service"
               image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402547/DSC03712_nveqsy.jpg"
             />
-            <p className="pt-8 text-center">
-              Les réservations se font par semaine de disponibilité. Ces
-              dernières sont régulièrement communiquées en story sur mon compte
-              Instagram, et sur les{" "}
-              <strong> formulaires de réservation (ci-dessous).</strong>
-              <span className="flex justify-center my-4">
-                <LiaFeatherAltSolid />
-              </span>
-              Vous aurez un formulaire à remplir avec toute les informations
-              nécessaires au bon déroulement du service choisi à me transmettre.
-              En réponse, je vous donnerai mes prochaines disponibilités ainsi
-              que le moyen de règlement (RIB).
-              <span className="flex justify-center my-4">
-                <LiaFeatherAltSolid />
-              </span>
-              Si toutes les modalités vues ensemble vous conviennent, votre
-              place sera alors préréservée pendant 72h, le temps de recevoir
-              votre paiement et valider ainsi définitivement la demande de
-              prestation.
-              <span className="flex justify-center my-4">
-                <LiaFeatherAltSolid />
-              </span>
-              <i>
-                Note pour les séances énergétiques : Pour la séance, votre
-                animal doit être au calme et au repos. Vous aurez donc un
-                rendez-vous plus précis que pour une communication animale (date
-                et heure à définir ensemble).
-              </i>
-            </p>
+            <GeneralBooking />
             <div className="bg-dark-beige rounded-lg my-8 p-2">
               <h3 className="font-bold mt-8 bg-white bg-opacity-50 rounded-lg p-2">
                 Les réservations par services :
