@@ -34,17 +34,21 @@ Online Payment: Ability to pay directly through the site and track orders
 ### Installation Steps:
 
 Clone this repository:
+    
     git clone https://github.com/npelcat/o-sun.git
 
 Install dependencies: 
+    
     npm install
 
 Set up your environment variables in a .env.local file: (upcoming)
 
 Start the application in development mode: 
+    
     npm run dev
 
 Access the site at 
+    
     http://localhost:3000
 
 
