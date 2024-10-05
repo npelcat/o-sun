@@ -6,9 +6,9 @@ The site includes a service showcase, a contact form, and calls-to-action for bo
 
 ## Current Features:
 
-Home Page (index.tsx in the pages/ folder)
-Navigation between different pages via Next.js routing
-Contact form allowing users to send messages
+ Home Page (index.tsx in the pages/ folder)
+ Navigation between different pages via Next.js routing
+ Contact form allowing users to send messages
 
 ## Upcoming Features:
 
