@@ -39,23 +39,44 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, items }) => {
     }
   }, [isOpen]);
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      setIsOpen(!isOpen);
+    }
+  };
+
+  const handleMenuKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape") {
+      setIsOpen(false);
+    }
+  };
+
   return (
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={handleKeyDown}
+        aria-haspopup="true"
+        aria-expanded={isOpen}
         className="p-3 font-subtitle transition duration-300 ease-in-out hover:bg-beige hover:bg-opacity-30 hover:rounded-lg lg:mx-8 lg:text-xl"
       >
         {title}
       </button>
       {isOpen && (
-        <div className="absolute mt-2 w-40 right-0 rounded-md shadow-lg bg-white ring-1 ring-dark-green ring-opacity-5 z-50">
+        <div
+          className="absolute mt-2 w-40 right-0 rounded-md shadow-lg bg-white ring-1 ring-dark-green ring-opacity-5 z-50"
+          role="menu"
+          onKeyDown={handleMenuKeyDown}
+        >
           <div className="py-1">
             {items.map((item, index) => (
               <Link
                 key={index}
                 href={item.href}
-                className="block px-4 py-2 hover:bg-dark-beige hover: bg-opacity-30 hover:font-bold rounded-lg focus:text-white"
+                className="block px-4 py-2 hover:bg-dark-beige hover: bg-opacity-30 hover:font-bold rounded-lg focus:bg-dark-beige focus:text-black"
                 onClick={() => setIsOpen(false)}
+                role="menuitem"
+                tabIndex={0}
               >
                 {item.label}
               </Link>

@@ -3,7 +3,6 @@
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import Accordion from "@/src/components/Accordion";
-import { IoIosArrowDropright } from "react-icons/io";
 import WhatServices from "@/src/content/services/guardians/what-services.mdx";
 import ForWhat from "@/src/content/services/guardians/for-what.mdx";
 import dynamic from "next/dynamic";

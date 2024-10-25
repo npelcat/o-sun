@@ -41,7 +41,7 @@ const Contact: FC = () => {
           <input
             type="text"
             placeholder="Jane Doe"
-            className="w-full rounded-md border border-gray-300 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
+            className="w-full rounded-md border border-gray-400 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
             {...register("name", { required: true })}
           />
         </div>
@@ -52,7 +52,7 @@ const Contact: FC = () => {
           <input
             type="email"
             placeholder="exemple@domaine.com"
-            className="w-full rounded-md border border-gray-300 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
+            className="w-full rounded-md border border-gray-400 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
             {...register("email", { required: true })}
           />
         </div>
@@ -63,7 +63,7 @@ const Contact: FC = () => {
           <textarea
             rows={4}
             placeholder="Ecrivez ici votre message"
-            className="w-full resize-none rounded-md border border-gray-300 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
+            className="w-full resize-none rounded-md border border-gray-400 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
             {...register("message", { required: true })}
           ></textarea>
         </div>

@@ -11,7 +11,7 @@ export const CardTitlePhoto: React.FC<CardTitlePhotoInterface> = ({
 }) => {
   return (
     <div className="relative w-full h-96 md:h- flex flex-col items-center justify-center">
-      <h3 className="absolute bottom-2 z-50 text-2xl text-dark-green bg-white font-subtitle bg-opacity-70 w-full p-2 m-2 text-center">
+      <h3 className="absolute bottom-2 z-50 text-2xl text-black bg-white font-subtitle bg-opacity-70 w-full p-2 m-2 text-center">
         {title}
       </h3>
 
@@ -20,8 +20,8 @@ export const CardTitlePhoto: React.FC<CardTitlePhotoInterface> = ({
         loading="lazy"
         src={image}
         alt={title}
-        width="4000"
-        height="6000"
+        width="400"
+        height="600"
       />
     </div>
   );
