@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "./Button";
 
 interface HomeCTAInterface {
   image: string;
@@ -14,9 +15,7 @@ export const HomeCTA: React.FC<HomeCTAInterface> = ({
 }) => {
   return (
     <div className="relative w-56 h-56 flex items-center justify-center m-5">
-      <button className="absolute bottom-8 z-50 text-2xl text-dark-green bg-white font-subtitle bg-opacity-70 rounded-full p-2 text-center transition duration-300 ease-in-out hover:bg-white">
-        <Link href={lien}>{titleButton}</Link>
-      </button>
+      <Button lien="/ton-lien" titleButton="Qui suis-je ?" />
 
       <Image
         className="absolute inset-0 h-full object-cover rounded-full"

@@ -3,10 +3,10 @@ import Image from "next/image";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="bg-dark-green text-white bg-opacity-50 mt-16">
+    <footer className="bg-dark-green text-black bg-opacity-50 mt-16">
       <div className="container mx-auto p-5 flex flex-col items-center justify-center">
         <div className="flex flex-col items-center">
-          <h3 className="text-lg text-black font-subtitle font-bold mb-2">
+          <h3 className="text-lg font-subtitle font-bold mb-2">
             On se retrouve sur mes réseaux ?
           </h3>
           <div className="flex items-center">

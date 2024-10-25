@@ -13,10 +13,13 @@ export const Button: React.FC<ButtonInterface> = ({
 }) => {
   return (
     <div className="flex justify-center items-center m-4">
-      <Link href={lien} target={target}>
-        <button className="text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-dark-green">
+      <Link href={lien} target={target} passHref>
+        <a
+          className="inline-block text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-dark-green focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          aria-label={titleButton}
+        >
           {titleButton}
-        </button>
+        </a>
       </Link>
     </div>
   );
