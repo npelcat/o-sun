@@ -31,11 +31,13 @@ const EnergyCare: React.FC = () => {
           <CardTitlePhoto
             title="Qu'est-ce que c'est ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402548/IMG_7523_hrovuj.jpg"
+            alt="Océane et son cheval gris Ghost, les mains posées autour de son encolure"
           />
           <WhatIsEnergyCare />
           <Button
             titleButton="Ma façon de travailler et mon éthique"
             lien="/about/ethics"
+            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
@@ -45,11 +47,15 @@ const EnergyCare: React.FC = () => {
           <CardTitlePhoto
             title="Quels sont les effets d'une séance énergétique ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402551/IMG_6874_rrkiyv.jpg"
+            alt="Océane et un de ses bergers australien en face à face, la tête penchée"
           />
           <WhatEffects />
           <Button
             titleButton="Réserver un soin énergétique"
             lien="https://form.jotform.com/233515437828361"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
@@ -59,12 +65,9 @@ const EnergyCare: React.FC = () => {
           <CardTitlePhoto
             title="Sur quoi agit une séance énergétique ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402554/IMG_7583_ky7o2f.jpg"
+            alt="Océane et son cheval gris Ghost, avec un coucher de soleil derrière eux"
           />
           <ActOnWhat />
-          <Button
-            titleButton="Réserver un soin énergétique"
-            lien="https://form.jotform.com/233515437828361"
-          />
         </div>
       </div>
 
@@ -73,6 +76,7 @@ const EnergyCare: React.FC = () => {
           <CardTitlePhoto
             title="Infos pratiques"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402552/IMG_7047_tmezot.jpg"
+            alt="Tête d'un berger australien tricolore"
           />
           <div>
             <Accordion title="A qui s'adresse mes soins énergétiques ?">
@@ -93,6 +97,7 @@ const EnergyCare: React.FC = () => {
                   <Link
                     href="/contact"
                     className="bg-dark-green bg-opacity-30 rounded-lg hover:text-dark-green hover:bg-beige hover:drop-shadow-lg"
+                    aria-label="Accéder au formulaire de contact"
                   >
                     {" "}
                     FORMULAIRE DU SITE.
@@ -105,9 +110,11 @@ const EnergyCare: React.FC = () => {
       </div>
       <div className="flex justify-center mt-16">
         <Button
-          titleButton="Réserver un soin"
+          titleButton="Réserver un soin énergétique"
           lien="https://form.jotform.com/233515437828361"
           target="_blank"
+          rel="noopener noreferrer"
+          className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

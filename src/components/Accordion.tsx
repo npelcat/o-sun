@@ -17,21 +17,35 @@ const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
     setIsOpen(!isOpen);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleAccordion();
+    }
+  };
+
   return (
     <div className="w-full my-10">
-      <h3
-        className="font-subtitle cursor-pointer flex items-center md:text-xl transition ease-in-out hover:bg-white hover:rounded-lg hover:bg-opacity-70"
-        onClick={toggleAccordion}
-      >
-        <FontAwesomeIcon
-          icon={isOpen ? faChevronUp : faChevronDown}
-          className="mr-2 md:text-2xl"
-        />
-        {title}
+      <h3 className="font-subtitle cursor-pointer flex items-center md:text-xl transition ease-in-out hover:bg-white hover:rounded-lg hover:bg-opacity-70">
+        <button
+          aria-expanded={isOpen}
+          className="flex items-center w-full text-left"
+          onClick={toggleAccordion}
+          onKeyDown={handleKeyDown}
+          role="button"
+        >
+          <FontAwesomeIcon
+            icon={isOpen ? faChevronUp : faChevronDown}
+            className="mr-2 md:text-2xl"
+          />
+          {title}
+        </button>
       </h3>
       {isOpen && (
         <div>
-          <div className="m-2 bg-white rounded-lg p-4">{children}</div>
+          <div role="region" className="m-2 bg-white rounded-lg p-4">
+            {children}
+          </div>
           {button && <div className="mt-4">{button}</div>}
         </div>
       )}

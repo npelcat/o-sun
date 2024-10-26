@@ -50,21 +50,22 @@ export const Footer: React.FC = () => {
             href="#"
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-2 p-2 text-sm font-semibold"
+            className="p-1 mr-2 text-sm font-semibold  hover:bg-dark-beige rounded-lg transition duration-300 ease-in-out"
             aria-label="Mentions légales"
           >
             Mentions légales
           </Link>
+          -
           <Link
             href="https://form.jotform.com/232924829211052"
             target="_blank"
             rel="noopener noreferrer"
-            className="mb-2 p-2 font-semibold text-sm"
+            className="p-1 ml-2 font-semibold text-sm hover:bg-dark-beige rounded-lg transition duration-300 ease-in-out"
             aria-label="Conditions générales de vente"
           >
             CGV
           </Link>
-          <p className="text-xs">© 2024 par O&apos;Sun - Voix Animale</p>
+          <p className="text-xs pt-3">© 2024 par O&apos;Sun - Voix Animale</p>
         </div>
       </div>
     </footer>

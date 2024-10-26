@@ -3,11 +3,13 @@ import Image from "next/image";
 interface CardTitlePhotoInterface {
   title: string;
   image: string;
+  alt: string;
 }
 
 export const CardTitlePhoto: React.FC<CardTitlePhotoInterface> = ({
   title,
   image,
+  alt,
 }) => {
   return (
     <div className="relative w-full h-96 md:h- flex flex-col items-center justify-center">
@@ -19,7 +21,7 @@ export const CardTitlePhoto: React.FC<CardTitlePhotoInterface> = ({
         className="absolute inset-0 w-full h-full object-cover rounded-lg"
         loading="lazy"
         src={image}
-        alt={title}
+        alt={alt}
         width="400"
         height="600"
       />

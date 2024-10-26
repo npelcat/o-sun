@@ -26,11 +26,13 @@ const Guardians: React.FC = () => {
           <CardTitlePhoto
             title="Quels sont-ils ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720967009/tarot-8643585_1920_wjzdf2.png"
+            alt="Cartes de tarot dans des mains"
           />
           <WhatServices />
           <Button
             titleButton="Ma façon de travailler et mon éthique"
             lien="/about/ethics"
+            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
@@ -40,11 +42,15 @@ const Guardians: React.FC = () => {
           <CardTitlePhoto
             title="A quoi ça sert ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720966614/tarot-5070107_1920_edpr5n.jpg"
+            alt="Cartes de tarot disposées sur une table"
           />
           <ForWhat />
           <Button
             titleButton="Services en cours de création"
             lien="/contact/booking"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
@@ -54,6 +60,7 @@ const Guardians: React.FC = () => {
           <CardTitlePhoto
             title="Infos pratiques"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720966610/tarot-8834477_1920_xgbuyu.jpg"
+            alt="bougies, pommes de pin et cartes face cachée"
           />
           <div>
             <Accordion title="Une séance en pratique">
@@ -73,6 +80,9 @@ const Guardians: React.FC = () => {
         <Button
           titleButton="Services en cours de création"
           lien="/contact/booking"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex justify-center items-center m-8 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

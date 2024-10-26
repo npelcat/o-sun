@@ -5,6 +5,7 @@ interface FeatureCardInterface {
   title: string;
   description: string;
   image: string;
+  alt: string;
   lien: string;
   titleButton: string;
 }
@@ -13,6 +14,7 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
   title,
   description,
   image,
+  alt,
   lien,
   titleButton,
 }) => {
@@ -30,7 +32,7 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
           className="absolute inset-0 w-full h-full object-cover rounded-lg"
           loading="lazy"
           src={image}
-          alt={title}
+          alt={alt}
           width="400"
           height="600"
         />

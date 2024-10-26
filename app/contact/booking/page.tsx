@@ -18,6 +18,7 @@ const Booking: React.FC = () => {
             <CardTitlePhoto
               title="Pour réserver un service"
               image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402547/DSC03712_nveqsy.jpg"
+              alt="Océane de dos, en face de son cheval gris Ghost"
             />
             <GeneralBooking />
             <div className="bg-dark-beige rounded-lg my-8 p-2">
@@ -29,27 +30,35 @@ const Booking: React.FC = () => {
                   titleButton="Réserver une communication animale"
                   lien="https://form.jotform.com/232924829211052"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
                 />
-                <GiFeather className="my-4" />
+                <GiFeather aria-hidden="true" className="my-4" />
                 <Button
                   titleButton="Réserver une séance énergétique"
                   lien="https://form.jotform.com/233515437828361"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
                 />
-                <GiFeather className="my-4" />
+                <GiFeather aria-hidden="true" className="my-4" />
                 <Button
                   titleButton="Réserver un service pour moi (gardien)"
                   lien="#"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
                 />
                 <p>
                   <i>Service en cours de création</i>
                 </p>
-                <GiFeather className="my-4" />
+                <GiFeather aria-hidden="true" className="my-4" />
                 <Button
                   titleButton="Réserver un Pack"
                   lien="https://form.jotform.com/232924829211052"
                   target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
                 />
               </div>
             </div>
@@ -58,7 +67,8 @@ const Booking: React.FC = () => {
                 className="w-1/2 h-full md:w-1/6 item-center object-cover"
                 loading="lazy"
                 src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720961702/animal-2026667_1920_nvpmjw.png"
-                alt="chien et chat"
+                alt=""
+                aria-hidden="true"
                 width="1920"
                 height="1686"
               />
@@ -72,6 +82,8 @@ const Booking: React.FC = () => {
           titleButton="Une question ? > Me contacter"
           lien="/contact"
           target="_blank"
+          rel="noopener noreferrer"
+          className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

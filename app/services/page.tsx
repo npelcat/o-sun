@@ -34,11 +34,13 @@ const ServicesIndex: NextPage = () => {
           <CardTitlePhoto
             title="Qu'est-ce que c'est ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402554/IMG_6702_f4snyr.jpg"
+            alt="Océane et un de ses bergers australien en contre-jour dans le coucher du soleil"
           />
           <WhatIsAnimalCom />
           <Button
             titleButton="Ma façon de travailler et mon éthique"
             lien="/about/ethics"
+            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
@@ -48,12 +50,15 @@ const ServicesIndex: NextPage = () => {
           <CardTitlePhoto
             title="A quoi ça sert ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402549/DSC03447_qlifqp.jpg"
+            alt="Encolure et tête du cheval d'Océane, Ghost, qui regarde vers un plan d'eau"
           />
           <ForWhat />
           <Button
             titleButton="Réserver une communication"
             lien="https://form.jotform.com/232924829211052"
             target="_blank"
+            rel="noopener noreferrer"
+            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
@@ -63,6 +68,7 @@ const ServicesIndex: NextPage = () => {
           <CardTitlePhoto
             title="Infos pratiques"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402553/IMG_7041_u1eddf.jpg"
+            alt="Tête d'un berger australien tricolore"
           />
           <div>
             <Accordion title="Avec qui puis-je communiquer ?">
@@ -82,6 +88,7 @@ const ServicesIndex: NextPage = () => {
                   POUR TOUTE URGENCE, ME CONTACTER DIRECTEMENT VIA LE
                   <Link
                     href="/contact"
+                    aria-label="Accéder au formulaire de contact"
                     className="bg-dark-green bg-opacity-30 rounded-lg hover:text-dark-green hover:bg-beige hover:drop-shadow-lg"
                   >
                     {" "}
@@ -100,9 +107,11 @@ const ServicesIndex: NextPage = () => {
       </div>
       <div className="flex justify-center mt-16">
         <Button
-          titleButton="Réserver une communication"
+          titleButton="Réserver une communication animale"
           lien="https://form.jotform.com/232924829211052"
           target="_blank"
+          rel="noopener noreferrer"
+          className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

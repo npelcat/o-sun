@@ -32,6 +32,7 @@ const Ethics: React.FC = () => {
             <CardTitlePhoto
               title="Ma façon de travailler"
               image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402550/IMG_7142_oybyym.jpg"
+              alt="Océane et son cheval Ghost"
             />
             <section className="pt-8 text-justify">
               <MyWayOfWorking />
@@ -40,7 +41,8 @@ const Ethics: React.FC = () => {
                   className="w-1/2 h-full md:w-1/6 item-center object-cover"
                   loading="lazy"
                   src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720859313/dog-1532627_1920_soflbg.png"
-                  alt="chien et chat"
+                  alt=""
+                  aria-hidden="true"
                   width="1920"
                   height="1180"
                 />
@@ -69,7 +71,11 @@ const Ethics: React.FC = () => {
       </div>
 
       <div className="flex justify-center mt-16">
-        <Button titleButton="Me contacter" lien="/contact" />
+        <Button
+          titleButton="Me contacter"
+          lien="/contact"
+          className="flex justify-center items-center mt-8 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+        />
       </div>
     </div>
   );
