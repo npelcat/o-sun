@@ -61,6 +61,7 @@ export const Header: React.FC = () => {
           width={6000}
           height={4000}
           alt="Océane et un de ses bergers australien partageant un contact main-patte"
+          loading="eager"
         />
       </section>
 
@@ -77,6 +78,7 @@ export const Header: React.FC = () => {
               width={6000}
               height={4000}
               alt="Océane et sa famille de 4 chiens"
+              loading="lazy"
             />
           </div>
         </div>

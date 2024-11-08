@@ -26,6 +26,7 @@ export const Footer: React.FC = () => {
                 width={382}
                 height={392}
                 alt="logo instagram"
+                loading="lazy"
               />{" "}
             </Link>
             <Link
@@ -41,6 +42,7 @@ export const Footer: React.FC = () => {
                 width={384}
                 height={392}
                 alt="logo facebook"
+                loading="lazy"
               />{" "}
             </Link>
           </div>

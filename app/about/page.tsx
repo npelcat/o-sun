@@ -6,6 +6,7 @@ import { NextPage } from "next";
 import Image from "next/image";
 import MyJourney from "@/src/content/who-am-i/my-journey.mdx";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 const AnimalComTraining = dynamic(
   () => import("@/src/content/who-am-i/animal-com-training.mdx")
@@ -22,6 +23,24 @@ const OtherServices = dynamic(
 const OldLife = dynamic(() => import("@/src/content/who-am-i/old-life.mdx"));
 
 const AboutIndex: NextPage = () => {
+  const [content, setContent] = useState<any[]>([]);
+
+  // Récupérer le contenu de la base de données via l'API
+  const fetchContent = async () => {
+    const response = await fetch("/api/content/1"); // Remplace "1" par l'ID de ta page
+    const data = await response.json();
+    setContent(data);
+  };
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  // Fonction pour récupérer une partie spécifique
+  const getPartContent = (partName: string) => {
+    return content.find((section) => section.part === partName)?.content;
+  };
+
   return (
     <div className="text-center pt-16 space-y-12">
       <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
@@ -36,7 +55,7 @@ const AboutIndex: NextPage = () => {
               image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402550/IMG_6825_tdlhcg.jpg"
               alt="Océane souriante assise dans la campagne avec un de ses bergers australien"
             />
-            <MyJourney />
+            <div className="pt-8">{getPartContent("Ton parcours")}</div>
             <div className="flex justify-center py-8">
               <Image
                 className="w-1/2 h-full md:w-1/6 item-center object-cover"
