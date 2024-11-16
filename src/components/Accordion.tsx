@@ -10,7 +10,7 @@ interface AccordionProps {
   button?: ReactNode;
 }
 
-const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
+export const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleAccordion = () => {
@@ -52,5 +52,3 @@ const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
     </div>
   );
 };
-
-export default Accordion;

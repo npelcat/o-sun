@@ -1,33 +1,27 @@
 "use client";
-import Accordion from "@/src/components/Accordion";
+import { Accordion } from "@/src/components/Accordion";
 import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
+import { TextEditor } from "@/src/components/TextEditor";
 import { NextPage } from "next";
 import Image from "next/image";
-import MyJourney from "@/src/content/who-am-i/my-journey.mdx";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { IoIosArrowDropright } from "react-icons/io";
 
-const AnimalComTraining = dynamic(
-  () => import("@/src/content/who-am-i/animal-com-training.mdx")
-);
-
-const EnergyCareTraining = dynamic(
-  () => import("@/src/content/who-am-i/energy-care-training.mdx")
-);
-
-const OtherServices = dynamic(
-  () => import("@/src/content/who-am-i/other-services.mdx")
-);
-
-const OldLife = dynamic(() => import("@/src/content/who-am-i/old-life.mdx"));
+type ContentSection = {
+  id: number;
+  page_id: number;
+  part: string;
+  content: string;
+  last_updated: string;
+};
 
 const AboutIndex: NextPage = () => {
-  const [content, setContent] = useState<any[]>([]);
+  const [content, setContent] = useState<ContentSection[]>([]);
 
   // Récupérer le contenu de la base de données via l'API
   const fetchContent = async () => {
-    const response = await fetch("/api/content/1"); // Remplace "1" par l'ID de ta page
+    const response = await fetch("/api/content/1"); //ID de la page souhaitée (cette page ci)
     const data = await response.json();
     setContent(data);
   };
@@ -39,6 +33,40 @@ const AboutIndex: NextPage = () => {
   // Fonction pour récupérer une partie spécifique
   const getPartContent = (partName: string) => {
     return content.find((section) => section.part === partName)?.content;
+  };
+
+  // Fonction pour sauvegarder les modifications
+  const handleSave = async (
+    updatedText: string,
+    part: string,
+    page_id: number
+  ) => {
+    try {
+      const response = await fetch(`/api/content/${page_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          page_id,
+          part,
+          content: updatedText,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la sauvegarde du contenu");
+      }
+
+      // Mettre à jour localement le state après une sauvegarde réussie
+      setContent((prevContent) =>
+        prevContent.map((section) =>
+          section.part === part ? { ...section, content: updatedText } : section
+        )
+      );
+      alert("Contenu sauvegardé avec succès !");
+    } catch (error) {
+      alert("Erreur lors de la sauvegarde : vérifiez votre connexion.");
+      console.error("Erreur : ", error);
+    }
   };
 
   return (
@@ -55,7 +83,15 @@ const AboutIndex: NextPage = () => {
               image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402550/IMG_6825_tdlhcg.jpg"
               alt="Océane souriante assise dans la campagne avec un de ses bergers australien"
             />
-            <div className="pt-8">{getPartContent("Ton parcours")}</div>
+            <div className="pt-8">
+              <TextEditor
+                initialText={getPartContent("Ton parcours") || ""}
+                part="Ton parcours"
+                onSave={(updatedText) =>
+                  handleSave(updatedText, "Ton parcours", 1)
+                }
+              />
+            </div>
             <div className="flex justify-center py-8">
               <Image
                 className="w-1/2 h-full md:w-1/6 item-center object-cover"
@@ -86,22 +122,164 @@ const AboutIndex: NextPage = () => {
           <div>
             <Accordion title="Ma formation en communication Animale">
               <section className="text-justify">
-                <AnimalComTraining />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={
+                      getPartContent("Formation com animale part 1") || ""
+                    }
+                    part="Formation com animale part 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "Formation com animale part 1", 1)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={
+                      getPartContent("Formation com animale part 2") || ""
+                    }
+                    part="Formation com animale part 2"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "Formation com animale part 2", 1)
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
             <Accordion title="Ma formation en soins énergétiques">
               <section className="text-justify">
-                <EnergyCareTraining />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={
+                      getPartContent("Formation soins energetiques part 1") ||
+                      ""
+                    }
+                    part="Formation soins energetiques part 1"
+                    onSave={(updatedText) =>
+                      handleSave(
+                        updatedText,
+                        "Formation soins energetiques part 1",
+                        1
+                      )
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={
+                      getPartContent("Formation soins energetiques part 2") ||
+                      ""
+                    }
+                    part="Formation soins energetiques part 2"
+                    onSave={(updatedText) =>
+                      handleSave(
+                        updatedText,
+                        "Formation soins energetiques part 2",
+                        1
+                      )
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
             <Accordion title="Ma formation pour les autres services">
               <section className="text-justify">
-                <OtherServices />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={
+                      getPartContent("Formation gardiens part 1") || ""
+                    }
+                    part="Formation gardiens part 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "Formation gardiens part 1", 1)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={
+                      getPartContent("Formation gardiens part 2") || ""
+                    }
+                    part="Formation gardiens part 2"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "Formation gardiens part 2", 1)
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
             <Accordion title="Mon ancienne vie">
               <section className="text-justify">
-                <OldLife />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("Ancienne vie part 1") || ""}
+                    part="Ancienne vie part 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "Ancienne vie part 1", 1)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("Ancienne vie part 1") || ""}
+                    part="Ancienne vie part 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "Ancienne vie part 1", 1)
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
           </div>
