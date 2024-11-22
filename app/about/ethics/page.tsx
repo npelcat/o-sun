@@ -71,12 +71,10 @@ const Ethics: React.FC = () => {
 
   return (
     <div className="text-center pt-16 space-y-12">
-      <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
-        Mon éthique
-      </h2>
+      <h2 className="text-3xl font-subtitle font-bold">Mon éthique</h2>
 
       <div className="flex justify-center bg-beige">
-        <div className="py-8 w-full md:w-3/5  px-4">
+        <div className="flex flex-col gap-6 p-8 w-full md:w-3/5">
           <div>
             <CardTitlePhoto
               title="Ma façon de travailler"
@@ -161,71 +159,66 @@ const Ethics: React.FC = () => {
                 />
               </div>
             </section>
-            <div className="bg-dark-beige rounded-lg my-8 p-2">
-              <h3 className="font-bold mt-8 bg-white bg-opacity-50 rounded-lg p-2">
+            <div className="bg-dark-beige rounded-lg py-4 px-8 flex flex-col gap-4">
+              <h3 className="font-bold bg-white bg-opacity-50 rounded-lg py-4">
                 Les détails de ma pratique pour chaque discipline :
               </h3>
-              <div className="p-2">
-                <div className="text-justify">
-                  <Accordion title="Communication Animale">
-                    <TextEditor
-                      initialText={
-                        getPartContent("Facon de travailler com animale") || ""
-                      }
-                      part="Facon de travailler com animale"
-                      onSave={(updatedText) =>
-                        handleSave(
-                          updatedText,
-                          "Facon de travailler com animale",
-                          2
-                        )
-                      }
-                    />
-                  </Accordion>
-                  <Accordion title="Soins énergétiques">
-                    <TextEditor
-                      initialText={
-                        getPartContent(
-                          "Facon de travailler soins energetiques"
-                        ) || ""
-                      }
-                      part="Facon de travailler soins energetiques"
-                      onSave={(updatedText) =>
-                        handleSave(
-                          updatedText,
-                          "Facon de travailler soins energetiques",
-                          2
-                        )
-                      }
-                    />
-                  </Accordion>
-                  <Accordion title="Pour les gardiens">
-                    <TextEditor
-                      initialText={
-                        getPartContent("Facon de travailler gardiens") || ""
-                      }
-                      part="Facon de travailler gardiens"
-                      onSave={(updatedText) =>
-                        handleSave(
-                          updatedText,
-                          "Facon de travailler gardiens",
-                          2
-                        )
-                      }
-                    />
-                  </Accordion>
-                </div>
+
+              <div className="text-justify">
+                <Accordion title="Communication Animale">
+                  <TextEditor
+                    initialText={
+                      getPartContent("Facon de travailler com animale") || ""
+                    }
+                    part="Facon de travailler com animale"
+                    onSave={(updatedText) =>
+                      handleSave(
+                        updatedText,
+                        "Facon de travailler com animale",
+                        2
+                      )
+                    }
+                  />
+                </Accordion>
+                <Accordion title="Soins énergétiques">
+                  <TextEditor
+                    initialText={
+                      getPartContent(
+                        "Facon de travailler soins energetiques"
+                      ) || ""
+                    }
+                    part="Facon de travailler soins energetiques"
+                    onSave={(updatedText) =>
+                      handleSave(
+                        updatedText,
+                        "Facon de travailler soins energetiques",
+                        2
+                      )
+                    }
+                  />
+                </Accordion>
+                <Accordion title="Pour les gardiens">
+                  <TextEditor
+                    initialText={
+                      getPartContent("Facon de travailler gardiens") || ""
+                    }
+                    part="Facon de travailler gardiens"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "Facon de travailler gardiens", 2)
+                    }
+                  />
+                </Accordion>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-center mt-16">
+      <div className="flex justify-center">
         <Button
           titleButton="Me contacter"
           lien="/contact"
-          className="flex justify-center items-center mt-8 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          className="flex justify-center items-center text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

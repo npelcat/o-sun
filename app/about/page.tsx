@@ -273,10 +273,10 @@ const AboutIndex: NextPage = () => {
                     />
                   </span>
                   <TextEditor
-                    initialText={getPartContent("Ancienne vie part 1") || ""}
+                    initialText={getPartContent("Ancienne vie part 2") || ""}
                     part="Ancienne vie part 1"
                     onSave={(updatedText) =>
-                      handleSave(updatedText, "Ancienne vie part 1", 1)
+                      handleSave(updatedText, "Ancienne vie part 2", 1)
                     }
                   />
                 </div>

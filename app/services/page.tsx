@@ -148,7 +148,7 @@ const ServicesIndex: NextPage = () => {
       </div>
 
       <div className="flex justify-center bg-dark-beige">
-        <div className=" py-8 w-full md:w-3/5  px-4">
+        <div className=" py-8 w-full md:w-3/5 px-4">
           <CardTitlePhoto
             title="Infos pratiques"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402553/IMG_7041_u1eddf.jpg"
@@ -160,7 +160,7 @@ const ServicesIndex: NextPage = () => {
                 <div className="flex">
                   <span className="text-2xl">
                     <IoIosArrowDropright
-                      className="w-6 h-6 mr-2 text-2xl"
+                      className="w-6 h-6 mr-2"
                       aria-hidden="true"
                     />
                   </span>
@@ -230,7 +230,7 @@ const ServicesIndex: NextPage = () => {
             <Accordion title="Une séance en pratique">
               <section className="text-justify">
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -246,7 +246,7 @@ const ServicesIndex: NextPage = () => {
                 </div>
                 <br />
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -262,7 +262,7 @@ const ServicesIndex: NextPage = () => {
                 </div>
                 <br />
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -278,7 +278,7 @@ const ServicesIndex: NextPage = () => {
                 </div>
                 <br />
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -294,7 +294,7 @@ const ServicesIndex: NextPage = () => {
                 </div>
                 <br />
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <CgDanger className="w-6 h-6 mr-2" aria-hidden="true" />
                   </span>
                   <TextEditor
@@ -311,7 +311,7 @@ const ServicesIndex: NextPage = () => {
               <section className="text-justify">
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <GiFallingLeaf
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -332,7 +332,7 @@ const ServicesIndex: NextPage = () => {
                 <br />
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <GiFallingLeaf
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -353,7 +353,7 @@ const ServicesIndex: NextPage = () => {
                 <br />
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <GiFallingLeaf
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -374,7 +374,7 @@ const ServicesIndex: NextPage = () => {
                 <br />
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <GiFallingLeaf
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -395,7 +395,7 @@ const ServicesIndex: NextPage = () => {
                 <br />
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <GiFallingLeaf
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -416,7 +416,7 @@ const ServicesIndex: NextPage = () => {
                 <br />
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <HiOutlineBellAlert
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -436,7 +436,7 @@ const ServicesIndex: NextPage = () => {
                   />
                 </div>
 
-                <h5 className="mt-8">
+                <h5 className="pt-8">
                   POUR TOUTE URGENCE, ME CONTACTER DIRECTEMENT VIA LE
                   <Link
                     href="/contact"
@@ -453,7 +453,7 @@ const ServicesIndex: NextPage = () => {
               <section className="text-justify">
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <PiHandHeartLight
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -474,7 +474,7 @@ const ServicesIndex: NextPage = () => {
                 <br />
                 <div>
                   <div className="flex">
-                    <span className="text-2xl pr-2">
+                    <span className="text-2xl">
                       <PiHandHeartLight
                         className="w-6 h-6 mr-2"
                         aria-hidden="true"
@@ -497,13 +497,13 @@ const ServicesIndex: NextPage = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-16">
+      <div className="flex justify-center pt-8">
         <Button
           titleButton="Réserver une communication animale"
           lien="https://form.jotform.com/232924829211052"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          className="flex justify-center items-center text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

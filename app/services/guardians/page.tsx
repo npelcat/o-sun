@@ -70,12 +70,12 @@ const Guardians: React.FC = () => {
 
   return (
     <div className="text-center pt-16 space-y-12">
-      <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
+      <h2 className="text-3xl font-subtitle font-bold">
         Services aux gardiens
       </h2>
 
       <div className="flex justify-center bg-beige">
-        <div className=" py-8 w-full md:w-3/5 px-4">
+        <div className=" flex flex-col gap-6 p-8 w-full md:w-3/5">
           <CardTitlePhoto
             title="Quels sont-ils ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720967009/tarot-8643585_1920_wjzdf2.png"
@@ -91,13 +91,13 @@ const Guardians: React.FC = () => {
           <Button
             titleButton="Ma façon de travailler et mon éthique"
             lien="/about/ethics"
-            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+            className="flex justify-center items-center text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
 
       <div className="flex justify-center bg-beige">
-        <div className=" py-8 w-full md:w-3/5  px-4">
+        <div className="flex flex-col gap-6 p-8 w-full md:w-3/5">
           <CardTitlePhoto
             title="A quoi ça sert ?"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720966614/tarot-5070107_1920_edpr5n.jpg"
@@ -117,13 +117,13 @@ const Guardians: React.FC = () => {
             lien="/contact/booking"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+            className="flex justify-center items-center text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
           />
         </div>
       </div>
 
       <div className="flex justify-center bg-dark-beige">
-        <div className=" py-8 w-full md:w-3/5  px-4">
+        <div className="flex flex-col gap-6 p-8 w-full md:w-3/5">
           <CardTitlePhoto
             title="Infos pratiques"
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720966610/tarot-8834477_1920_xgbuyu.jpg"
@@ -133,7 +133,7 @@ const Guardians: React.FC = () => {
             <Accordion title="Une séance en pratique">
               <section className="text-justify">
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -149,7 +149,7 @@ const Guardians: React.FC = () => {
                 </div>
                 <br />
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -168,7 +168,7 @@ const Guardians: React.FC = () => {
             <Accordion title="Types de séance et tarifs">
               <section className="text-justify">
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -184,7 +184,7 @@ const Guardians: React.FC = () => {
                 </div>
                 <br />
                 <div className="flex">
-                  <span className="text-2xl pr-2">
+                  <span className="text-2xl">
                     <IoIosArrowDropright
                       className="w-6 h-6 mr-2"
                       aria-hidden="true"
@@ -203,13 +203,13 @@ const Guardians: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-16">
+      <div className="flex justify-center">
         <Button
           titleButton="Services en cours de création"
           lien="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex justify-center items-center m-8 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          className="flex justify-center items-center text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>
