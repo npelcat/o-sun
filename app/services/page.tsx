@@ -8,19 +8,11 @@ import Link from "next/link";
 import { PiMoonStarsThin } from "react-icons/pi";
 import { IoIosArrowDropright } from "react-icons/io";
 import { CgDanger } from "react-icons/cg";
-import dynamic from "next/dynamic";
+import { GiFallingLeaf } from "react-icons/gi";
+import { HiOutlineBellAlert } from "react-icons/hi2";
+import { PiHandHeartLight } from "react-icons/pi";
 import { TextEditor } from "@/src/components/TextEditor";
 import { useEffect, useState } from "react";
-
-const PracticalSession = dynamic(
-  () => import("@/src/content/services/animal-com/practical-session.mdx")
-);
-const TypeAndPrices = dynamic(
-  () => import("@/src/content/services/animal-com/type-and-prices.mdx")
-);
-const Packs = dynamic(
-  () => import("@/src/content/services/animal-com/packs.mdx")
-);
 
 type ContentSection = {
   id: number;
@@ -237,12 +229,213 @@ const ServicesIndex: NextPage = () => {
             </Accordion>
             <Accordion title="Une séance en pratique">
               <section className="text-justify">
-                <PracticalSession />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("seance pratique part 1") || ""}
+                    part="seance pratique part 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "seance pratique part 1", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("seance pratique part 2") || ""}
+                    part="seance pratique part 2"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "seance pratique part 2", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("seance pratique part 3") || ""}
+                    part="seance pratique part 3"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "seance pratique part 3", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("seance pratique part 4") || ""}
+                    part="seance pratique part 4"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "seance pratique part 4", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <CgDanger className="w-6 h-6 mr-2" aria-hidden="true" />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("seance pratique part 4") || ""}
+                    part="seance pratique part 4"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "seance pratique part 4", 4)
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
             <Accordion title="Types de séance et tarifs">
               <section className="text-justify">
-                <TypeAndPrices />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <GiFallingLeaf
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Communication animale guidée par les cartes Oracles ~ 20 €
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("prestation 1") || ""}
+                    part="prestation 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation 1", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <GiFallingLeaf
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Communication animale message ~ 35 €
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("prestation 2") || ""}
+                    part="prestation 2"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation 2", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <GiFallingLeaf
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Communication animale ~ 65 €
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("prestation 3") || ""}
+                    part="prestation 3"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation 3", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <GiFallingLeaf
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Communication animale défunt ~ 65 €
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("prestation 4") || ""}
+                    part="prestation 4"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation 4", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <GiFallingLeaf
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Communication animale de suivi ~ 20 €
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("prestation 5") || ""}
+                    part="prestation 5"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation 5", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <HiOutlineBellAlert
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Les Urgences ~ + 15€ au prix initial de la prestation
+                      demandée
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("prestation 6") || ""}
+                    part="prestation 6"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation 6", 4)
+                    }
+                  />
+                </div>
+
                 <h5 className="mt-8">
                   POUR TOUTE URGENCE, ME CONTACTER DIRECTEMENT VIA LE
                   <Link
@@ -258,7 +451,47 @@ const ServicesIndex: NextPage = () => {
             </Accordion>
             <Accordion title="Les PACKS">
               <section className="text-justify">
-                <Packs />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <PiHandHeartLight
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Pack Accompagnement Profondeur – 115€
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("pack 1") || ""}
+                    part="pack 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "pack 1", 4)
+                    }
+                  />
+                </div>
+                <br />
+                <div>
+                  <div className="flex">
+                    <span className="text-2xl pr-2">
+                      <PiHandHeartLight
+                        className="w-6 h-6 mr-2"
+                        aria-hidden="true"
+                      />{" "}
+                    </span>
+                    <h3 className="font-subtitle font-bold pb-4">
+                      Pack Accompagnement Fin de vie – 160€
+                    </h3>
+                  </div>
+                  <TextEditor
+                    initialText={getPartContent("pack 2") || ""}
+                    part="pack 2"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "pack 2", 4)
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
           </div>

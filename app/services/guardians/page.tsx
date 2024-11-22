@@ -2,19 +2,72 @@
 
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
-import Accordion from "@/src/components/Accordion";
-import WhatServices from "@/src/content/services/guardians/what-services.mdx";
-import ForWhat from "@/src/content/services/guardians/for-what.mdx";
-import dynamic from "next/dynamic";
+import { Accordion } from "@/src/components/Accordion";
+import { IoIosArrowDropright } from "react-icons/io";
+import { useEffect, useState } from "react";
+import { TextEditor } from "@/src/components/TextEditor";
 
-const PracticalSession = dynamic(
-  () => import("@/src/content/services/guardians/practical-session.mdx")
-);
-const TypeAndPrices = dynamic(
-  () => import("@/src/content/services/guardians/type-and-prices.mdx")
-);
+type ContentSection = {
+  id: number;
+  page_id: number;
+  part: string;
+  content: string;
+  last_updated: string;
+};
 
 const Guardians: React.FC = () => {
+  const [content, setContent] = useState<ContentSection[]>([]);
+
+  // Récupérer le contenu de la base de données via l'API
+  const fetchContent = async () => {
+    const response = await fetch("/api/content/6"); //ID de la page souhaitée (cette page ci)
+    const data = await response.json();
+    setContent(data);
+  };
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  // Fonction pour récupérer une partie spécifique
+  const getPartContent = (partName: string) => {
+    return content.find((section) => section.part === partName)?.content;
+  };
+
+  // Fonction pour sauvegarder les modifications
+  const handleSave = async (
+    updatedText: string,
+    part: string,
+    page_id: number
+  ) => {
+    try {
+      const response = await fetch(`/api/content/${page_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          page_id,
+          part,
+          content: updatedText,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erreur lors de la sauvegarde du contenu");
+      }
+
+      // Mettre à jour localement le state après une sauvegarde réussie
+      setContent((prevContent) =>
+        prevContent.map((section) =>
+          section.part === part ? { ...section, content: updatedText } : section
+        )
+      );
+      alert("Contenu sauvegardé avec succès !");
+    } catch (error) {
+      alert("Erreur lors de la sauvegarde : vérifiez votre connexion.");
+      console.error("Erreur : ", error);
+    }
+  };
+
   return (
     <div className="text-center pt-16 space-y-12">
       <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
@@ -28,7 +81,13 @@ const Guardians: React.FC = () => {
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720967009/tarot-8643585_1920_wjzdf2.png"
             alt="Cartes de tarot dans des mains"
           />
-          <WhatServices />
+          <TextEditor
+            initialText={getPartContent("services gardiens part 1") || ""}
+            part="services gardiens part 1"
+            onSave={(updatedText) =>
+              handleSave(updatedText, "services gardiens part 1", 6)
+            }
+          />
           <Button
             titleButton="Ma façon de travailler et mon éthique"
             lien="/about/ethics"
@@ -44,7 +103,15 @@ const Guardians: React.FC = () => {
             image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720966614/tarot-5070107_1920_edpr5n.jpg"
             alt="Cartes de tarot disposées sur une table"
           />
-          <ForWhat />
+          <TextEditor
+            initialText={
+              getPartContent("services gardiens pourquoi part 1") || ""
+            }
+            part="services gardiens pourquoi part 1"
+            onSave={(updatedText) =>
+              handleSave(updatedText, "services gardiens pourquoi part 1", 6)
+            }
+          />
           <Button
             titleButton="Services en cours de création"
             lien="/contact/booking"
@@ -65,12 +132,72 @@ const Guardians: React.FC = () => {
           <div>
             <Accordion title="Une séance en pratique">
               <section className="text-justify">
-                <PracticalSession />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("seance gardien part 1") || ""}
+                    part="seance gardien part 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "seance gardien part 1", 6)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("seance gardien part 2") || ""}
+                    part="seance gardien part 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "seance gardien part 2", 6)
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
             <Accordion title="Types de séance et tarifs">
               <section className="text-justify">
-                <TypeAndPrices />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("prestation gardiens 1") || ""}
+                    part="prestation gardien 1"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation gardiens 1", 6)
+                    }
+                  />
+                </div>
+                <br />
+                <div className="flex">
+                  <span className="text-2xl pr-2">
+                    <IoIosArrowDropright
+                      className="w-6 h-6 mr-2"
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <TextEditor
+                    initialText={getPartContent("prestation gardiens 2") || ""}
+                    part="prestation gardien 2"
+                    onSave={(updatedText) =>
+                      handleSave(updatedText, "prestation gardiens 2", 6)
+                    }
+                  />
+                </div>
               </section>
             </Accordion>
           </div>
