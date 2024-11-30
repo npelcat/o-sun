@@ -5,9 +5,7 @@ import Image from "next/image";
 const Testimonials: React.FC = () => {
   return (
     <div className="text-center py-16 space-y-12">
-      <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
-        Témoignages
-      </h2>
+      <h2 className="text-3xl font-subtitle font-bold">Témoignages</h2>
 
       <div className="flex justify-center bg-beige">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-20 py-8 w-full md:w-4/5 px-4">
@@ -119,19 +117,19 @@ const Testimonials: React.FC = () => {
               lien="https://www.google.com/search?client=firefox-b-d&sca_esv=f3abb217fb528311&sxsrf=ADLYWIL_GQ_PC-IenD17enp6_LVkAxUdEA:1731763003006&q=o%27sun+voix+animale&si=ACC90nwjPmqJHrCEt6ewASzksVFQDX8zco_7MgBaIawvaF4-7gukCCCj3HMoXA8EhI8OXZDsb6HENkobNzSbN1iXphPgepPIv_ydvun7HyEulUOwR4oEiaU%3D&uds=ADvngMhGB-VtBMom1-3tEuR0_dZAqVXLkLNFD5Nb5yTKtEOzLWPm2J32gwBTnDq-KRza4BlHr-byDgYwWU7D840Iu8uOkJ4QB5QBcewQn4J6D5wdEPUBPOs&sa=X&ved=2ahUKEwiphYT19-CJAxXOUqQEHS4FGcIQ3PALegQIFxAE&biw=1536&bih=730&dpr=1.25"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex justify-center items-center mt-8 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+              className="flex justify-center items-center text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
             />
             <br />
           </div>
         </div>
       </div>
-      <div className="flex justify-center mt-16">
+      <div className="flex justify-center">
         <Button
           titleButton="Réserver un service"
           lien="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex justify-center items-center mt-8 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          className="flex justify-center items-center text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

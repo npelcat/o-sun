@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "../../../../utils/supabaseClient";
+import { verifyAuth } from "../../../../middleware/authMiddleware";
 
-// Handler pour les requêtes GET (déjà existant)
+// Handler pour les requêtes GET
 export async function GET(
   request: Request,
   { params }: { params: { page: string } }
@@ -29,8 +30,18 @@ export async function GET(
   return NextResponse.json(data); // Retourne toutes les part pour la page donnée
 }
 
-// Handler pour les requêtes PUT (nouveau)
+// Handler pour les requêtes PUT
 export async function PUT(request: Request) {
+  // Convertir Request en NextRequest
+  const nextRequest =
+    request instanceof NextRequest ? request : new NextRequest(request);
+  // Exécuter le middleware
+  const authResponse = await verifyAuth(nextRequest);
+  if (authResponse instanceof NextResponse) {
+    // Si réponse, interrompre l'exécution et la renvoyer
+    return authResponse;
+  }
+
   try {
     // Récupérer les données envoyées dans le body
     const { page_id, part, content } = await request.json();

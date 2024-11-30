@@ -43,6 +43,7 @@ export const Header: React.FC = () => {
             items={[
               { label: "Réservation", href: "/contact/booking" },
               { label: "Me contacter", href: "/contact" },
+              { label: "Connexion", href: "/contact/login" },
             ]}
           />
         </div>

@@ -164,7 +164,7 @@ const Ethics: React.FC = () => {
                 Les détails de ma pratique pour chaque discipline :
               </h3>
 
-              <div className="text-justify">
+              <section className="text-justify">
                 <Accordion title="Communication Animale">
                   <TextEditor
                     initialText={
@@ -208,7 +208,7 @@ const Ethics: React.FC = () => {
                     }
                   />
                 </Accordion>
-              </div>
+              </section>
             </div>
           </div>
         </div>
