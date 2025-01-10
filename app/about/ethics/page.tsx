@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Button } from "@/src/components/Button";
-import Accordion from "@/src/components/Accordion";
+import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import MyWayOfWorking from "@/src/content/my-ethics/way-of-working.mdx";
 import dynamic from "next/dynamic";

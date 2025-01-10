@@ -1,3 +1,5 @@
+import { BlocksContent } from "@strapi/blocks-react-renderer";
+
 export interface StrapiBlockContent {
   documentId: string;
   title: string;
@@ -5,5 +7,6 @@ export interface StrapiBlockContent {
     url: string;
     alternativeText?: string | null;
   } | null;
-  content: string;
+  content: BlocksContent;
+  slug: string;
 }

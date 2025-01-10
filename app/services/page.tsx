@@ -2,7 +2,7 @@
 
 import { Button } from "@/src/components/Button";
 import { NextPage } from "next";
-import Accordion from "@/src/components/Accordion";
+import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import Link from "next/link";
 import WhatIsAnimalCom from "@/src/content/services/animal-com/what-is-animal-com.mdx";

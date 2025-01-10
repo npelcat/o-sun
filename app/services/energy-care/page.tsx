@@ -2,7 +2,7 @@
 
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
-import Accordion from "@/src/components/Accordion";
+import { Accordion } from "@/src/components/Accordion";
 import Link from "next/link";
 import WhatIsEnergyCare from "@/src/content/services/energy-care/what-is-energy-care.mdx";
 import WhatEffects from "@/src/content/services/energy-care/what-effects.mdx";

@@ -10,7 +10,6 @@ export const fetchBlockContentById = async (
       `/api/block-contents/${id}?populate=picture`
     );
 
-    console.log("data strapi", data);
     const blockData = data.data;
     if (!blockData) {
       throw new Error("Les données du bloc sont manquantes.");
@@ -27,8 +26,8 @@ export const fetchBlockContentById = async (
       documentId: blockData.documentId,
       title: blockData.title,
       picture,
-
       content: blockData.content,
+      slug: blockData.slug,
     };
   } catch (error) {
     console.error(
@@ -40,11 +39,12 @@ export const fetchBlockContentById = async (
 };
 
 export const fetchMultipleBlockContents = async (
-  ids: string[]
+  slugs: string[]
 ): Promise<StrapiBlockContent[]> => {
-  const query = ids.map((id) => `documentId=${id}`).join("&");
+  // Construire le filtre pour les slugs
+  const query = slugs.map((slug) => `filters[slug][$in]=${slug}`).join("&");
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_URL}/block-contents?${query}`
+    `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/block-contents?${query}&populate=*`
   );
 
   if (!response.ok) {
@@ -54,8 +54,10 @@ export const fetchMultipleBlockContents = async (
   }
 
   const data = await response.json();
-  return data.map((block: any) => ({
-    documentId: block.documentId,
+
+  // Mapper les résultats pour renvoyer les données au bon format
+  return data.data.map((block: any) => ({
+    slug: block.slug,
     title: block.title,
     picture: block.picture
       ? {
