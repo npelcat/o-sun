@@ -6,46 +6,38 @@ import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { StrapiBlockContent } from "../api/types/strapi";
 import BlockRendererClient from "../api/strapi/BlockRendererClient";
-import { fetchMultipleAccordions } from "../api/strapi/accordion";
-import { fetchBlockContentById } from "../api/strapi/block-content";
+import { fetchBlockContentAndAccordions } from "../api/utils/fetchPage";
+import { StrapiBlockContent } from "../api/types/strapi";
 
 const AboutIndex: NextPage = () => {
-  const [blockContents, setBlockContents] = useState<
-    StrapiBlockContent[] | null
-  >(null);
-
-  const [accordions, setAccordions] = useState<StrapiBlockContent[] | null>(
-    null
-  );
+  const [data, setData] = useState<{
+    blockContents: StrapiBlockContent[] | null;
+    accordions: StrapiBlockContent[] | null;
+  }>({
+    blockContents: null,
+    accordions: null,
+  });
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const responseAccordions = await fetchMultipleAccordions([
-          "ma-formation-en-communication-animale",
-          "ma-formation-en-soins-energetiques",
-          "ma-formation-pour-les-services-aux-gardiens",
-          "mon-ancienne-vie",
-        ]);
         const blockIds = [
           "qcw4qczfv0cdjav8lldwgafd",
           "pjl27su4oxru475tjkhaaywd",
         ];
+        const accordionSlugs = [
+          "ma-formation-en-communication-animale",
+          "ma-formation-en-soins-energetiques",
+          "ma-formation-pour-les-services-aux-gardiens",
+          "mon-ancienne-vie",
+        ];
 
-        const responsesBlockContent = await Promise.all(
-          blockIds.map((id) => fetchBlockContentById(id))
-        );
-
-        const validBlockContents = responsesBlockContent.filter(
-          (content): content is StrapiBlockContent => content !== null
-        );
-
-        setBlockContents(validBlockContents);
-        setAccordions(responseAccordions);
-      } catch (error) {
+        const { blockContents, accordions } =
+          await fetchBlockContentAndAccordions(blockIds, accordionSlugs);
+        setData({ blockContents, accordions });
+      } catch (err) {
         setError("Erreur lors du chargement des données.");
       }
     };
@@ -54,14 +46,16 @@ const AboutIndex: NextPage = () => {
   }, []);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!blockContents) return <p>Chargement des données...</p>;
-  if (!accordions) return <p>Chargement des données...</p>;
+  if (!data.blockContents || !data.accordions)
+    return <p>Chargement des données...</p>;
 
-  const oceaneContent = blockContents.find((block) => block.slug === "oceane");
-  const diplomesEtFormations = blockContents.find(
+  const oceaneContent = data.blockContents.find(
+    (block) => block.slug === "oceane"
+  );
+  const diplomesEtFormations = data.blockContents.find(
     (block) => block.slug === "mes-diplomes-et-formations"
   );
-  const trainingContents = accordions.filter((block) =>
+  const trainingContents = data.accordions.filter((block) =>
     [
       "ma-formation-en-communication-animale",
       "ma-formation-en-soins-energetiques",
@@ -106,7 +100,6 @@ const AboutIndex: NextPage = () => {
         </div>
       )}
 
-      {/* Bloc secondaire : Formations */}
       {diplomesEtFormations && (
         <div className="flex justify-center bg-dark-beige">
           <div className="py-8 w-full md:w-3/5 px-4">
@@ -115,15 +108,13 @@ const AboutIndex: NextPage = () => {
               image={diplomesEtFormations.picture?.url || ""}
               alt={diplomesEtFormations.picture?.alternativeText || ""}
             />
-            {trainingContents.map((training) => {
-              return (
-                <Accordion key={training.slug} title={training.title}>
-                  <section className="text-justify">
-                    <BlockRendererClient content={training.content} />
-                  </section>
-                </Accordion>
-              );
-            })}
+            {trainingContents.map((training) => (
+              <Accordion key={training.slug} title={training.title}>
+                <section className="text-justify">
+                  <BlockRendererClient content={training.content} />
+                </section>
+              </Accordion>
+            ))}
           </div>
         </div>
       )}

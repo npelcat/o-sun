@@ -1,19 +1,21 @@
 export const fetchFromStrapi = async (endpoint: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}${endpoint}`
+      `${process.env.NEXT_PUBLIC_STRAPI_URL}${endpoint}`,
+      {
+        // headers: {
+        //   Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        // },
+      }
     );
 
     if (!response.ok) {
-      throw new Error(`Erreur lors de l'appel à ${endpoint}`);
+      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
-    return await response.json();
+    return response.json();
   } catch (error) {
-    console.error(
-      "Erreur lors de la récupération des données de Strapi:",
-      error
-    );
+    console.error("Erreur dans fetchFromStrapi :", error);
     throw error;
   }
 };
