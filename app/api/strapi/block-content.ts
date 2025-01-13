@@ -41,7 +41,6 @@ export const fetchBlockContentById = async (
 export const fetchMultipleBlockContents = async (
   slugs: string[]
 ): Promise<StrapiBlockContent[]> => {
-  // Construire le filtre pour les slugs
   const query = slugs.map((slug) => `filters[slug][$in]=${slug}`).join("&");
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/block-contents?${query}&populate=*`
@@ -55,7 +54,6 @@ export const fetchMultipleBlockContents = async (
 
   const data = await response.json();
 
-  // Mapper les résultats pour renvoyer les données au bon format
   return data.data.map((block: any) => ({
     slug: block.slug,
     title: block.title,

@@ -6,30 +6,35 @@ import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import { fetchMultipleBlockContents } from "../api/strapi/block-content";
 import { StrapiBlockContent } from "../api/types/strapi";
-import { IoIosArrowDropright } from "react-icons/io";
-import { type BlocksContent } from "@strapi/blocks-react-renderer";
 import BlockRendererClient from "../api/strapi/BlockRendererClient";
+import { fetchMultipleAccordions } from "../api/strapi/accordion";
+import { fetchBlockContentById } from "../api/strapi/block-content";
 
 const AboutIndex: NextPage = () => {
-  const [blockContents, setBlockContents] = useState<
-    StrapiBlockContent[] | null
-  >(null);
+  const [blockContent, setBlockContent] = useState<StrapiBlockContent | null>(
+    null
+  );
+  const [accordions, setAccordions] = useState<StrapiBlockContent[] | null>(
+    null
+  );
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetchMultipleBlockContents([
+        const responseAccordions = await fetchMultipleAccordions([
           "oceane",
           "ma-formation-en-communication-animale",
           "ma-formation-en-soins-energetiques",
           "ma-formation-pour-les-services-aux-gardiens",
           "mon-ancienne-vie",
         ]);
-        setBlockContents(response);
+        setAccordions(responseAccordions);
+        const responseBlockContent = await fetchBlockContentById(
+          "qcw4qczfv0cdjav8lldwgafd"
+        ); // Remplacez fetchBlockContent par la fonction appropriée
+        setBlockContent(responseBlockContent);
       } catch (error) {
         setError("Erreur lors du chargement des données.");
       }
@@ -39,10 +44,11 @@ const AboutIndex: NextPage = () => {
   }, []);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!blockContents) return <p>Chargement des données...</p>;
+  if (!blockContent) return <p>Chargement des données...</p>;
+  if (!accordions) return <p>Chargement des données...</p>;
 
-  const oceaneContent = blockContents.find((block) => block.slug === "oceane");
-  const trainingContents = blockContents.filter((block) =>
+  const oceaneContent = blockContent?.slug === "oceane" ? blockContent : null;
+  const trainingContents = accordions.filter((block) =>
     [
       "ma-formation-en-communication-animale",
       "ma-formation-en-soins-energetiques",
@@ -50,12 +56,6 @@ const AboutIndex: NextPage = () => {
       "mon-ancienne-vie",
     ].includes(block.slug)
   );
-
-  // Fonction de gestion des icônes et du Markdown
-  const handleIcon = (content: string): string => {
-    // Remplacer les balises [ICON] par des espaces (ou d'autres symboles si nécessaire)
-    return content.split("[ICON]").join(" [ICON] "); // Ajoute des espaces ou d'autres séparateurs si nécessaire
-  };
 
   return (
     <div className="text-center pt-16 space-y-12">
