@@ -12,9 +12,10 @@ import { fetchMultipleAccordions } from "../api/strapi/accordion";
 import { fetchBlockContentById } from "../api/strapi/block-content";
 
 const AboutIndex: NextPage = () => {
-  const [blockContent, setBlockContent] = useState<StrapiBlockContent | null>(
-    null
-  );
+  const [blockContents, setBlockContents] = useState<
+    StrapiBlockContent[] | null
+  >(null);
+
   const [accordions, setAccordions] = useState<StrapiBlockContent[] | null>(
     null
   );
@@ -24,17 +25,26 @@ const AboutIndex: NextPage = () => {
     const fetchData = async () => {
       try {
         const responseAccordions = await fetchMultipleAccordions([
-          "oceane",
           "ma-formation-en-communication-animale",
           "ma-formation-en-soins-energetiques",
           "ma-formation-pour-les-services-aux-gardiens",
           "mon-ancienne-vie",
         ]);
+        const blockIds = [
+          "qcw4qczfv0cdjav8lldwgafd",
+          "pjl27su4oxru475tjkhaaywd",
+        ];
+
+        const responsesBlockContent = await Promise.all(
+          blockIds.map((id) => fetchBlockContentById(id))
+        );
+
+        const validBlockContents = responsesBlockContent.filter(
+          (content): content is StrapiBlockContent => content !== null
+        );
+
+        setBlockContents(validBlockContents);
         setAccordions(responseAccordions);
-        const responseBlockContent = await fetchBlockContentById(
-          "qcw4qczfv0cdjav8lldwgafd"
-        ); // Remplacez fetchBlockContent par la fonction appropriée
-        setBlockContent(responseBlockContent);
       } catch (error) {
         setError("Erreur lors du chargement des données.");
       }
@@ -44,10 +54,13 @@ const AboutIndex: NextPage = () => {
   }, []);
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!blockContent) return <p>Chargement des données...</p>;
+  if (!blockContents) return <p>Chargement des données...</p>;
   if (!accordions) return <p>Chargement des données...</p>;
 
-  const oceaneContent = blockContent?.slug === "oceane" ? blockContent : null;
+  const oceaneContent = blockContents.find((block) => block.slug === "oceane");
+  const diplomesEtFormations = blockContents.find(
+    (block) => block.slug === "mes-diplomes-et-formations"
+  );
   const trainingContents = accordions.filter((block) =>
     [
       "ma-formation-en-communication-animale",
@@ -63,7 +76,6 @@ const AboutIndex: NextPage = () => {
         Qui suis-je ?
       </h2>
 
-      {/* Bloc principal : Océane */}
       {oceaneContent && (
         <div className="flex justify-center bg-beige">
           <div className="py-8 w-full md:w-3/5 px-4">
@@ -95,24 +107,26 @@ const AboutIndex: NextPage = () => {
       )}
 
       {/* Bloc secondaire : Formations */}
-      <div className="flex justify-center bg-dark-beige">
-        <div className="py-8 w-full md:w-3/5 px-4">
-          <CardTitlePhoto
-            title="Mes diplômes et formations"
-            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402552/IMG_7198_r1dwqk.jpg"
-            alt="Océane et son cheval gris Ghost, dans la forêt"
-          />
-          {trainingContents.map((training) => {
-            return (
-              <Accordion key={training.slug} title={training.title}>
-                <section className="text-justify">
-                  <BlockRendererClient content={training.content} />
-                </section>
-              </Accordion>
-            );
-          })}
+      {diplomesEtFormations && (
+        <div className="flex justify-center bg-dark-beige">
+          <div className="py-8 w-full md:w-3/5 px-4">
+            <CardTitlePhoto
+              title={diplomesEtFormations.title}
+              image={diplomesEtFormations.picture?.url || ""}
+              alt={diplomesEtFormations.picture?.alternativeText || ""}
+            />
+            {trainingContents.map((training) => {
+              return (
+                <Accordion key={training.slug} title={training.title}>
+                  <section className="text-justify">
+                    <BlockRendererClient content={training.content} />
+                  </section>
+                </Accordion>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="flex justify-center mt-16">
         <Button
