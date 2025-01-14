@@ -12,7 +12,7 @@ export const CardTitlePhoto: React.FC<CardTitlePhotoInterface> = ({
   alt,
 }) => {
   return (
-    <div className="relative w-full h-96 md:h- flex flex-col items-center justify-center">
+    <div className="relative w-full h-96 md:h- flex flex-col items-center justify-center mb-8">
       <h3 className="absolute bottom-2 z-50 text-2xl text-black bg-white font-subtitle bg-opacity-70 w-full p-2 m-2 text-center">
         {title}
       </h3>
