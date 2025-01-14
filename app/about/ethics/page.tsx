@@ -4,66 +4,100 @@ import Image from "next/image";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import MyWayOfWorking from "@/src/content/my-ethics/way-of-working.mdx";
-import dynamic from "next/dynamic";
-
-const EthicAnimalCom = dynamic(
-  () => import("@/src/content/my-ethics/ethic-animal-com.mdx")
-);
-
-const EthicEnergyCare = dynamic(
-  () => import("@/src/content/my-ethics/ethic-energy-care.mdx")
-);
-
-const EthicGuardians = dynamic(
-  () => import("@/src/content/my-ethics/ethic-guardians.mdx")
-);
+import { useEffect, useState } from "react";
+import { StrapiBlockContent } from "@/app/api/types/strapi";
+import { fetchBlockContentAndAccordions } from "@/app/api/utils/fetchPage";
+import BlockRendererClient from "@/app/api/strapi/BlockRendererClient";
 
 const Ethics: React.FC = () => {
+  const [data, setData] = useState<{
+    blockContents: StrapiBlockContent[] | null;
+    accordions: StrapiBlockContent[] | null;
+  }>({
+    blockContents: null,
+    accordions: null,
+  });
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const blockIds = ["p4rfvz92wvfp1avhdpmnmmgp"];
+        const accordionSlugs = [
+          "mon-ethique-en-communication-animale",
+          "mon-ethique-en-soins-energetiques",
+          "mon-ethique-pour-les-services-aux-gardiens",
+        ];
+
+        const { blockContents, accordions } =
+          await fetchBlockContentAndAccordions(blockIds, accordionSlugs);
+        setData({ blockContents, accordions });
+      } catch (err) {
+        setError("Erreur lors du chargement des données.");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!data.blockContents || !data.accordions)
+    return <p>Chargement des données...</p>;
+
+  const wayOfWorking = data.blockContents.find(
+    (block) => block.slug === "ma-facon-de-travailler"
+  );
+
+  const ethicsContents = data.accordions.filter((block) =>
+    [
+      "mon-ethique-en-communication-animale",
+      "mon-ethique-en-soins-energetiques",
+      "mon-ethique-pour-les-services-aux-gardiens",
+    ].includes(block.slug)
+  );
+
   return (
-    <div className="text-center pt-16 space-y-12">
-      <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
+    <div className="pt-16 space-y-12">
+      <h2 className="text-center text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
         Mon éthique
       </h2>
 
       <div className="flex justify-center bg-beige">
         <div className="py-8 w-full md:w-3/5  px-4">
           <div>
-            <CardTitlePhoto
-              title="Ma façon de travailler"
-              image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402550/IMG_7142_oybyym.jpg"
-              alt="Océane et son cheval Ghost"
-            />
-            <section className="pt-8 text-justify">
-              <MyWayOfWorking />
-              <div className="flex justify-center py-8">
-                <Image
-                  className="w-1/2 h-full md:w-1/6 item-center object-cover"
-                  loading="lazy"
-                  src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720859313/dog-1532627_1920_soflbg.png"
-                  alt=""
-                  aria-hidden="true"
-                  width="1920"
-                  height="1180"
+            {wayOfWorking && (
+              <>
+                <CardTitlePhoto
+                  title={wayOfWorking.title}
+                  image={wayOfWorking.picture?.url || ""}
+                  alt={wayOfWorking.picture?.alternativeText || ""}
                 />
-              </div>
-            </section>
+                <section className="pt-8 text-justify">
+                  <BlockRendererClient content={wayOfWorking.content} />
+                  <div className="flex justify-center py-8">
+                    <Image
+                      className="w-1/2 h-full md:w-1/6 item-center object-cover"
+                      loading="lazy"
+                      src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720859313/dog-1532627_1920_soflbg.png"
+                      alt=""
+                      aria-hidden="true"
+                      width="1920"
+                      height="1180"
+                    />
+                  </div>
+                </section>
+              </>
+            )}
             <div className="bg-dark-beige rounded-lg my-8 p-2">
-              <h3 className="font-bold mt-8 bg-white bg-opacity-50 rounded-lg p-2">
+              <h3 className="text-center font-bold mt-8 bg-white bg-opacity-50 rounded-lg p-2">
                 Les détails de ma pratique pour chaque discipline :
               </h3>
-              <div className="p-2">
-                <div>
-                  <Accordion title="Communication Animale">
-                    <EthicAnimalCom />
+              <div className="p-2 text-justify">
+                {ethicsContents.map((content) => (
+                  <Accordion key={content.slug} title={content.title}>
+                    <BlockRendererClient content={content.content} />
                   </Accordion>
-                  <Accordion title="Soins énergétiques">
-                    <EthicEnergyCare />
-                  </Accordion>
-                  <Accordion title="Pour les gardiens">
-                    <EthicGuardians />
-                  </Accordion>
-                </div>
+                ))}
               </div>
             </div>
           </div>
