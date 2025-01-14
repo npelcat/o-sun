@@ -3,10 +3,6 @@
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
-import Link from "next/link";
-import WhatIsEnergyCare from "@/src/content/services/energy-care/what-is-energy-care.mdx";
-import WhatEffects from "@/src/content/services/energy-care/what-effects.mdx";
-import ActOnWhat from "@/src/content/services/energy-care/act-on-what.mdx";
 import { useEffect, useState } from "react";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 import { fetchBlockContentAndAccordions } from "@/app/api/utils/fetchPage";
