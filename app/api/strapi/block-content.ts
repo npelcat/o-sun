@@ -1,7 +1,6 @@
-import { fetchFromStrapi } from "./strapi"; // Import de la fonction générique
-import { StrapiBlockContent } from "../types/strapi"; // Import des types
+import { fetchFromStrapi } from "./strapi";
+import { StrapiBlockContent } from "../types/strapi";
 
-// Fonction pour récupérer une entrée spécifique
 export const fetchBlockContentById = async (
   id: string
 ): Promise<StrapiBlockContent | null> => {
@@ -21,7 +20,6 @@ export const fetchBlockContentById = async (
         }
       : undefined;
 
-    // Mapping des données de Strapi vers l'interface BlockContent
     return {
       documentId: blockData.documentId,
       title: blockData.title,

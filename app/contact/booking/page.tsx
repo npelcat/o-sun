@@ -4,9 +4,26 @@ import Image from "next/image";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { GiFeather } from "react-icons/gi";
-import GeneralBooking from "@/src/content/booking/general-booking.mdx";
+import { useEffect, useState } from "react";
+import { StrapiBlockContent } from "@/app/api/types/strapi";
+import { fetchBlockContentById } from "@/app/api/strapi/block-content";
+import BlockRendererClient from "@/app/api/strapi/BlockRendererClient";
 
 const Booking: React.FC = () => {
+  const [blockContent, setBlockContent] = useState<StrapiBlockContent | null>(
+    null
+  );
+  const blockId = "dwml9tiykiv5r7yjtglsef1x";
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      const content = await fetchBlockContentById(blockId);
+      setBlockContent(content);
+    };
+
+    fetchContent();
+  }, [blockId]);
+
   return (
     <div className="text-center pt-16 space-y-12">
       <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
@@ -15,12 +32,16 @@ const Booking: React.FC = () => {
       <div className="flex justify-center bg-beige">
         <div className="py-8 w-full md:w-3/5  px-4">
           <div>
-            <CardTitlePhoto
-              title="Pour réserver un service"
-              image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402547/DSC03712_nveqsy.jpg"
-              alt="Océane de dos, en face de son cheval gris Ghost"
-            />
-            <GeneralBooking />
+            {blockContent && (
+              <>
+                <CardTitlePhoto
+                  title={blockContent.title}
+                  image={blockContent.picture?.url || ""}
+                  alt={blockContent.picture?.alternativeText || ""}
+                />
+                <BlockRendererClient content={blockContent.content} />
+              </>
+            )}
             <div className="bg-dark-beige rounded-lg my-8 p-2">
               <h3 className="font-bold mt-8 bg-white bg-opacity-50 rounded-lg p-2">
                 Les réservations par services :
