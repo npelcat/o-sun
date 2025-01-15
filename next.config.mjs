@@ -11,13 +11,13 @@ const nextConfig = withMDX({
     appDir: true,
   },
   images: {
-    domains: ["res.cloudinary.com"],
+    domains: ["res.cloudinary.com", "localhost"],
     remotePatterns: [
       {
         protocol: "http",
         hostname: "localhost",
-        port: "1337", // Spécifiez le port utilisé par Strapi
-        pathname: "/uploads/**", // Autorisez uniquement les images dans le dossier /uploads
+        port: "1337",
+        pathname: "/**",
       },
     ],
   },

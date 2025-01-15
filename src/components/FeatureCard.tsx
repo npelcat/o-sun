@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ReactNode } from "react";
 
 interface FeatureCardInterface {
   title: string;
-  description: string;
+  description: string | ReactNode;
   image: string;
   alt: string;
   lien: string;

@@ -1,28 +1,96 @@
+"use client";
+
 import { Button } from "@/src/components/Button";
 import { FeatureCard } from "../src/components/FeatureCard";
 import { HomeCTA } from "../src/components/HomeCTA";
 import Image from "next/image";
+import { fetchBlockContentById } from "@/app/api/strapi/block-content";
+import BlockRendererClient from "./api/strapi/BlockRendererClient";
+import {
+  fetchLinkComponentById,
+  fetchMultipleLinkComponents,
+} from "./api/strapi/link-component";
+import { useEffect, useState } from "react";
+import { StrapiBlockContent, StrapiLinkComponent } from "./api/types/strapi";
 
 export default function Home() {
+  const [quoteBlock, setQuoteBlock] = useState<StrapiBlockContent | null>(null);
+  const [homeCTAComponents, setHomeCTAComponents] = useState<
+    StrapiLinkComponent[]
+  >([]);
+  const [featureCardComponents, setFeatureCardComponents] = useState<
+    StrapiLinkComponent[]
+  >([]);
+  const [testimonialComponent, setTestimonialComponent] =
+    useState<StrapiLinkComponent | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const quoteBlockId = "jurx7g9k98qkycxylf0ovvvo";
+        const homeCTASlugs = ["qui-suis-je", "mon-ethique", "reservation"];
+        const featureCardSlugs = [
+          "la-communication-animale",
+          "les-soins-energetiques",
+          "pour-les-gardiens",
+        ];
+        const testimonialComponentId = "jjjr5w6ef328auwy65kxwsta";
+
+        const quote = await fetchBlockContentById(quoteBlockId);
+        const homeCTAs = await fetchMultipleLinkComponents(homeCTASlugs);
+        const featureCards = await fetchMultipleLinkComponents(
+          featureCardSlugs
+        );
+        const testimonial = await fetchLinkComponentById(
+          testimonialComponentId
+        );
+
+        setQuoteBlock(quote);
+        setHomeCTAComponents(homeCTAs);
+        setFeatureCardComponents(featureCards);
+        setTestimonialComponent(testimonial);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des données :", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <main>
+      {quoteBlock && (
+        <section className="pt-24">
+          <div className="flex-col md:flex-row bg-dark-green bg-opacity-50 p-5 items-center mx-auto">
+            <div className="w-full flex flex-col md:flex-row items-center justify-center md:px-16">
+              <h2 className="pb-3 text-center" aria-level={2}>
+                <BlockRendererClient content={quoteBlock.content} />
+              </h2>
+              {quoteBlock.picture && (
+                <Image
+                  className="w-48 h-24 md:w-64 md:h-32 lg:w-72 lg:h-36 rounded-lg object-cover mt-4 md:mt-0 md:ml-4"
+                  src={quoteBlock.picture?.url || ""}
+                  width={6000}
+                  height={4000}
+                  alt={quoteBlock.picture?.alternativeText || "Image"}
+                  loading="lazy"
+                />
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section>
         <div className="flex flex-col md:flex-row flex-wrap items-center justify-center mt-16">
-          <HomeCTA
-            titleButton="Qui suis-je ?"
-            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402553/IMG_7558_ylvtta.jpg"
-            lien="/about"
-          />
-          <HomeCTA
-            titleButton="Mon éthique"
-            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402555/IMG_1522_oad6fy.jpg"
-            lien="/about/ethics"
-          />
-          <HomeCTA
-            titleButton="Réservation"
-            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402553/IMG_67278_cxplew.jpg"
-            lien="/contact/booking"
-          />
+          {homeCTAComponents.map((component) => (
+            <HomeCTA
+              key={component.slug}
+              titleButton={component.title}
+              image={component.picture?.url || ""}
+              lien={component.link}
+            />
+          ))}
         </div>
       </section>
 
@@ -31,52 +99,40 @@ export default function Home() {
           Mes Services
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
-          <FeatureCard
-            title="La communication animale"
-            description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
-            fugiat sit. Optio amet mollitia iusto!"
-            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402554/IMG_7056_n0wsq0.jpg"
-            alt="Tête de berger Australien tricolore, penchée sur le côté, regard intéressé"
-            lien="/services"
-            titleButton="En savoir plus"
-          />
-          <FeatureCard
-            title="Les soins énergétiques"
-            description=" Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
-            fugiat sit. Optio amet mollitia iusto!"
-            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402549/IMG_7529_dc85ib.jpg"
-            alt="Océane aux côtés de son cheval gris Ghost qui tourne la tête vers elle"
-            lien="/services/energy-care"
-            titleButton="En savoir plus"
-          />
-          <FeatureCard
-            title="Pour les gardiens"
-            description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
-            fugiat sit. Optio amet mollitia iusto!"
-            image="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719403682/fortune-telling-4896472_1920_bxgeo8.jpg"
-            alt="Cartes de tarot, photophore en arrière plan"
-            lien="/services/guardians"
-            titleButton="En savoir plus"
-          />
+          {featureCardComponents.map((component) => (
+            <FeatureCard
+              key={component.slug}
+              title={component.title}
+              description={
+                <BlockRendererClient content={component.description} />
+              }
+              image={component.picture?.url || ""}
+              alt={component.picture?.alternativeText || ""}
+              lien={component.link}
+              titleButton="En savoir plus"
+            />
+          ))}
         </div>
       </section>
 
-      <section>
-        <div className="relative">
-          <Image
-            className="w-full h-56 object-cover my-24"
-            src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402555/312806563_1244487349726046_1342959404907481300_n_cx8q4j.jpg"
-            alt="Océane et Hélios, son berger australien ticolore, dans la campagne, qui regardent dans la même direction"
-            width={960}
-            height={1280}
-          />
-          <Button
-            titleButton="Témoignages"
-            lien="/about/testimonials"
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-lg bg-opacity-70 font-subtitle text-3xl text-dark-green transition duration-300 ease-in-out hover:bg-white"
-          />
-        </div>
-      </section>
+      {testimonialComponent && (
+        <section>
+          <div className="relative">
+            <Image
+              className="w-full h-56 object-cover my-24"
+              src={testimonialComponent.picture?.url || ""}
+              alt={testimonialComponent.picture?.alternativeText || ""}
+              width={960}
+              height={1280}
+            />
+            <Button
+              titleButton={testimonialComponent.title}
+              lien={testimonialComponent.link}
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-lg bg-opacity-70 font-subtitle text-3xl text-dark-green transition duration-300 ease-in-out hover:bg-white"
+            />
+          </div>
+        </section>
+      )}
     </main>
   );
 }

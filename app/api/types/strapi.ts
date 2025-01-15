@@ -22,3 +22,15 @@ export interface StrapiTestimonials {
   createdat: Date;
   slug?: string;
 }
+
+export interface StrapiLinkComponent {
+  documentId: string;
+  title: string;
+  link: string;
+  picture?: {
+    url: string;
+    alternativeText?: string | null;
+  } | null;
+  description: BlocksContent;
+  slug?: string;
+}

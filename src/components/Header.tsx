@@ -64,25 +64,6 @@ export const Header: React.FC = () => {
           loading="eager"
         />
       </section>
-
-      <section className="pt-24">
-        <div className="flex-col md:flex-row bg-dark-green bg-opacity-50 p-5 items-center mx-auto">
-          <div className="w-full flex flex-col md:flex-row items-center justify-center md:px-16">
-            <h2 className="pb-3 text-center" aria-level={2}>
-              Citation ou phrase que tu aimes particulièrement et qui te
-              reprèsente bien !
-            </h2>
-            <Image
-              className="w-48 h-24 md:w-64 md:h-32 lg:w-72 lg:h-36 rounded-lg object-cover mt-4 md:mt-0 md:ml-4"
-              src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1719402555/280859275_1460786831038584_3178236038909394168_n_jb1nb4.jpg"
-              width={6000}
-              height={4000}
-              alt="Océane et sa famille de 4 chiens"
-              loading="lazy"
-            />
-          </div>
-        </div>
-      </section>
     </header>
   );
 };
