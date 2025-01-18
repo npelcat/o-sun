@@ -4,12 +4,12 @@ import { Button } from "@/src/components/Button";
 import { FeatureCard } from "../src/components/FeatureCard";
 import { HomeCTA } from "../src/components/HomeCTA";
 import Image from "next/image";
-import { fetchBlockContentById } from "@/app/api/strapi/block-content";
-import BlockRendererClient from "./api/strapi/BlockRendererClient";
+import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
+import BlockRendererClient from "./api/utils/BlockRendererClient";
 import {
   fetchLinkComponentById,
   fetchMultipleLinkComponents,
-} from "./api/strapi/link-component";
+} from "./api/strapi/fetchers/link-component";
 import { useEffect, useState } from "react";
 import { StrapiBlockContent, StrapiLinkComponent } from "./api/types/strapi";
 

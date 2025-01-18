@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BlockRendererClient from "@/app/api/strapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
 import { StrapiTestimonials } from "@/app/api/types/strapi";
 import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import { fetchFromStrapi } from "../../api/strapi/strapi";
+import { fetchFromStrapi } from "../../api/strapi/helpers/strapi";
 
 export default function TestimonialsPage() {
   const [testimonials, setTestimonials] = useState<StrapiTestimonials[]>([]);

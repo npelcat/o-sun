@@ -3,66 +3,47 @@
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
-import { useEffect, useState } from "react";
-import { StrapiBlockContent } from "@/app/api/types/strapi";
-import { fetchBlockContentAndAccordions } from "@/app/api/utils/fetchPage";
-import BlockRendererClient from "@/app/api/strapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import usePageData from "@/app/api/utils/usePageData";
 
 const Guardians: React.FC = () => {
-  const [data, setData] = useState<{
-    blockContents: StrapiBlockContent[] | null;
-    accordions: StrapiBlockContent[] | null;
-  }>({
-    blockContents: null,
-    accordions: null,
-  });
-  const [error, setError] = useState<string | null>(null);
+  const blockIds = [
+    "e6kkmhe424iko1zevz8wo51z",
+    "g5lgt0mnb1dxj57jt74pg1fd",
+    "kc8jct496l1snx0r4vttadjn",
+  ];
+  const accordionSlugs = [
+    "en-pratique-premier-service",
+    "en-pratique-deuxieme-service",
+    "gardiens-type-de-seance-et-tarifs",
+  ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const blockIds = [
-          "e6kkmhe424iko1zevz8wo51z",
-          "g5lgt0mnb1dxj57jt74pg1fd",
-          "kc8jct496l1snx0r4vttadjn",
-        ];
-        const accordionSlugs = [
-          "en-pratique-premier-service",
-          "en-pratique-deuxieme-service",
-          "gardiens-type-de-seance-et-tarifs",
-        ];
-
-        const { blockContents, accordions } =
-          await fetchBlockContentAndAccordions(blockIds, accordionSlugs);
-        setData({ blockContents, accordions });
-      } catch (err) {
-        setError("Erreur lors du chargement des données.");
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { blockContents, accordions, error } = usePageData(
+    blockIds,
+    accordionSlugs
+  );
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!data.blockContents || !data.accordions)
-    return <p>Chargement des données...</p>;
+  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
 
-  const whatAreTheyContent = data.blockContents.find(
+  const whatAreTheyContent = blockContents.find(
     (block) => block.slug === "gardiens-quels-sont-ils"
   );
-  const whatIsItForContent = data.blockContents.find(
+  const whatIsItForContent = blockContents.find(
     (block) => block.slug === "gardiens-a-quoi-ca-sert"
   );
-  const practicalInfosContent = data.blockContents.find(
+  const practicalInfosContent = blockContents.find(
     (block) => block.slug === "gardiens-infos-pratiques"
   );
 
-  const practicalInfosAccordions = data.accordions.filter((block) =>
-    [
-      "en-pratique-premier-service",
-      "en-pratique-deuxieme-service",
-      "gardiens-type-de-seance-et-tarifs",
-    ].includes(block.slug)
+  const practicalInfosAccordions = accordions.filter(
+    (block) =>
+      block.slug &&
+      [
+        "en-pratique-premier-service",
+        "en-pratique-deuxieme-service",
+        "gardiens-type-de-seance-et-tarifs",
+      ].includes(block.slug)
   );
 
   return (

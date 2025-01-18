@@ -6,8 +6,8 @@ import { Button } from "@/src/components/Button";
 import { GiFeather } from "react-icons/gi";
 import { useEffect, useState } from "react";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
-import { fetchBlockContentById } from "@/app/api/strapi/block-content";
-import BlockRendererClient from "@/app/api/strapi/BlockRendererClient";
+import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
+import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
 
 const Booking: React.FC = () => {
   const [blockContent, setBlockContent] = useState<StrapiBlockContent | null>(

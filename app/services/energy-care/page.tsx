@@ -3,70 +3,51 @@
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
-import { useEffect, useState } from "react";
-import { StrapiBlockContent } from "@/app/api/types/strapi";
-import { fetchBlockContentAndAccordions } from "@/app/api/utils/fetchPage";
-import BlockRendererClient from "@/app/api/strapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import usePageData from "@/app/api/utils/usePageData";
 
 const EnergyCare: React.FC = () => {
-  const [data, setData] = useState<{
-    blockContents: StrapiBlockContent[] | null;
-    accordions: StrapiBlockContent[] | null;
-  }>({
-    blockContents: null,
-    accordions: null,
-  });
-  const [error, setError] = useState<string | null>(null);
+  const blockIds = [
+    "etf6ka1c7dqjxms8h2httkls",
+    "krjgfou8hwz6gr9673mgs56i",
+    "h5gdzy76slippixboqv6t540",
+    "bulx7c6i548oqn4t2ervuu04",
+  ];
+  const accordionSlugs = [
+    "a-qui-s-adresse-mes-soins-energetiques",
+    "soins-energetiques-une-seance-en-pratique",
+    "soins-energetiques-type-de-seance-et-tarifs",
+  ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const blockIds = [
-          "etf6ka1c7dqjxms8h2httkls",
-          "krjgfou8hwz6gr9673mgs56i",
-          "h5gdzy76slippixboqv6t540",
-          "bulx7c6i548oqn4t2ervuu04",
-        ];
-        const accordionSlugs = [
-          "a-qui-s-adresse-mes-soins-energetiques",
-          "soins-energetiques-une-seance-en-pratique",
-          "soins-energetiques-type-de-seance-et-tarifs",
-        ];
-
-        const { blockContents, accordions } =
-          await fetchBlockContentAndAccordions(blockIds, accordionSlugs);
-        setData({ blockContents, accordions });
-      } catch (err) {
-        setError("Erreur lors du chargement des données.");
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { blockContents, accordions, error } = usePageData(
+    blockIds,
+    accordionSlugs
+  );
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!data.blockContents || !data.accordions)
-    return <p>Chargement des données...</p>;
+  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
 
-  const whatIsThisContent = data.blockContents.find(
+  const whatIsThisContent = blockContents.find(
     (block) => block.slug === "soins-energetiques-qu-est-ce-que-c-est"
   );
-  const whatEffectsContent = data.blockContents.find(
+  const whatEffectsContent = blockContents.find(
     (block) => block.slug === "quels-sont-les-effets-d-une-seance-energetique"
   );
-  const onWhatContent = data.blockContents.find(
+  const onWhatContent = blockContents.find(
     (block) => block.slug === "sur-quoi-agit-une-seance-energetique"
   );
-  const practicalInfosContent = data.blockContents.find(
+  const practicalInfosContent = blockContents.find(
     (block) => block.slug === "soins-energetiques-infos-pratiques"
   );
 
-  const practicalInfosAccordions = data.accordions.filter((block) =>
-    [
-      "a-qui-s-adresse-mes-soins-energetiques",
-      "soins-energetiques-une-seance-en-pratique",
-      "soins-energetiques-type-de-seance-et-tarifs",
-    ].includes(block.slug)
+  const practicalInfosAccordions = accordions.filter(
+    (block) =>
+      block.slug &&
+      [
+        "a-qui-s-adresse-mes-soins-energetiques",
+        "soins-energetiques-une-seance-en-pratique",
+        "soins-energetiques-type-de-seance-et-tarifs",
+      ].includes(block.slug)
   );
 
   return (

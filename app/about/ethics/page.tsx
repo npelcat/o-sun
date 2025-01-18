@@ -4,56 +4,37 @@ import Image from "next/image";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import { useEffect, useState } from "react";
-import { StrapiBlockContent } from "@/app/api/types/strapi";
-import { fetchBlockContentAndAccordions } from "@/app/api/utils/fetchPage";
-import BlockRendererClient from "@/app/api/strapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import usePageData from "@/app/api/utils/usePageData";
 
 const Ethics: React.FC = () => {
-  const [data, setData] = useState<{
-    blockContents: StrapiBlockContent[] | null;
-    accordions: StrapiBlockContent[] | null;
-  }>({
-    blockContents: null,
-    accordions: null,
-  });
-  const [error, setError] = useState<string | null>(null);
+  const blockIds = ["p4rfvz92wvfp1avhdpmnmmgp"];
+  const accordionSlugs = [
+    "mon-ethique-en-communication-animale",
+    "mon-ethique-en-soins-energetiques",
+    "mon-ethique-pour-les-services-aux-gardiens",
+  ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const blockIds = ["p4rfvz92wvfp1avhdpmnmmgp"];
-        const accordionSlugs = [
-          "mon-ethique-en-communication-animale",
-          "mon-ethique-en-soins-energetiques",
-          "mon-ethique-pour-les-services-aux-gardiens",
-        ];
-
-        const { blockContents, accordions } =
-          await fetchBlockContentAndAccordions(blockIds, accordionSlugs);
-        setData({ blockContents, accordions });
-      } catch (err) {
-        setError("Erreur lors du chargement des données.");
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { blockContents, accordions, error } = usePageData(
+    blockIds,
+    accordionSlugs
+  );
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!data.blockContents || !data.accordions)
-    return <p>Chargement des données...</p>;
+  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
 
-  const wayOfWorking = data.blockContents.find(
+  const wayOfWorking = blockContents.find(
     (block) => block.slug === "ma-facon-de-travailler"
   );
 
-  const ethicsContents = data.accordions.filter((block) =>
-    [
-      "mon-ethique-en-communication-animale",
-      "mon-ethique-en-soins-energetiques",
-      "mon-ethique-pour-les-services-aux-gardiens",
-    ].includes(block.slug)
+  const ethicsContents = accordions.filter(
+    (block) =>
+      block.slug &&
+      [
+        "mon-ethique-en-communication-animale",
+        "mon-ethique-en-soins-energetiques",
+        "mon-ethique-pour-les-services-aux-gardiens",
+      ].includes(block.slug)
   );
 
   return (

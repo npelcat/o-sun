@@ -4,68 +4,49 @@ import { Button } from "@/src/components/Button";
 import { NextPage } from "next";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import { useEffect, useState } from "react";
-import { StrapiBlockContent } from "../api/types/strapi";
-import { fetchBlockContentAndAccordions } from "../api/utils/fetchPage";
-import BlockRendererClient from "../api/strapi/BlockRendererClient";
+import BlockRendererClient from "../api/utils/BlockRendererClient";
+import usePageData from "../api/utils/usePageData";
 
 const ServicesIndex: NextPage = () => {
-  const [data, setData] = useState<{
-    blockContents: StrapiBlockContent[] | null;
-    accordions: StrapiBlockContent[] | null;
-  }>({
-    blockContents: null,
-    accordions: null,
-  });
-  const [error, setError] = useState<string | null>(null);
+  const blockIds = [
+    "gq45qnh9mzp7frix51cm1iad",
+    "rbmsw4youqj5y8dis9eaordk",
+    "n418rbmlpib4cb94h0kqv00j",
+  ];
+  const accordionSlugs = [
+    "avec-qui-puis-je-communiquer",
+    "com-animale-une-seance-en-pratique",
+    "com-animale-type-de-seance-et-tarifs",
+    "com-animale-les-packs",
+  ];
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const blockIds = [
-          "gq45qnh9mzp7frix51cm1iad",
-          "rbmsw4youqj5y8dis9eaordk",
-          "n418rbmlpib4cb94h0kqv00j",
-        ];
-        const accordionSlugs = [
-          "avec-qui-puis-je-communiquer",
-          "com-animale-une-seance-en-pratique",
-          "com-animale-type-de-seance-et-tarifs",
-          "com-animale-les-packs",
-        ];
-
-        const { blockContents, accordions } =
-          await fetchBlockContentAndAccordions(blockIds, accordionSlugs);
-        setData({ blockContents, accordions });
-      } catch (err) {
-        setError("Erreur lors du chargement des données.");
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { blockContents, accordions, error } = usePageData(
+    blockIds,
+    accordionSlugs
+  );
 
   if (error) return <p className="text-red-500">{error}</p>;
-  if (!data.blockContents || !data.accordions)
-    return <p>Chargement des données...</p>;
+  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
 
-  const whatIsThisContent = data.blockContents.find(
+  const whatIsThisContent = blockContents.find(
     (block) => block.slug === "com-animale-qu-est-ce-que-c-est"
   );
-  const whatIsItForContent = data.blockContents.find(
+  const whatIsItForContent = blockContents.find(
     (block) => block.slug === "com-animale-a-quoi-ca-sert"
   );
-  const practicalInfosContent = data.blockContents.find(
+  const practicalInfosContent = blockContents.find(
     (block) => block.slug === "com-animale-infos-pratiques"
   );
 
-  const practicalInfosAccordions = data.accordions.filter((block) =>
-    [
-      "avec-qui-puis-je-communiquer",
-      "com-animale-une-seance-en-pratique",
-      "com-animale-type-de-seance-et-tarifs",
-      "com-animale-les-packs",
-    ].includes(block.slug)
+  const practicalInfosAccordions = accordions.filter(
+    (block) =>
+      block.slug &&
+      [
+        "avec-qui-puis-je-communiquer",
+        "com-animale-une-seance-en-pratique",
+        "com-animale-type-de-seance-et-tarifs",
+        "com-animale-les-packs",
+      ].includes(block.slug)
   );
 
   return (
