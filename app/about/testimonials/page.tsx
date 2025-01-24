@@ -6,14 +6,18 @@ import { StrapiTestimonials } from "@/app/api/types/strapi";
 import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { fetchFromStrapi } from "../../api/strapi/helpers/strapi";
+import ErrorDisplay from "@/src/components/ErrorDisplay";
+import Loader from "@/src/components/Loader";
 
 export default function TestimonialsPage() {
   const [testimonials, setTestimonials] = useState<StrapiTestimonials[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
+        setIsLoading(true);
         const data = await fetchFromStrapi(
           `/api/testimonials/?populate=picture`
         );
@@ -23,30 +27,23 @@ export default function TestimonialsPage() {
         }
 
         setTestimonials(data.data);
-      } catch (error) {
+        setError(null);
+      } catch (err) {
         setError("Erreur lors du chargement des témoignages");
-        console.error(
-          "Erreur lors de la récupération des témoignages :",
-          error
-        );
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchTestimonials();
   }, []);
 
-  if (error) {
+  if (error)
     return (
-      <div className="text-center py-16">
-        <h2 className="text-3xl font-subtitle font-bold text-red-500">
-          {error}
-        </h2>
-        <p className="text-gray-700 mt-4">
-          Nous avons rencontré un problème pour charger les témoignages.
-          Veuillez réessayer plus tard.
-        </p>
-      </div>
+      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
     );
+  if (isLoading) {
+    return <Loader />;
   }
 
   return (

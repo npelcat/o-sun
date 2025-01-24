@@ -5,6 +5,8 @@ import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
 import usePageData from "@/app/api/utils/usePageData";
+import ErrorDisplay from "@/src/components/ErrorDisplay";
+import Loader from "@/src/components/Loader";
 
 const Guardians: React.FC = () => {
   const blockIds = [
@@ -23,8 +25,11 @@ const Guardians: React.FC = () => {
     accordionSlugs
   );
 
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
+  if (error)
+    return (
+      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+    );
+  if (!blockContents || !accordions) return <Loader />;
 
   const whatAreTheyContent = blockContents.find(
     (block) => block.slug === "gardiens-quels-sont-ils"

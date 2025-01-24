@@ -7,6 +7,8 @@ import { NextPage } from "next";
 import Image from "next/image";
 import BlockRendererClient from "../api/utils/BlockRendererClient";
 import usePageData from "../api/utils/usePageData";
+import ErrorDisplay from "@/src/components/ErrorDisplay";
+import Loader from "@/src/components/Loader";
 
 const AboutIndex: NextPage = () => {
   const blockIds = ["qcw4qczfv0cdjav8lldwgafd", "pjl27su4oxru475tjkhaaywd"];
@@ -22,8 +24,11 @@ const AboutIndex: NextPage = () => {
     accordionSlugs
   );
 
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
+  if (error)
+    return (
+      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+    );
+  if (!blockContents || !accordions) return <Loader />;
 
   const oceaneContent = blockContents.find((block) => block.slug === "oceane");
   const diplomesEtFormations = blockContents.find(

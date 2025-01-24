@@ -6,6 +6,8 @@ import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
 import usePageData from "@/app/api/utils/usePageData";
+import ErrorDisplay from "@/src/components/ErrorDisplay";
+import Loader from "@/src/components/Loader";
 
 const Ethics: React.FC = () => {
   const blockIds = ["p4rfvz92wvfp1avhdpmnmmgp"];
@@ -20,8 +22,11 @@ const Ethics: React.FC = () => {
     accordionSlugs
   );
 
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
+  if (error)
+    return (
+      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+    );
+  if (!blockContents || !accordions) return <Loader />;
 
   const wayOfWorking = blockContents.find(
     (block) => block.slug === "ma-facon-de-travailler"

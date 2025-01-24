@@ -6,6 +6,8 @@ import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import BlockRendererClient from "../api/utils/BlockRendererClient";
 import usePageData from "../api/utils/usePageData";
+import ErrorDisplay from "@/src/components/ErrorDisplay";
+import Loader from "@/src/components/Loader";
 
 const ServicesIndex: NextPage = () => {
   const blockIds = [
@@ -25,8 +27,11 @@ const ServicesIndex: NextPage = () => {
     accordionSlugs
   );
 
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!blockContents || !accordions) return <p>Chargement des données...</p>;
+  if (error)
+    return (
+      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+    );
+  if (!blockContents || !accordions) return <Loader />;
 
   const whatIsThisContent = blockContents.find(
     (block) => block.slug === "com-animale-qu-est-ce-que-c-est"

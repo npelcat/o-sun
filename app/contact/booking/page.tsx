@@ -8,21 +8,61 @@ import { useEffect, useState } from "react";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
 import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import Loader from "@/src/components/Loader";
+import ErrorDisplay from "@/src/components/ErrorDisplay";
 
 const Booking: React.FC = () => {
   const [blockContent, setBlockContent] = useState<StrapiBlockContent | null>(
     null
   );
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const blockId = "dwml9tiykiv5r7yjtglsef1x";
 
   useEffect(() => {
     const fetchContent = async () => {
-      const content = await fetchBlockContentById(blockId);
-      setBlockContent(content);
+      setLoading(true);
+      setError(null);
+      try {
+        const content = await fetchBlockContentById(blockId);
+        setBlockContent(content);
+        setError(null);
+      } catch (error) {
+        console.error("Error fetching content:", error);
+        setError("Erreur lors du chargement des informations de réservation.");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchContent();
-  }, [blockId]);
+  }, []);
+
+  if (loading) return <Loader />;
+  if (error)
+    return (
+      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+    );
+
+  const bookingOptions = [
+    {
+      title: "Réserver une communication animale",
+      lien: "https://form.jotform.com/232924829211052",
+    },
+    {
+      title: "Réserver une séance énergétique",
+      lien: "https://form.jotform.com/233515437828361",
+    },
+    {
+      title: "Réserver un service pour moi (gardien)",
+      lien: "#",
+      note: "Service en cours de création",
+    },
+    {
+      title: "Réserver un Pack",
+      lien: "https://form.jotform.com/232924829211052",
+    },
+  ];
 
   return (
     <div className="text-center pt-16 space-y-12">
@@ -47,40 +87,23 @@ const Booking: React.FC = () => {
                 Les réservations par services :
               </h3>
               <div className="flex flex-col items-center">
-                <Button
-                  titleButton="Réserver une communication animale"
-                  lien="https://form.jotform.com/232924829211052"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
-                />
-                <GiFeather aria-hidden="true" className="my-4" />
-                <Button
-                  titleButton="Réserver une séance énergétique"
-                  lien="https://form.jotform.com/233515437828361"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
-                />
-                <GiFeather aria-hidden="true" className="my-4" />
-                <Button
-                  titleButton="Réserver un service pour moi (gardien)"
-                  lien="#"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
-                />
-                <p>
-                  <i>Service en cours de création</i>
-                </p>
-                <GiFeather aria-hidden="true" className="my-4" />
-                <Button
-                  titleButton="Réserver un Pack"
-                  lien="https://form.jotform.com/232924829211052"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
-                />
+                {bookingOptions.map((option, index) => (
+                  <div key={index} className="text-center">
+                    <Button
+                      titleButton={option.title}
+                      lien={option.lien}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black"
+                    />
+                    {option.note && (
+                      <p>
+                        <i>{option.note}</i>
+                      </p>
+                    )}
+                    🪶
+                  </div>
+                ))}
               </div>
             </div>
             <div className="flex justify-center py-8">

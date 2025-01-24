@@ -12,6 +12,8 @@ import {
 } from "./api/strapi/fetchers/link-component";
 import { useEffect, useState } from "react";
 import { StrapiBlockContent, StrapiLinkComponent } from "./api/types/strapi";
+import ErrorDisplay from "@/src/components/ErrorDisplay";
+import Loader from "@/src/components/Loader";
 
 export default function Home() {
   const [quoteBlock, setQuoteBlock] = useState<StrapiBlockContent | null>(null);
@@ -23,6 +25,8 @@ export default function Home() {
   >([]);
   const [testimonialComponent, setTestimonialComponent] =
     useState<StrapiLinkComponent | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,26 +40,33 @@ export default function Home() {
         ];
         const testimonialComponentId = "jjjr5w6ef328auwy65kxwsta";
 
-        const quote = await fetchBlockContentById(quoteBlockId);
-        const homeCTAs = await fetchMultipleLinkComponents(homeCTASlugs);
-        const featureCards = await fetchMultipleLinkComponents(
-          featureCardSlugs
-        );
-        const testimonial = await fetchLinkComponentById(
-          testimonialComponentId
-        );
+        const [quote, homeCTAs, featureCards, testimonial] = await Promise.all([
+          fetchBlockContentById(quoteBlockId),
+          fetchMultipleLinkComponents(homeCTASlugs),
+          fetchMultipleLinkComponents(featureCardSlugs),
+          fetchLinkComponentById(testimonialComponentId),
+        ]);
 
         setQuoteBlock(quote);
         setHomeCTAComponents(homeCTAs);
         setFeatureCardComponents(featureCards);
         setTestimonialComponent(testimonial);
       } catch (error) {
-        console.error("Erreur lors de la récupération des données :", error);
+        setError("Une erreur s'est produite lors du chargement des données.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
+  if (loading) return <Loader />;
+
+  if (error)
+    return (
+      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+    );
 
   return (
     <main>
