@@ -1,6 +1,7 @@
 // src/hooks/usePageData.ts
 import { useEffect, useState } from "react";
-import { fetchPageData } from "../utils/fetchPageData";
+import { fetchMultipleAccordions } from "../strapi/fetchers/accordion";
+import { fetchBlockContentById } from "../strapi/fetchers/block-content";
 import { StrapiBlockContent } from "../types/strapi";
 
 interface UsePageDataResult {
@@ -24,19 +25,29 @@ const usePageData = (
 
   useEffect(() => {
     const fetchData = async () => {
+      if (data.blockContents !== null && data.accordions !== null) {
+        return;
+      }
+
       try {
-        const { blockContents, accordions } = await fetchPageData(
-          blockIds,
-          accordionSlugs
+        const [accordions, blockContents] = await Promise.all([
+          fetchMultipleAccordions(accordionSlugs),
+          Promise.all(blockIds.map(fetchBlockContentById)),
+        ]);
+
+        const validBlockContents = blockContents.filter(
+          (block): block is StrapiBlockContent =>
+            block !== null && block !== undefined
         );
-        setData({ blockContents, accordions });
+
+        setData({ blockContents: validBlockContents, accordions });
       } catch (err) {
         setError("Erreur lors du chargement des données.");
       }
     };
 
     fetchData();
-  }, [blockIds, accordionSlugs]);
+  }, [blockIds, accordionSlugs, data.blockContents, data.accordions]);
 
   return { ...data, error };
 };
