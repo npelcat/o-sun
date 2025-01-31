@@ -1,7 +1,7 @@
 export const fetchFromStrapi = async (endpoint: string) => {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}${endpoint}`,
+      `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
       {
         // headers: {
         //   Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,

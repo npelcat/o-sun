@@ -34,7 +34,7 @@ export const fetchMultipleLinkComponents = async (
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_URL}/api/component-with-links?${query}&populate=*`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/component-with-links?${query}&populate=*`
     );
 
     if (!response.ok) {
