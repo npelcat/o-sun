@@ -11,7 +11,11 @@ const nextConfig = withMDX({
     appDir: true,
   },
   images: {
-    domains: ["res.cloudinary.com", "localhost"],
+    domains: [
+      "res.cloudinary.com",
+      "localhost",
+      "annual-bessie-nadcat-17feb7ed.koyeb.app",
+    ],
     remotePatterns: [
       {
         protocol: "http",
