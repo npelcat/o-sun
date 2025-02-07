@@ -57,7 +57,7 @@ export default function TestimonialsPage() {
           {testimonials.map((item) => {
             const picture = item.picture
               ? {
-                  url: `${process.env.NEXT_PUBLIC_API_URL}${item.picture.url}`,
+                  url: `${item.picture.url}`,
                   alternativeText: item.picture.alternativeText || "",
                 }
               : undefined;
