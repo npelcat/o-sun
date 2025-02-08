@@ -45,21 +45,27 @@ const Booking: React.FC = () => {
 
   const bookingOptions = [
     {
-      title: "Réserver une communication animale",
+      title:
+        "Réserver une communication animale ou une séance énergétique animale",
+      lien: "https://calendly.com/o-sun-voixanimale",
+    },
+    {
+      title: "Réserver une séance énergétique humain",
+      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-humain?back=1&month=2025-02",
+    },
+    {
+      title: "Réserver une Moon Guidance",
+      lien: "https://calendly.com/o-sun-voixanimale/moon-guidance?back=1&month=2025-02",
+      note: "(pour les gardiens)",
+    },
+    {
+      title: "Réserver le Pack : communication animale + séance énergétique",
       lien: "https://form.jotform.com/232924829211052",
     },
     {
-      title: "Réserver une séance énergétique",
-      lien: "https://form.jotform.com/233515437828361",
-    },
-    {
-      title: "Réserver un service pour moi (gardien)",
-      lien: "#",
-      note: "Service en cours de création",
-    },
-    {
-      title: "Réserver un Pack",
-      lien: "https://form.jotform.com/232924829211052",
+      title: "Réserver un appel de 15 minutes",
+      lien: "https://calendly.com/o-sun-voixanimale/on-s-appelle?back=1&month=2025-02",
+      note: "(Pour en savoir plus avant réservation d'un service)",
     },
   ];
 
