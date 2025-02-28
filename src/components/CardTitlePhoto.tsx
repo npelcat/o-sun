@@ -22,8 +22,8 @@ export const CardTitlePhoto: React.FC<CardTitlePhotoInterface> = ({
         loading="lazy"
         src={image}
         alt={alt}
-        width="400"
-        height="600"
+        width="800"
+        height="1200"
       />
     </div>
   );
