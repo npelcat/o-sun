@@ -1,43 +1,48 @@
-// app/api/reservations/[id]/route.ts
 import { NextResponse, NextRequest } from "next/server";
 import db from "@/src/db/index";
 import { bookings } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
+import { withErrorHandler, HttpError } from "@/utils/withErrorHandler";
+import logger from "@/utils/logger";
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
+  return withErrorHandler(req, async () => {
     const { id } = params;
+    logger.info(`GET /booking/${id} - Retrieving reservation`);
     const reservation = await db
       .select()
       .from(bookings)
       .where(eq(bookings.id, id));
     if (!reservation.length) {
-      return NextResponse.json(
-        { error: "Réservation introuvable" },
-        { status: 404 }
-      );
+      logger.error(`Reservation not found for id: ${id}`);
+      throw new HttpError(404, "Réservation introuvable");
     }
+    logger.info(`Reservation found for id: ${id}`);
     return NextResponse.json({ reservation: reservation[0] });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Erreur lors de la récupération de la réservation" },
-      { status: 500 }
-    );
-  }
+  });
 }
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
+  return withErrorHandler(req, async () => {
     const { id } = params;
     const body = await req.json();
     const { timeSlotId, status } = body;
+
+    logger.info(`PUT /booking/${id} - Updating reservation`, {
+      timeSlotId,
+      status,
+    });
+
+    if (!timeSlotId || !status) {
+      logger.error(`PUT /booking/${id} - Missing or invalid data`);
+      throw new HttpError(400, "Données manquantes ou invalides");
+    }
 
     const updatedReservation = await db
       .update(bookings)
@@ -46,44 +51,33 @@ export async function PUT(
       .returning();
 
     if (!updatedReservation.length) {
-      return NextResponse.json(
-        { error: "Réservation introuvable ou non mise à jour" },
-        { status: 404 }
-      );
+      logger.error(`PUT /booking/${id} - Reservation not found or not updated`);
+      throw new HttpError(404, "Réservation introuvable ou non mise à jour");
     }
+    logger.info(`PUT /booking/${id} - Reservation successfully updated`);
     return NextResponse.json({ reservation: updatedReservation[0] });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Erreur lors de la mise à jour de la réservation" },
-      { status: 500 }
-    );
-  }
+  });
 }
 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  try {
+  return withErrorHandler(req, async () => {
     const { id } = params;
+    logger.info(`DELETE /booking/${id} - Deleting reservation`);
     const deletedReservation = await db
       .delete(bookings)
       .where(eq(bookings.id, id))
       .returning();
 
     if (!deletedReservation.length) {
-      return NextResponse.json(
-        { error: "Réservation introuvable ou non supprimée" },
-        { status: 404 }
+      logger.error(
+        `DELETE /booking/${id} - Reservation not found or not deleted`
       );
+      throw new HttpError(404, "Réservation introuvable ou non supprimée");
     }
+    logger.info(`DELETE /booking/${id} - Reservation successfully deleted`);
     return NextResponse.json({ message: "Réservation supprimée" });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Erreur lors de la suppression de la réservation" },
-      { status: 500 }
-    );
-  }
+  });
 }
