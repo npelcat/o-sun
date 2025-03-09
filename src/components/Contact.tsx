@@ -2,7 +2,9 @@
 
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { sendEmail } from "@/utils/send-email";
+import { contactSchema, ContactFormData } from "@/app/api/email/contactSchema";
 
 export type FormData = {
   name: string;
@@ -11,12 +13,20 @@ export type FormData = {
 };
 
 const Contact: FC = () => {
-  const { register, handleSubmit, reset } = useForm<FormData>();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
+
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(
     null
   );
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     const result = await sendEmail(data);
     if (result.message) {
       setConfirmationMessage(result.message);
@@ -42,9 +52,11 @@ const Contact: FC = () => {
             type="text"
             placeholder="Jane Doe"
             className="w-full rounded-md border border-gray-400 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
-            {...register("name", { required: true })}
+            {...register("name")}
           />
+          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
         </div>
+
         <div className="mb-5">
           <label htmlFor="email" className="mb-3 block font-bold">
             Votre adresse e-mail
@@ -53,25 +65,34 @@ const Contact: FC = () => {
             type="email"
             placeholder="exemple@domaine.com"
             className="w-full rounded-md border border-gray-400 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
-            {...register("email", { required: true })}
+            {...register("email")}
           />
+          {errors.email && (
+            <p className="text-red-500">{errors.email.message}</p>
+          )}
         </div>
+
         <div className="mb-5">
           <label htmlFor="message" className="mb-3 block font-bold">
             Votre message
           </label>
           <textarea
             rows={4}
-            placeholder="Ecrivez ici votre message"
+            placeholder="Écrivez ici votre message"
             className="w-full resize-none rounded-md border border-gray-400 bg-white p-3 outline-none focus:border-dark-green focus:shadow-md"
-            {...register("message", { required: true })}
+            {...register("message")}
           ></textarea>
+          {errors.message && (
+            <p className="text-red-500">{errors.message.message}</p>
+          )}
         </div>
+
         <div className="flex justify-center">
           <button className="text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-dark-green">
             Envoyer
           </button>
         </div>
+
         {confirmationMessage && (
           <p className="mt-10 bg-dark-beige bg-opacity-20 p-2 rounded-lg text-center w-full">
             {confirmationMessage}
