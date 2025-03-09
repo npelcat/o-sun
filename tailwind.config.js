@@ -17,9 +17,9 @@ module.exports = {
         "dark-green": "#5b6353",
       },
       fontFamily: {
-        title: ["Dancing Script", "cursive"],
-        subtitle: ["Amarante", "serif"],
-        text: ["Maitree", "sans-serif"],
+        title: ["Great Vibes", "cursive"],
+        subtitle: ["Arsenal SC", "serif"],
+        text: ["Montserrat", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
