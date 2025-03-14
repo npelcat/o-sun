@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 const NewBooking = dynamic(() => import("@/src/components/Booking"), {
   ssr: false,
@@ -15,5 +16,13 @@ export default function Page() {
   const timeSlotId = searchParams.get("timeSlotId");
   const label = searchParams.get("label");
 
-  return timeSlotId && label ? <FormBooking /> : <NewBooking />;
+  return timeSlotId && label ? (
+    <Suspense>
+      <FormBooking />
+    </Suspense>
+  ) : (
+    <Suspense>
+      <NewBooking />
+    </Suspense>
+  );
 }
