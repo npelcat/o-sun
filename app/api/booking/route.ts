@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
   return withErrorHandler(req, async () => {
     const body = await req.json();
     const { timeSlotId, name, email, content } = body;
-    console.log("Body", body);
 
     if (!timeSlotId || !name || !email) {
       throw new HttpError(400, "Données manquantes ou invalides");

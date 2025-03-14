@@ -11,18 +11,18 @@ const FormBooking = dynamic(() => import("@/src/components/FormBooking"), {
   ssr: false,
 });
 
-export default function Page() {
+function PageContent() {
   const searchParams = useSearchParams();
   const timeSlotId = searchParams.get("timeSlotId");
   const label = searchParams.get("label");
 
-  return timeSlotId && label ? (
-    <Suspense>
-      <FormBooking />
-    </Suspense>
-  ) : (
-    <Suspense>
-      <NewBooking />
+  return timeSlotId && label ? <FormBooking /> : <NewBooking />;
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PageContent />
     </Suspense>
   );
 }
