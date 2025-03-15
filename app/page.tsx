@@ -72,17 +72,17 @@ export default function Home() {
     <main>
       {quoteBlock && (
         <section className="pt-24">
-          <div className="flex-col md:flex-row bg-dark-green bg-opacity-50 p-5 items-center mx-auto">
-            <div className="w-full flex flex-col md:flex-row items-center justify-center md:px-16">
-              <h2 className="pb-3 text-center" aria-level={2}>
+          <div className="bg-dark-green bg-opacity-50 py-5 sm:py-10 w-full">
+            <div className="max-w-[800px] mx-auto flex flex-col items-center px-5">
+              <h2 className="pb-3 text-center">
                 <BlockRendererClient content={quoteBlock.content} />
               </h2>
               {quoteBlock.picture && (
                 <Image
-                  className="w-48 h-24 md:w-64 md:h-32 lg:w-72 lg:h-36 rounded-lg object-cover mt-4 md:mt-0 md:ml-4"
+                  className="w-48 h-24 md:w-64 md:h-32 lg:w-72 lg:h-36 rounded-lg object-cover mt-4"
                   src={quoteBlock.picture?.url || ""}
-                  width={6000}
-                  height={4000}
+                  width={600}
+                  height={400}
                   alt={quoteBlock.picture?.alternativeText || "Image"}
                   loading="lazy"
                 />
