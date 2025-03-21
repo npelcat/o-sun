@@ -1,5 +1,6 @@
 "use client";
 
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "../src/styles/globals.css"; // Importe les styles globaux
 
 export default function ClientLayout({
@@ -7,5 +8,10 @@ export default function ClientLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+      <SpeedInsights />
+    </>
+  );
 }
