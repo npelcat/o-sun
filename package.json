@@ -22,7 +22,6 @@
     "@supabase/supabase-js": "^2.45.4",
     "@types/mdx": "^2.0.13",
     "@types/nodemailer": "^6.4.15",
-    "@vercel/speed-insights": "^1.2.0",
     "@vercel/postgres": "^0.10.0",
     "@vercel/speed-insights": "^1.2.0",
     "dotenv": "^16.4.7",
