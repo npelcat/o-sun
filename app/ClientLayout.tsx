@@ -1,7 +1,8 @@
 "use client";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import "../src/styles/globals.css"; // Importe les styles globaux
+import "../src/styles/globals.css";
+import "../src/styles/globals.css";
 
 export default function ClientLayout({
   children,
