@@ -2,12 +2,15 @@ import { type NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 import { contactSchema } from "./contactSchema";
+import logger from "@/utils/logger";
 
 export async function POST(request: NextRequest) {
   try {
+    logger.info("POST /email - Received email request");
     const data = await request.json();
 
     const { name, email, message } = contactSchema.parse(data);
+    logger.info("POST /email - Data validated", { name, email });
 
     const transport = nodemailer.createTransport({
       service: "gmail",
@@ -58,11 +61,13 @@ export async function POST(request: NextRequest) {
       });
     });
 
+    logger.info("POST /email - Email sent successfully");
     return NextResponse.json({
       message:
         "Ton e-mail a bien été envoyé, je te répondrai dans les plus brefs délais. En attendant, n'hésite pas à me suivre sur Instagram (lien en bas de page) pour rester au courant de mes actualités.",
     });
   } catch (error) {
+    logger.error("POST /email - Error sending email", { error });
     if (error instanceof Error && "issues" in error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
