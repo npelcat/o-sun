@@ -44,6 +44,8 @@ The site includes a service showcase, a contact form, and calls-to-action for bo
    ```bash
    git clone https://github.com/npelcat/o-sun.git
    cd o-sun
+   ```
+
 ````
 
 2. **Install dependencies**:
@@ -140,3 +142,4 @@ Feel free to open an issue or submit a pull request.
 * **@nad\_cat** – Passionate Full Stack Developer, France
 * Learn more about my experience: [LinkedIn](https://www.linkedin.com/in/nadege-pelcat/)
 
+````
