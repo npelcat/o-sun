@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 const FormBooking: React.FC = () => {
@@ -12,35 +10,59 @@ const FormBooking: React.FC = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); //avoid spam
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const releaseSlot = useCallback(async () => {
+    if (!timeSlotId) return;
+    try {
+      await fetch("/api/release-slot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ timeSlotId }),
+      });
+    } catch (error) {
+      console.error("Erreur lors de la libération du créneau :", error);
+    }
+  }, [timeSlotId]);
+
+  useEffect(() => {
+    if (!timeSlotId) return;
+
+    timeoutRef.current = setTimeout(async () => {
+      await releaseSlot();
+      alert("Temps écoulé ! Le créneau a été libéré.");
+      router.push("/contact/newbooking");
+    }, 15 * 60 * 1000); // 15 minutes
+
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [timeSlotId, router, releaseSlot]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const data = { timeSlotId, name, email, content };
 
     try {
-      // La route API doit être accessible à l'URL /api/booking
-      const response = await fetch("/api/booking", {
+      const response = await fetch("/api/booking/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ timeSlotId, name, email, content }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Erreur lors de la réservation");
-      }
+      if (!response.ok) throw new Error("Erreur lors de la réservation");
 
       await response.json();
-      alert("Réservation créée avec succès !");
+      alert("Réservation réussie !");
       router.push("/");
+
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     } catch (error) {
-      if (error instanceof Error) {
-        alert(`Erreur : ${error.message}`);
-      } else {
-        alert("Une erreur inconnue est survenue.");
-      }
+      alert(error instanceof Error ? error.message : "Erreur inconnue");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -49,7 +71,7 @@ const FormBooking: React.FC = () => {
       <h1>Réserver le créneau {label}</h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block" }}>Nom :</label>
+          <label>Nom :</label>
           <input
             type="text"
             value={name}
@@ -58,7 +80,7 @@ const FormBooking: React.FC = () => {
           />
         </div>
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block" }}>Email :</label>
+          <label>Email :</label>
           <input
             type="email"
             value={email}
@@ -67,7 +89,7 @@ const FormBooking: React.FC = () => {
           />
         </div>
         <div style={{ marginBottom: "1rem" }}>
-          <label style={{ display: "block" }}>Contenu (optionnel) :</label>
+          <label>Contenu (optionnel) :</label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
