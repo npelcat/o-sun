@@ -1,9 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import db from "@/src/db/index";
-import { bookings, formData } from "@/src/db/schema";
-import { withErrorHandler, HttpError } from "@/utils/withErrorHandler";
-import { timeSlots } from "@/src/db/schema";
-import { eq } from "drizzle-orm";
+import { bookings } from "@/src/db/schema";
+import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
 
 export async function GET(req: NextRequest) {
@@ -15,7 +13,8 @@ export async function GET(req: NextRequest) {
   });
 }
 
-export async function POST(req: NextRequest) {
+{
+  /* export async function POST(req: NextRequest) {
   return withErrorHandler(req, async () => {
     const body = await req.json();
     const { timeSlotId, name, email, content } = body;
@@ -72,4 +71,5 @@ export async function POST(req: NextRequest) {
     });
     return NextResponse.json({ booking: insertedBooking[0] }, { status: 201 });
   });
+} */
 }
