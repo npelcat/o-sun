@@ -9,7 +9,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 
-// Define a new schema different from "public" to avoid conflicts with the tables used in the Strapi backend
+// New schema different from "public" to avoid conflicts with the tables used in the Strapi backend
 export const bookingSchema = pgSchema("booking");
 
 export const users = bookingSchema.table("users", {
