@@ -1,11 +1,10 @@
-"use client";
-
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface TimeSlot {
   id: string;
   label: string;
+  isActive: boolean;
 }
 
 const NewBooking: React.FC = () => {
@@ -13,15 +12,73 @@ const NewBooking: React.FC = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(
     null
   );
+  const [isReserving, setIsReserving] = useState(false);
+  const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
 
-  const timeSlots: TimeSlot[] = [
-    { id: "e7239622-80f5-4954-a173-e60bb59ed624", label: "09:00 - 10:00" },
-    { id: "75885356-4fa4-4541-a16e-8704048c3932", label: "10:00 - 11:00" },
-    { id: "coucou", label: "11:00 - 12:00" },
-  ];
+  useEffect(() => {
+    const fetchSlots = async () => {
+      try {
+        const response = await fetch("/api/booking/timeslots");
+        if (!response.ok) {
+          throw new Error("Erreur lors de la récupération des créneaux");
+        }
+        const data = await response.json();
 
-  const handleSelectSlot = (slot: TimeSlot) => {
-    setSelectedTimeSlot(slot);
+        const formatterDate = new Intl.DateTimeFormat("fr-FR", {
+          weekday: "long",
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+
+        const formatterHour = new Intl.DateTimeFormat("fr-FR", {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        });
+
+        setTimeSlots(
+          data.slots.map((slot: any) => {
+            const start = new Date(slot.startTime);
+            const end = new Date(slot.endTime);
+            const dateStr = formatterDate.format(start);
+            const startStr = formatterHour.format(start).replace(":", "h");
+            const endStr = formatterHour.format(end).replace(":", "h");
+
+            return {
+              id: slot.id,
+              label: `${dateStr} ${startStr} - ${endStr}`,
+              isActive: slot.isActive,
+            };
+          })
+        );
+      } catch (error: any) {
+        console.error(error);
+        alert(error.message);
+      }
+    };
+
+    fetchSlots();
+  }, []);
+
+  const handleSelectSlot = async (slot: TimeSlot) => {
+    setIsReserving(true);
+    try {
+      const response = await fetch("/api/booking/reserve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ timeSlotId: slot.id }),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Créneau non disponible");
+      }
+      setSelectedTimeSlot(slot);
+    } catch (error: any) {
+      alert(`Erreur : ${error.message}`);
+    } finally {
+      setIsReserving(false);
+    }
   };
 
   const handleContinue = () => {
@@ -40,7 +97,12 @@ const NewBooking: React.FC = () => {
       <ul style={{ listStyle: "none", padding: 0 }}>
         {timeSlots.map((slot) => (
           <li key={slot.id} style={{ marginBottom: "0.5rem" }}>
-            <button onClick={() => handleSelectSlot(slot)}>{slot.label}</button>
+            <button
+              onClick={() => handleSelectSlot(slot)}
+              disabled={isReserving}
+            >
+              {slot.label}
+            </button>
           </li>
         ))}
       </ul>
