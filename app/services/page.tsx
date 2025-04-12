@@ -68,7 +68,9 @@ const ServicesIndex: NextPage = () => {
               image={whatIsThisContent.picture?.url || ""}
               alt={whatIsThisContent.picture?.alternativeText || ""}
             />
-            <BlockRendererClient content={whatIsThisContent.content} />
+            <div className="text-justify">
+              <BlockRendererClient content={whatIsThisContent.content} />
+            </div>
             <Button
               titleButton="Ma façon de travailler et mon éthique"
               lien="/about/ethics"
@@ -86,7 +88,9 @@ const ServicesIndex: NextPage = () => {
               image={whatIsItForContent.picture?.url || ""}
               alt={whatIsItForContent.picture?.alternativeText || ""}
             />
-            <BlockRendererClient content={whatIsItForContent.content} />
+            <div className="text-justify">
+              <BlockRendererClient content={whatIsItForContent.content} />
+            </div>
             <Button
               titleButton="Réserver une communication"
               lien="https://calendly.com/o-sun-voixanimale"

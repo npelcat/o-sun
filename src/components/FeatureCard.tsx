@@ -40,7 +40,7 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
       </div>
       <div className="flex-auto p-4">
         <div className="flex flex-wrap justify-center">
-          <div className="text-sm text-center">{description}</div>
+          <div className="text-sm text-justify">{description}</div>
         </div>
       </div>
 

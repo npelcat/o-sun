@@ -25,7 +25,7 @@ export const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
   };
 
   return (
-    <div className="w-full my-10">
+    <div className="w-full my-4">
       <h3 className="font-subtitle cursor-pointer flex items-center md:text-xl transition ease-in-out hover:bg-white hover:rounded-lg hover:bg-opacity-70">
         <button
           aria-expanded={isOpen}
@@ -36,7 +36,7 @@ export const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
         >
           <FontAwesomeIcon
             icon={isOpen ? faChevronUp : faChevronDown}
-            className="mr-2 md:text-2xl"
+            className="mr-2 md:text-2xl p-2"
           />
           {title}
         </button>

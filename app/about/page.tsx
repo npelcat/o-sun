@@ -59,7 +59,9 @@ const AboutIndex: NextPage = () => {
               image={oceaneContent.picture?.url || ""}
               alt={oceaneContent.picture?.alternativeText || ""}
             />
-            <BlockRendererClient content={oceaneContent.content} />
+            <div className="text-justify">
+              <BlockRendererClient content={oceaneContent.content} />
+            </div>
             <div className="flex justify-center py-8">
               <Image
                 className="w-1/2 h-full md:w-1/6 item-center object-cover"
