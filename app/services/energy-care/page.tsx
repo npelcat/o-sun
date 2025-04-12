@@ -69,7 +69,9 @@ const EnergyCare: React.FC = () => {
               image={whatIsThisContent.picture?.url || ""}
               alt={whatIsThisContent.picture?.alternativeText || ""}
             />
-            <BlockRendererClient content={whatIsThisContent.content} />
+            <div className="text-justify">
+              <BlockRendererClient content={whatIsThisContent.content} />
+            </div>
             <Button
               titleButton="Ma façon de travailler et mon éthique"
               lien="/about/ethics"
@@ -87,7 +89,9 @@ const EnergyCare: React.FC = () => {
               image={whatEffectsContent.picture?.url || ""}
               alt={whatEffectsContent.picture?.alternativeText || ""}
             />
-            <BlockRendererClient content={whatEffectsContent.content} />
+            <div className="text-justify">
+              <BlockRendererClient content={whatEffectsContent.content} />
+            </div>
             <Button
               titleButton="Réserver un soin énergétique"
               lien="https://calendly.com/o-sun-voixanimale"

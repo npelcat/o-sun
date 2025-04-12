@@ -84,7 +84,9 @@ const Booking: React.FC = () => {
                   image={blockContent.picture?.url || ""}
                   alt={blockContent.picture?.alternativeText || ""}
                 />
-                <BlockRendererClient content={blockContent.content} />
+                <div className="text-justify">
+                  <BlockRendererClient content={blockContent.content} />
+                </div>
               </>
             )}
             <div className="bg-dark-beige rounded-lg my-8 p-2">

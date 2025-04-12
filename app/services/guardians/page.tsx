@@ -65,7 +65,9 @@ const Guardians: React.FC = () => {
               image={whatAreTheyContent.picture?.url || ""}
               alt={whatAreTheyContent.picture?.alternativeText || ""}
             />
-            <BlockRendererClient content={whatAreTheyContent.content} />
+            <div className="text-justify">
+              <BlockRendererClient content={whatAreTheyContent.content} />
+            </div>
             <Button
               titleButton="Ma façon de travailler et mon éthique"
               lien="/about/ethics"
@@ -83,7 +85,9 @@ const Guardians: React.FC = () => {
               image={whatIsItForContent.picture?.url || ""}
               alt={whatIsItForContent.picture?.alternativeText || ""}
             />
-            <BlockRendererClient content={whatIsItForContent.content} />
+            <div className="text-justify">
+              <BlockRendererClient content={whatIsItForContent.content} />
+            </div>
             <Button
               titleButton="Réserver un service pour moi"
               lien="https://calendly.com/o-sun-voixanimale"

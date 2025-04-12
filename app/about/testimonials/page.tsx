@@ -69,7 +69,7 @@ export default function TestimonialsPage() {
                   image={picture?.url || ""}
                   alt={picture?.alternativeText || ""}
                 />
-                <p className="pt-8">
+                <p className="pt-8 text-justify">
                   <BlockRendererClient content={item.content} />
                 </p>
                 <br />
