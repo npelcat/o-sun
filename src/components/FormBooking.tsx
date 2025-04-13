@@ -11,13 +11,14 @@ const FormBooking: React.FC = () => {
   const [email, setEmail] = useState("");
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false); //avoid spam
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const releaseSlot = useCallback(async () => {
     if (!timeSlotId) return;
     try {
-      await fetch("/api/release-slot", {
+      await fetch("/api/booking/release-slot", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ timeSlotId }),
@@ -26,6 +27,14 @@ const FormBooking: React.FC = () => {
       console.error("Erreur lors de la libération du créneau :", error);
     }
   }, [timeSlotId]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (!timeSlotId) return;
@@ -68,7 +77,7 @@ const FormBooking: React.FC = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Réserver le créneau {label}</h1>
+      <h1>Réserver le créneau : {label}</h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "1rem" }}>
           <label>Nom :</label>
@@ -99,6 +108,10 @@ const FormBooking: React.FC = () => {
           {isSubmitting ? "Envoi en cours..." : "Valider la réservation"}
         </button>
       </form>
+      <div style={{ marginBottom: "1rem", fontWeight: "bold" }}>
+        Temps restant : {Math.floor(timeLeft / 60)}:
+        {String(timeLeft % 60).padStart(2, "0")}
+      </div>
     </div>
   );
 };
