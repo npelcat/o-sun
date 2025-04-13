@@ -4,6 +4,8 @@ import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
 import { timeSlots } from "@/src/db/schema";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: NextRequest) {
   return withErrorHandler(req, async () => {
     logger.info(
