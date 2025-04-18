@@ -4,8 +4,8 @@ import { Button } from "@/src/components/Button";
 import { NextPage } from "next";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import BlockRendererClient from "../api/utils/BlockRendererClient";
-import usePageData from "../api/utils/usePageData";
+import BlockRendererClient from "../api/utilsStrapi/BlockRendererClient";
+import usePageData from "../api/utilsStrapi/usePageData";
 import ErrorDisplay from "@/src/components/ErrorDisplay";
 import Loader from "@/src/components/Loader";
 
