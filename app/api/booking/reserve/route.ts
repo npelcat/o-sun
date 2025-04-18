@@ -3,7 +3,7 @@ import db from "@/src/db/index";
 import { timeSlots } from "@/src/db/schema";
 import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
-import { and, eq } from "drizzle-orm";
+import { and, eq, isNull, lt, or } from "drizzle-orm";
 
 export async function POST(request: NextRequest) {
   return withErrorHandler(request, async () => {
@@ -20,11 +20,22 @@ export async function POST(request: NextRequest) {
       timeSlotId,
     });
 
+    const FIFTEEN_MINUTES_AGO = new Date(Date.now() - 15 * 60 * 1000);
+
     await db.transaction(async (trx) => {
       const slot = await trx
         .select()
         .from(timeSlots)
-        .where(and(eq(timeSlots.id, timeSlotId), eq(timeSlots.isActive, true)))
+        .where(
+          and(
+            eq(timeSlots.id, timeSlotId),
+            eq(timeSlots.isActive, true),
+            or(
+              isNull(timeSlots.lockedAt),
+              lt(timeSlots.lockedAt, FIFTEEN_MINUTES_AGO)
+            )
+          )
+        )
         .limit(1)
         .execute();
 
@@ -38,11 +49,13 @@ export async function POST(request: NextRequest) {
 
       await trx
         .update(timeSlots)
-        .set({ isActive: false })
+        .set({ lockedAt: new Date() })
         .where(eq(timeSlots.id, timeSlotId))
         .execute();
 
-      logger.info("POST /booking/reserve - Créneau verrouillé", { timeSlotId });
+      logger.info("POST /booking/reserve - Créneau verrouillé provisoirement", {
+        timeSlotId,
+      });
     });
 
     return NextResponse.json({ message: "Créneau réservé provisoirement" });

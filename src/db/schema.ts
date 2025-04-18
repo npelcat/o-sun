@@ -26,6 +26,7 @@ export const timeSlots = bookingSchema.table("time_slots", {
   startTime: timestamp("start_time").notNull(),
   endTime: timestamp("end_time").notNull(),
   isActive: boolean("is_active").default(true),
+  lockedAt: timestamp("locked_at"), // <-- ici
   createdAt: timestamp("created_at").defaultNow(),
 });
 

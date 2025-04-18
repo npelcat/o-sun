@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Button } from "./Button";
 
 const FormBooking: React.FC = () => {
   const router = useRouter();
@@ -43,7 +44,7 @@ const FormBooking: React.FC = () => {
       await releaseSlot();
       alert("Temps écoulé ! Le créneau a été libéré.");
       router.push("/contact/newbooking");
-    }, 15 * 60 * 1000); // 15 minutes
+    }, 1 * 60 * 1000); // 15 minutes
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -77,7 +78,8 @@ const FormBooking: React.FC = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h1>Réserver le créneau : {label}</h1>
+      <h2 className="font-subtitle text-3xl pb-3">Réserver le créneau :</h2>
+      <p className="font-bold pb-5">{label}</p>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: "1rem" }}>
           <label>Nom :</label>
@@ -104,11 +106,16 @@ const FormBooking: React.FC = () => {
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Envoi en cours..." : "Valider la réservation"}
-        </button>
+        <Button
+          titleButton={
+            isSubmitting ? "Envoi en cours..." : "Valider la réservation"
+          }
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-dark-green p-3 rounded-lg bg-opacity-70 font-subtitle text-xl text-white transition duration-300 ease-in-out hover:bg-white hover:text-black"
+        />
       </form>
-      <div style={{ marginBottom: "1rem", fontWeight: "bold" }}>
+      <div className="my-2 font-bold">
         Temps restant : {Math.floor(timeLeft / 60)}:
         {String(timeLeft % 60).padStart(2, "0")}
       </div>
