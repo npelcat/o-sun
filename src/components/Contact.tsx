@@ -3,14 +3,21 @@
 import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendEmail } from "@/utils/send-email";
 import { contactSchema, ContactFormData } from "@/app/api/email/contactSchema";
 
-export type FormData = {
-  name: string;
-  email: string;
-  message: string;
-};
+async function sendEmail(data: ContactFormData) {
+  try {
+    const response = await fetch("/api/email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    return await response.json();
+  } catch (err) {
+    if (err instanceof Error) return { error: err.message };
+    return { error: "Une erreur inconnue est survenue." };
+  }
+}
 
 const Contact: FC = () => {
   const {
@@ -28,13 +35,11 @@ const Contact: FC = () => {
 
   const onSubmit = async (data: ContactFormData) => {
     const result = await sendEmail(data);
-    if (result.message) {
-      setConfirmationMessage(result.message);
-    } else if (result.error) {
+    if (result.message) setConfirmationMessage(result.message);
+    else
       setConfirmationMessage(
         "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer."
       );
-    }
     reset();
   };
 
