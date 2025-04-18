@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiTestimonials } from "@/app/api/types/strapi";
 import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";

@@ -5,7 +5,7 @@ import { FeatureCard } from "../src/components/FeatureCard";
 import { HomeCTA } from "../src/components/HomeCTA";
 import Image from "next/image";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
-import BlockRendererClient from "./api/utils/BlockRendererClient";
+import BlockRendererClient from "./api/utilsStrapi/BlockRendererClient";
 import {
   fetchLinkComponentById,
   fetchMultipleLinkComponents,
