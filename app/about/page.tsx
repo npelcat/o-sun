@@ -5,8 +5,8 @@ import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { NextPage } from "next";
 import Image from "next/image";
-import BlockRendererClient from "../api/utils/BlockRendererClient";
-import usePageData from "../api/utils/usePageData";
+import BlockRendererClient from "../api/utilsStrapi/BlockRendererClient";
+import usePageData from "../api/utilsStrapi/usePageData";
 import ErrorDisplay from "@/src/components/ErrorDisplay";
 import Loader from "@/src/components/Loader";
 
