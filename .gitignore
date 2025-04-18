@@ -16,6 +16,10 @@ logs/
 /.next/
 /out/
 
+# drizzle
+drizzle/*.sql
+drizzle/meta/
+
 # production
 /build
 

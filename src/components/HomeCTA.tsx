@@ -23,7 +23,7 @@ export const HomeCTA: React.FC<HomeCTAInterface> = ({
         height="600"
       />
       <Button
-        link={link}
+        link={lien}
         titleButton={titleButton}
         className="m-4 bg-opacity-70 absolute bottom-2 z-50"
       />
