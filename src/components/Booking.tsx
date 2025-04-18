@@ -95,6 +95,7 @@ const NewBooking: React.FC = () => {
     <div style={{ padding: "2rem" }}>
       <h2>Choisissez votre créneau</h2>
       <p>Les horaires sont affichés selon l’heure de Paris (CET/CEST)</p>
+      <br></br>
       <ul style={{ listStyle: "none", padding: 0 }}>
         {timeSlots.map((slot) => (
           <li key={slot.id} style={{ marginBottom: "0.5rem" }}>
