@@ -93,7 +93,7 @@ export default function TestimonialsPage() {
         />
         <Button
           titleButton="Réserver un service"
-          lien="/contact/booking"
+          link="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
           className="text-xl text-white bg-dark-green font-subtitle rounded-full px-8 py-4 transition duration-300 hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"

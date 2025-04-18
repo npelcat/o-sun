@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     await db
       .update(timeSlots)
-      .set({ isActive: true })
+      .set({ isActive: true, lockedAt: null })
       .where(eq(timeSlots.id, timeSlotId))
       .execute();
 
