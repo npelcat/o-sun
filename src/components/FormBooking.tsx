@@ -43,7 +43,7 @@ const FormBooking: React.FC = () => {
       await releaseSlot();
       alert("Temps écoulé ! Le créneau a été libéré.");
       router.push("/contact/newbooking");
-    }, 15 * 60 * 1000); // 15 minutes
+    }, 1 * 60 * 1000); // 15 minutes
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
