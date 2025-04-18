@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       logger.error("POST /email - Resend API error", { error });
+      console.error("Resend API error details:", error);
       return NextResponse.json(
         { error: "Erreur lors de l'envoi de l'e-mail." },
         { status: 500 }
