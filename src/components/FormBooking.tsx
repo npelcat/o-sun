@@ -40,11 +40,14 @@ const FormBooking: React.FC = () => {
   useEffect(() => {
     if (!timeSlotId) return;
 
-    timeoutRef.current = setTimeout(async () => {
-      await releaseSlot();
-      alert("Temps écoulé ! Le créneau a été libéré.");
-      router.push("/contact/newbooking");
-    }, 1 * 60 * 1000); // 15 minutes
+    timeoutRef.current = setTimeout(
+      async () => {
+        await releaseSlot();
+        alert("Temps écoulé ! Le créneau a été libéré.");
+        router.push("/contact/newbooking");
+      },
+      1 * 60 * 1000
+    ); // 15 minutes
 
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -64,8 +67,17 @@ const FormBooking: React.FC = () => {
 
       if (!response.ok) throw new Error("Erreur lors de la réservation");
 
-      await response.json();
-      alert("Réservation réussie !");
+      const emailResponse = await fetch("/api/booking/confirm-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ timeSlotId, name, email, content }),
+      });
+
+      if (!emailResponse.ok)
+        throw new Error("Erreur lors de l'envoi de l'email");
+
+      await emailResponse.json();
+      alert("Réservation réussie et email de confirmation envoyé !");
       router.push("/");
 
       if (timeoutRef.current) clearTimeout(timeoutRef.current);

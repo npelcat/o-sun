@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sendEmail } from "@/utils/send-email";
 import { contactSchema, ContactFormData } from "@/app/api/email/contactSchema";
+import { sendEmail } from "@/utils/send-email";
 
 export default function ContactClient() {
   const {
@@ -22,13 +22,11 @@ export default function ContactClient() {
 
   const onSubmit = async (data: ContactFormData) => {
     const result = await sendEmail(data);
-    if (result.message) {
-      setConfirmationMessage(result.message);
-    } else if (result.error) {
+    if (result.message) setConfirmationMessage(result.message);
+    else
       setConfirmationMessage(
         "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer."
       );
-    }
     reset();
   };
 
