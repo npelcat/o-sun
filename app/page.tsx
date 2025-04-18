@@ -138,7 +138,7 @@ export default function Home() {
             />
             <Button
               titleButton={testimonialComponent.title}
-              lien={testimonialComponent.link}
+              link={testimonialComponent.link}
               className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-5 rounded-lg bg-opacity-70 font-subtitle text-3xl text-dark-green transition duration-300 ease-in-out hover:bg-white"
             />
           </div>

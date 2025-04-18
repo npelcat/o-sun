@@ -2,32 +2,40 @@ import Link from "next/link";
 
 interface ButtonInterface {
   titleButton: string;
-  lien?: string;
+  link?: string;
   target?: string;
   rel?: string;
   className?: string;
   onClick?: () => void;
+  type?: "button" | "submit";
+  disabled?: boolean;
 }
 
 export const Button: React.FC<ButtonInterface> = ({
   titleButton,
-  lien,
+  link,
   target,
   rel,
   className,
   onClick,
+  type = "button",
+  disabled = false,
 }) => {
-  if (onClick) {
+  if (link) {
     return (
-      <button onClick={onClick} className={className}>
+      <Link href={link || "#"} target={target} rel={rel} className={className}>
         {titleButton}
-      </button>
+      </Link>
     );
   }
-
   return (
-    <Link href={lien || "#"} target={target} rel={rel} className={className}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={className}
+      disabled={disabled}
+    >
       {titleButton}
-    </Link>
+    </button>
   );
 };
