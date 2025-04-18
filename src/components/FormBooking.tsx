@@ -76,12 +76,21 @@ const FormBooking: React.FC = () => {
     }
   };
 
+  const handleCancel = async () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    await releaseSlot();
+    alert("Réservation annulée.");
+    router.push("/contact/newbooking");
+  };
+
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2 className="font-subtitle text-3xl pb-3">Réserver le créneau :</h2>
-      <p className="font-bold pb-5">{label}</p>
+    <div className="pt-8 px-4 text-justify">
+      <h2 className="font-subtitle text-start text-3xl pb-3">
+        Réserver le créneau :
+      </h2>
+      <p className="font-bold py-5">{label}</p>
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "1rem" }}>
+        <div className="py-5">
           <label>Nom :</label>
           <input
             type="text"
@@ -90,7 +99,7 @@ const FormBooking: React.FC = () => {
             required
           />
         </div>
-        <div style={{ marginBottom: "1rem" }}>
+        <div className="py-5">
           <label>Email :</label>
           <input
             type="email"
@@ -99,21 +108,31 @@ const FormBooking: React.FC = () => {
             required
           />
         </div>
-        <div style={{ marginBottom: "1rem" }}>
+        <div className="py-5">
           <label>Contenu (optionnel) :</label>
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
-        <Button
-          titleButton={
-            isSubmitting ? "Envoi en cours..." : "Valider la réservation"
-          }
-          type="submit"
-          disabled={isSubmitting}
-          className="bg-dark-green p-3 rounded-lg bg-opacity-70 font-subtitle text-xl text-white transition duration-300 ease-in-out hover:bg-white hover:text-black"
-        />
+        <div className="flex space-x-4">
+          <Button
+            titleButton={
+              isSubmitting ? "Envoi en cours..." : "Valider la réservation"
+            }
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-dark-green p-3 rounded-lg bg-opacity-70 font-subtitle text-xl text-white transition duration-300 ease-in-out hover:bg-white hover:text-black"
+          />
+
+          <Button
+            titleButton="Annuler"
+            type="button"
+            onClick={handleCancel}
+            disabled={isSubmitting}
+            className="bg-gray-400 p-3 rounded-lg font-subtitle text-xl text-white transition duration-300 ease-in-out hover:bg-gray-500"
+          />
+        </div>
       </form>
       <div className="my-2 font-bold">
         Temps restant : {Math.floor(timeLeft / 60)}:
