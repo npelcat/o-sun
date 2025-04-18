@@ -74,7 +74,7 @@ const EnergyCare: React.FC = () => {
             </div>
             <Button
               titleButton="Ma façon de travailler et mon éthique"
-              lien="/about/ethics"
+              link="/about/ethics"
               className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
             />
           </div>
@@ -94,7 +94,7 @@ const EnergyCare: React.FC = () => {
             </div>
             <Button
               titleButton="Réserver un soin énergétique"
-              lien="https://calendly.com/o-sun-voixanimale"
+              link="https://calendly.com/o-sun-voixanimale"
               target="_blank"
               rel="noopener noreferrer"
               className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
@@ -139,7 +139,7 @@ const EnergyCare: React.FC = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver un soin énergétique"
-          lien="https://form.jotform.com/233515437828361"
+          link="https://form.jotform.com/233515437828361"
           target="_blank"
           rel="noopener noreferrer"
           className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"

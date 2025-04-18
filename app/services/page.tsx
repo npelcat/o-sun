@@ -73,7 +73,7 @@ const ServicesIndex: NextPage = () => {
             </div>
             <Button
               titleButton="Ma façon de travailler et mon éthique"
-              lien="/about/ethics"
+              link="/about/ethics"
               className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
             />
           </div>
@@ -93,7 +93,7 @@ const ServicesIndex: NextPage = () => {
             </div>
             <Button
               titleButton="Réserver une communication"
-              lien="https://calendly.com/o-sun-voixanimale"
+              link="https://calendly.com/o-sun-voixanimale"
               target="_blank"
               rel="noopener noreferrer"
               className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
@@ -125,7 +125,7 @@ const ServicesIndex: NextPage = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une communication animale"
-          lien="https://form.jotform.com/232924829211052"
+          link="https://form.jotform.com/232924829211052"
           target="_blank"
           rel="noopener noreferrer"
           className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"

@@ -1,6 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
 import { DateTime } from "luxon";
+import Loader from "@/src/components/Loader";
+import { Button } from "@/src/components/Button";
 
 interface TimeSlot {
   id: string;
@@ -15,8 +17,10 @@ const NewBooking: React.FC = () => {
   );
   const [isReserving, setIsReserving] = useState(false);
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchSlots = useCallback(async () => {
+    setIsLoading(true);
     try {
       const response = await fetch("/api/booking/timeslots", {
         headers: {
@@ -51,6 +55,8 @@ const NewBooking: React.FC = () => {
     } catch (error: any) {
       console.error(error);
       alert(error.message);
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -93,25 +99,36 @@ const NewBooking: React.FC = () => {
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h2>Choisissez votre créneau</h2>
+      <h2 className="font-subtitle text-3xl pb-3">Choisissez votre créneau</h2>
       <p>Les horaires sont affichés selon l’heure de Paris (CET/CEST)</p>
       <br></br>
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {timeSlots.map((slot) => (
-          <li key={slot.id} style={{ marginBottom: "0.5rem" }}>
-            <button
-              onClick={() => handleSelectSlot(slot)}
-              disabled={isReserving || !slot.isActive}
-            >
-              {slot.label}
-            </button>
-          </li>
-        ))}
-      </ul>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {timeSlots.map((slot) => (
+            <li key={slot.id} style={{ marginBottom: "0.5rem" }}>
+              <button
+                onClick={() => handleSelectSlot(slot)}
+                disabled={isReserving || !slot.isActive}
+              >
+                {slot.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
       {selectedTimeSlot && (
-        <div style={{ marginTop: "1rem" }}>
+        <div style={{ position: "relative", marginTop: "1rem" }}>
           <p>Créneau sélectionné : {selectedTimeSlot.label}</p>
-          <button onClick={handleContinue}>Continuer</button>
+          <p className="py-3 font-bold">
+            Le créneau sélectionné est réservé pendant 15 minutes.
+          </p>
+          <Button
+            titleButton={"Continuer"}
+            onClick={handleContinue}
+            className="bg-dark-green p-3 rounded-lg bg-opacity-70 font-subtitle text-xl text-white transition duration-300 ease-in-out hover:bg-white hover:text-black"
+          />
         </div>
       )}
     </div>
