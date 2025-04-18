@@ -98,8 +98,10 @@ const NewBooking: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2 className="font-subtitle text-3xl pb-3">Choisissez votre créneau</h2>
+    <div className="pt-8 px-4 text-justify">
+      <h2 className="font-subtitle text-start text-3xl pb-3">
+        Choisissez votre créneau :
+      </h2>
       <p>Les horaires sont affichés selon l’heure de Paris (CET/CEST)</p>
       <br></br>
       {isLoading ? (
