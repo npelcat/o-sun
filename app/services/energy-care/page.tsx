@@ -3,8 +3,8 @@
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
-import usePageData from "@/app/api/utils/usePageData";
+import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
+import usePageData from "@/app/api/utilsStrapi/usePageData";
 import ErrorDisplay from "@/src/components/ErrorDisplay";
 import Loader from "@/src/components/Loader";
 
