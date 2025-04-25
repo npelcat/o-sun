@@ -3,7 +3,7 @@
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 interface GuardiansClientProps {

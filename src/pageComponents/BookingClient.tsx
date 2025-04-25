@@ -4,7 +4,7 @@ import Image from "next/image";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 
 interface BookingClientProps {
   blockContent: StrapiBlockContent;

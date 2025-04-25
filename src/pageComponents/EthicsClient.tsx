@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 interface EthicsClientProps {
