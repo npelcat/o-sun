@@ -4,9 +4,8 @@ import logger from "@/utils/logger";
 import { getSlotById } from "@/lib/booking";
 import { formatDate, formatTime } from "@/lib/date";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     logger.info("POST /reservation - Received reservation request");
 
@@ -43,19 +42,37 @@ export async function POST(request: NextRequest) {
       </div>
     `;
 
-    await resend.emails.send({
+    const { error: userError } = await resend.emails.send({
       from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
       to: [email],
       subject: userEmailSubject,
       html: userEmailBody,
     });
+    if (userError) {
+      logger.error("POST /reservation - Error sending user confirmation", {
+        userError,
+      });
+      return NextResponse.json(
+        { error: "Erreur interne, réservation non confirmée." },
+        { status: 500 }
+      );
+    }
 
-    await resend.emails.send({
+    const { error: adminError } = await resend.emails.send({
       from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
       to: [process.env.MY_EMAIL!],
       subject: oceaneEmailSubject,
       html: oceaneEmailBody,
     });
+    if (adminError) {
+      logger.error("POST /reservation - Error sending admin notification", {
+        adminError,
+      });
+      return NextResponse.json(
+        { error: "Erreur interne, réservation non confirmée." },
+        { status: 500 }
+      );
+    }
 
     logger.info("POST /reservation - Emails sent successfully");
     return NextResponse.json({
