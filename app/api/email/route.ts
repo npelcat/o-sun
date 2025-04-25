@@ -3,9 +3,8 @@ import { Resend } from "resend";
 import { contactSchema } from "./contactSchema";
 import logger from "@/utils/logger";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: NextRequest) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     logger.info("POST /email - Received email request");
     const data = await request.json();

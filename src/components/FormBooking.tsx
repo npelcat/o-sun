@@ -46,7 +46,7 @@ const FormBooking: React.FC = () => {
         alert("Temps écoulé ! Le créneau a été libéré.");
         router.push("/contact/newbooking");
       },
-      1 * 60 * 1000
+      15 * 60 * 1000
     ); // 15 minutes
 
     return () => {
