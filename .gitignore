@@ -9,9 +9,16 @@
 # testing
 /coverage
 
+# logs
+logs/
+
 # next.js
 /.next/
 /out/
+
+# drizzle
+drizzle/*.sql
+drizzle/meta/
 
 # production
 /build
