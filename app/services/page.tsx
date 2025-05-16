@@ -13,13 +13,12 @@ const ServicesIndex: NextPage = () => {
   const blockIds = [
     "gq45qnh9mzp7frix51cm1iad",
     "rbmsw4youqj5y8dis9eaordk",
+    "pa21ykdbfd3gxjdtz2ehphx1",
     "n418rbmlpib4cb94h0kqv00j",
   ];
   const accordionSlugs = [
-    "avec-qui-puis-je-communiquer",
-    "com-animale-une-seance-en-pratique",
+    "com-animale-limites",
     "com-animale-type-de-seance-et-tarifs",
-    "com-animale-les-packs",
   ];
 
   const { blockContents, accordions, error } = usePageData(
@@ -39,6 +38,9 @@ const ServicesIndex: NextPage = () => {
   const whatIsItForContent = blockContents.find(
     (block) => block.slug === "com-animale-a-quoi-ca-sert"
   );
+  const whatIsLookLike = blockContents.find(
+    (block) => block.slug === "com-animale-a-quoi-ressemble-une-seance"
+  );
   const practicalInfosContent = blockContents.find(
     (block) => block.slug === "com-animale-infos-pratiques"
   );
@@ -46,12 +48,9 @@ const ServicesIndex: NextPage = () => {
   const practicalInfosAccordions = accordions.filter(
     (block) =>
       block.slug &&
-      [
-        "avec-qui-puis-je-communiquer",
-        "com-animale-une-seance-en-pratique",
-        "com-animale-type-de-seance-et-tarifs",
-        "com-animale-les-packs",
-      ].includes(block.slug)
+      ["com-animale-limites", "com-animale-type-de-seance-et-tarifs"].includes(
+        block.slug
+      )
   );
 
   return (
@@ -102,6 +101,21 @@ const ServicesIndex: NextPage = () => {
         </div>
       )}
 
+      {whatIsLookLike && (
+        <div className="flex justify-center bg-beige">
+          <div className="py-8 w-full md:w-3/5 px-4">
+            <CardTitlePhoto
+              title={whatIsLookLike.title}
+              image={whatIsLookLike.picture?.url || ""}
+              alt={whatIsLookLike.picture?.alternativeText || ""}
+            />
+            <div className="text-justify">
+              <BlockRendererClient content={whatIsLookLike.content} />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-center bg-dark-beige">
         <div className=" py-8 w-full md:w-3/5  px-4">
           {practicalInfosContent && (
@@ -125,7 +139,7 @@ const ServicesIndex: NextPage = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une communication animale"
-          lien="https://form.jotform.com/232924829211052"
+          lien="https://calendly.com/o-sun-voixanimale"
           target="_blank"
           rel="noopener noreferrer"
           className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"

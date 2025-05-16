@@ -36,3 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 .env
+
+#logs and automatic drizzle generation
+/logs
+/drizzle
