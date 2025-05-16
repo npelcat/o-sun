@@ -6,7 +6,7 @@ import { Button } from "@/src/components/Button";
 import { useEffect, useState } from "react";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import Loader from "@/src/components/Loader";
 import ErrorDisplay from "@/src/components/ErrorDisplay";
 
@@ -106,7 +106,7 @@ const Booking: React.FC = () => {
                   <div key={index} className="text-center">
                     <Button
                       titleButton={option.title}
-                      lien={option.lien}
+                      link={option.lien}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black"
@@ -139,7 +139,7 @@ const Booking: React.FC = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Une question ? > Me contacter"
-          lien="/contact"
+          link="/contact"
           target="_blank"
           rel="noopener noreferrer"
           className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
