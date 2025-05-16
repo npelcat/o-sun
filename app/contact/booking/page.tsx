@@ -45,13 +45,25 @@ const Booking: React.FC = () => {
 
   const bookingOptions = [
     {
-      title:
-        "Réserver une communication animale ou une séance énergétique animale",
+      title: "Réserver une communication animale",
       lien: "https://calendly.com/o-sun-voixanimale",
     },
     {
-      title: "Réserver une séance énergétique humain",
-      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-humain?back=1&month=2025-02",
+      title: "Réserver un séance énergétique animal",
+      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-ani?back=1&month=2025-05",
+    },
+    {
+      title:
+        "Réserver le Pack animal : communication animale + séance énergétique",
+      lien: "https://calendly.com/o-sun-voixanimale/pack-profondeur?back=1&month=2025-05",
+    },
+    {
+      title: "Réserver une séance énergétique humain - Appel",
+      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-humain?back=1&month=2025-05",
+    },
+    {
+      title: "Réserver une séance énergétique DUO gardien/animal - Appel",
+      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-duo-appel?back=1&month=2025-05",
     },
     {
       title: "Réserver une Moon Guidance",
@@ -59,12 +71,8 @@ const Booking: React.FC = () => {
       note: "(pour les gardiens)",
     },
     {
-      title: "Réserver le Pack : communication animale + séance énergétique",
-      lien: "https://form.jotform.com/232924829211052",
-    },
-    {
-      title: "Réserver un appel de 15 minutes",
-      lien: "https://calendly.com/o-sun-voixanimale/on-s-appelle?back=1&month=2025-02",
+      title: "Réserver un appel découverte de 15 minutes",
+      lien: "https://calendly.com/o-sun-voixanimale/on-s-appelle?back=1&month=2025-05",
       note: "(Pour en savoir plus avant réservation d'un service)",
     },
   ];
