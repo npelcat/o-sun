@@ -4,8 +4,8 @@ import { Button } from "@/src/components/Button";
 import { NextPage } from "next";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import BlockRendererClient from "../api/utils/BlockRendererClient";
-import usePageData from "../api/utils/usePageData";
+import BlockRendererClient from "../api/utilsStrapi/BlockRendererClient";
+import usePageData from "../api/utilsStrapi/usePageData";
 import ErrorDisplay from "@/src/components/ErrorDisplay";
 import Loader from "@/src/components/Loader";
 
@@ -72,7 +72,7 @@ const ServicesIndex: NextPage = () => {
             </div>
             <Button
               titleButton="Ma façon de travailler et mon éthique"
-              lien="/about/ethics"
+              link="/about/ethics"
               className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
             />
           </div>
@@ -92,7 +92,7 @@ const ServicesIndex: NextPage = () => {
             </div>
             <Button
               titleButton="Réserver une communication"
-              lien="https://calendly.com/o-sun-voixanimale"
+              link="https://calendly.com/o-sun-voixanimale"
               target="_blank"
               rel="noopener noreferrer"
               className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
@@ -140,7 +140,7 @@ const ServicesIndex: NextPage = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une communication animale"
-          lien="https://calendly.com/o-sun-voixanimale"
+          link="https://calendly.com/o-sun-voixanimale"
           target="_blank"
           rel="noopener noreferrer"
           className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
