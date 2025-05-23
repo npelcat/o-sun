@@ -86,8 +86,7 @@ const Ethics: React.FC = () => {
       <div className="flex justify-center pb-12">
         <Button
           titleButton="Me contacter"
-          lien="/contact"
-          className="text-xl text-white bg-dark-green font-subtitle rounded-full px-6 py-3 transition hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          link="/contact"
         />
       </div>
     </div>

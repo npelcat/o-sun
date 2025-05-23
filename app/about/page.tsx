@@ -97,8 +97,7 @@ const AboutIndex: NextPage = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver un service"
-          lien="/contact/booking"
-          className="mt-8 p-4 text-xl font-subtitle text-white bg-dark-green rounded-full transition duration-300 hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          link="/contact/booking"
         />
       </div>
     </div>
