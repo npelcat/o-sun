@@ -99,7 +99,7 @@ export default function Home() {
               key={component.slug}
               titleButton={component.title}
               image={component.picture?.url || ""}
-              lien={component.link}
+              link={component.link}
             />
           ))}
         </div>
@@ -119,7 +119,7 @@ export default function Home() {
               }
               image={component.picture?.url || ""}
               alt={component.picture?.alternativeText || ""}
-              lien={component.link}
+              link={component.link}
               titleButton="En savoir plus"
             />
           ))}
@@ -139,7 +139,7 @@ export default function Home() {
             <Button
               titleButton={testimonialComponent.title}
               link={testimonialComponent.link}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-dark-green py-6 px-10 rounded-full bg-opacity-70 font-subtitle text-3xl text-dark-green transition duration-300 ease-in-out hover:bg-dark-beige"
+              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 py-6 px-10 bg-opacity-70 text-3xl"
             />
           </div>
         </section>

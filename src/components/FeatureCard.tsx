@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
+import { Button } from "./Button";
 
 interface FeatureCardInterface {
   title: string;
   description: string | ReactNode;
   image: string;
   alt: string;
-  lien: string;
+  link: string;
   titleButton: string;
 }
 
@@ -16,7 +17,7 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
   description,
   image,
   alt,
-  lien,
+  link,
   titleButton,
 }) => {
   return (
@@ -44,16 +45,12 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
         </div>
       </div>
 
-      <div className="flex space-x-4 mb-5 text-sm font-medium justify-center">
-        <div className="flex-auto flex space-x-4 justify-center">
-          <Link
-            href={lien}
-            className="h-10 px-6 font-semibold rounded-full bg-dark-green text-white transition duration-300 ease-in-out hover:bg-white hover:text-dark-green flex items-center justify-center"
-            aria-label={titleButton}
-          >
-            {titleButton}
-          </Link>
-        </div>
+      <div className="flex space-x-4 mb-5 justify-center">
+        <Button
+          titleButton={titleButton}
+          link={link}
+          aria-label={titleButton}
+        />
       </div>
     </section>
   );

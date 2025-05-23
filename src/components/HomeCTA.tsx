@@ -4,13 +4,13 @@ import { Button } from "./Button";
 interface HomeCTAInterface {
   image: string;
   titleButton: string;
-  lien: string;
+  link: string;
 }
 
 export const HomeCTA: React.FC<HomeCTAInterface> = ({
   image,
   titleButton,
-  lien,
+  link,
 }) => {
   return (
     <div className="relative w-56 h-56 flex items-center justify-center m-5">
@@ -23,9 +23,9 @@ export const HomeCTA: React.FC<HomeCTAInterface> = ({
         height="600"
       />
       <Button
-        lien={lien}
+        link={link}
         titleButton={titleButton}
-        className="flex justify-center items-center m-4 text-xl text-white bg-dark-green bg-opacity-70 font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2 absolute bottom-2 z-50"
+        className="m-4 bg-opacity-70 absolute bottom-2 z-50"
       />
     </div>
   );
