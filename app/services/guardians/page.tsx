@@ -27,7 +27,12 @@ const Guardians: React.FC = () => {
 
   if (error)
     return (
-      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+      <div aria-live="polite">
+        <ErrorDisplay
+          message={error}
+          onRetry={() => window.location.reload()}
+        />
+      </div>
     );
   if (!blockContents || !accordions) return <Loader />;
 

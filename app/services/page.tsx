@@ -117,7 +117,7 @@ const ServicesIndex: NextPage = () => {
       )}
 
       <div className="flex justify-center bg-dark-beige">
-        <div className=" py-8 w-full md:w-3/5  px-4">
+        <div className="py-8 w-full md:w-3/5 px-4">
           {practicalInfosContent && (
             <>
               <CardTitlePhoto
@@ -136,6 +136,7 @@ const ServicesIndex: NextPage = () => {
           )}
         </div>
       </div>
+
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une communication animale"

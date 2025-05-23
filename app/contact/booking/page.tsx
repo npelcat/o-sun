@@ -40,7 +40,12 @@ const Booking: React.FC = () => {
   if (loading) return <Loader />;
   if (error)
     return (
-      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+      <div aria-live="polite">
+        <ErrorDisplay
+          message={error}
+          onRetry={() => window.location.reload()}
+        />
+      </div>
     );
 
   const bookingOptions = [
@@ -116,7 +121,7 @@ const Booking: React.FC = () => {
                         <i>{option.note}</i>
                       </p>
                     )}
-                    🪶
+                    <span aria-hidden="true">🪶</span>
                   </div>
                 ))}
               </div>

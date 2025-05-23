@@ -47,8 +47,8 @@ export default function TestimonialsPage() {
   }
 
   return (
-    <div className="text-center py-16 space-y-12">
-      <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
+    <div className="py-16 space-y-12">
+      <h2 className="text-3xl pt-16 pb-5 px-4 text-center font-subtitle font-bold">
         Témoignages
       </h2>
 
@@ -82,13 +82,21 @@ export default function TestimonialsPage() {
           })}
         </div>
       </div>
-      <div className="flex justify-center mt-16">
+
+      <div className="flex flex-col items-center space-y-6 mt-16">
+        <Button
+          titleButton="Lire les autres témoignages"
+          lien="https://www.google.com/search?client=firefox-b-d&sca_esv=62fb01c2d8665f4a&..."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xl text-white bg-dark-green font-subtitle rounded-full px-8 py-4 transition duration-300 hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+        />
         <Button
           titleButton="Réserver un service"
           lien="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex justify-center items-center mt-8 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+          className="text-xl text-white bg-dark-green font-subtitle rounded-full px-8 py-4 transition duration-300 hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

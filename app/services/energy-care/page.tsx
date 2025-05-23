@@ -28,7 +28,12 @@ const EnergyCare: React.FC = () => {
 
   if (error)
     return (
-      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+      <div aria-live="polite">
+        <ErrorDisplay
+          message={error}
+          onRetry={() => window.location.reload()}
+        />
+      </div>
     );
   if (!blockContents || !accordions) return <Loader />;
 
@@ -57,7 +62,7 @@ const EnergyCare: React.FC = () => {
 
   return (
     <div className="text-center py-16 space-y-12">
-      <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
+      <h2 className="text-3xl pt-16 pb-5 font-subtitle font-bold">
         Les soins énergétiques
       </h2>
 
