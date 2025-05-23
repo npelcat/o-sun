@@ -74,13 +74,12 @@ const EnergyCare: React.FC = () => {
               image={whatIsThisContent.picture?.url || ""}
               alt={whatIsThisContent.picture?.alternativeText || ""}
             />
-            <div className="text-justify">
+            <div className="text-justify pb-10">
               <BlockRendererClient content={whatIsThisContent.content} />
             </div>
             <Button
               titleButton="Ma façon de travailler et mon éthique"
-              lien="/about/ethics"
-              className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
+              link="/about/ethics"
             />
           </div>
         </div>
@@ -94,15 +93,14 @@ const EnergyCare: React.FC = () => {
               image={whatEffectsContent.picture?.url || ""}
               alt={whatEffectsContent.picture?.alternativeText || ""}
             />
-            <div className="text-justify">
+            <div className="text-justify pb-10">
               <BlockRendererClient content={whatEffectsContent.content} />
             </div>
             <Button
               titleButton="Réserver un soin énergétique"
-              lien="https://calendly.com/o-sun-voixanimale"
+              link="https://calendly.com/o-sun-voixanimale"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
             />
           </div>
         </div>
@@ -144,10 +142,9 @@ const EnergyCare: React.FC = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver un soin énergétique"
-          lien="https://calendly.com/o-sun-voixanimale"
+          link="https://calendly.com/o-sun-voixanimale"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex justify-center items-center mt-12 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

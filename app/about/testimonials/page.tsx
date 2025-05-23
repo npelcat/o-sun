@@ -86,17 +86,15 @@ export default function TestimonialsPage() {
       <div className="flex flex-col items-center space-y-6 mt-16">
         <Button
           titleButton="Lire les autres témoignages"
-          lien="https://www.google.com/search?client=firefox-b-d&sca_esv=62fb01c2d8665f4a&..."
+          link="https://www.google.com/search?sca_esv=642680827a50424a&sxsrf=AE3TifOrLEbsap8STT4ZcxUcs48QZHuk8A:1748006113460&q=avis+sur+o%27sun+voix+animale+montigny-lencoup&uds=AOm0WdE2fekQnsyfYEw8JPYozOKzP_KumZAVtokyTLxWtqUgAvmEcRZORXBjO47hOdO1ARNULuJNYpAMuAo-nucQAbTSG_QG2raqXpK4rj9UumkRJURW86rbjj-6x2TjbKyzyxweRzCpgjDG29T5s0fpR-6wKfTaTD4tA9YCoaX74GPjUN7RuSUEt08pjW68OSJGCz1hvhRM&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E6pk3jEShFCKj69FETGZGMzRUHt7i7QUGWOuojwjyxtMuIPQcWw2G20h_ryGaM4OFAjz6GPewh6TnRqUwlEfdUEDOeR7k1KipZXC82Y4bARF_APct4Klu9yp3iHwsvwYA5li7dA%3D&sa=X&ved=2ahUKEwiZ39Sb1rmNAxWTTKQEHZb3DxkQxKsJegQIFBAB&ictx=1&biw=784&bih=730&dpr=1.25"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xl text-white bg-dark-green font-subtitle rounded-full px-8 py-4 transition duration-300 hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
         <Button
           titleButton="Réserver un service"
-          lien="/contact/booking"
+          link="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xl text-white bg-dark-green font-subtitle rounded-full px-8 py-4 transition duration-300 hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>

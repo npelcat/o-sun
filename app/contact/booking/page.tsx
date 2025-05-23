@@ -102,26 +102,26 @@ const Booking: React.FC = () => {
                 </div>
               </>
             )}
-            <div className="bg-dark-beige rounded-lg my-8 p-2">
-              <h3 className="font-bold mt-8 bg-white bg-opacity-50 rounded-lg p-2">
+            <div className="bg-dark-beige rounded-lg p-2 my-8">
+              <h3 className="font-bold py-4 px-2 bg-white bg-opacity-50 rounded-lg">
                 Les réservations par services :
               </h3>
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col justify-center items-center gap-2">
                 {bookingOptions.map((option, index) => (
-                  <div key={index} className="text-center">
+                  <div key={index} className="flex flex-col gap-1 pt-6 item-center text-center">
                     <Button
                       titleButton={option.title}
-                      lien={option.lien}
+                      link={option.lien}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-beige hover:text-black"
+                      className="hover:border-2 hover:border-beige hover:shadow-xs"
                     />
                     {option.note && (
-                      <p>
+                      <p className="max-w-xs">
                         <i>{option.note}</i>
                       </p>
                     )}
-                    <span aria-hidden="true">🪶</span>
+                    <br/><span aria-hidden="true">🍃</span>
                   </div>
                 ))}
               </div>
@@ -133,8 +133,8 @@ const Booking: React.FC = () => {
                 src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720961702/animal-2026667_1920_nvpmjw.png"
                 alt=""
                 aria-hidden="true"
-                width="1920"
-                height="1686"
+                width="300"
+                height="400"
               />
             </div>
           </div>
@@ -144,10 +144,9 @@ const Booking: React.FC = () => {
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Une question ? > Me contacter"
-          lien="/contact"
+          link="/contact"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex justify-center items-center m-4 text-xl text-white bg-dark-green font-subtitle rounded-full p-4 text-center transition duration-300 ease-in-out hover:bg-dark-beige hover:text-black focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2"
         />
       </div>
     </div>
