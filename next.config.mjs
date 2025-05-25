@@ -7,9 +7,6 @@ const withMDX = require("@next/mdx")({
 
 const nextConfig = withMDX({
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
-  experimental: {
-    appDir: true,
-  },
   images: {
     domains: [
       "res.cloudinary.com",
