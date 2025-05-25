@@ -8,6 +8,8 @@ interface ButtonInterface {
   rel?: string;
   className?: string;
   onClick?: () => void;
+  type?: "button" | "submit";
+  disabled?: boolean;
 }
 
 export const Button: React.FC<ButtonInterface> = ({
@@ -17,26 +19,24 @@ export const Button: React.FC<ButtonInterface> = ({
   rel,
   className = "",
   onClick,
+  type = "button",
+  disabled = false,
 }) => {
-  const baseClasses = clsx(
-    "text-xl font-subtitle text-white bg-dark-green rounded-full p-4 max-w-xs",
-    "text-center transition duration-300 ease-in-out",
-    "hover:bg-dark-beige hover:text-black border-2 border-transparent",
-    "focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2",
-    className
-  );
-
-  if (onClick) {
+  if (link) {
     return (
-      <button onClick={onClick} className={baseClasses}>
+      <Link href={link || "#"} target={target} rel={rel} className={className}>
         {titleButton}
-      </button>
+      </Link>
     );
   }
-
   return (
-    <Link href={link || "#"} target={target} rel={rel} className={baseClasses}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={className}
+      disabled={disabled}
+    >
       {titleButton}
-    </Link>
+    </button>
   );
 };

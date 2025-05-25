@@ -6,7 +6,7 @@ import { Button } from "@/src/components/Button";
 import { useEffect, useState } from "react";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
+import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import Loader from "@/src/components/Loader";
 import ErrorDisplay from "@/src/components/ErrorDisplay";
 
