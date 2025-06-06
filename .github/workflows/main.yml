@@ -8,6 +8,8 @@ on:
 jobs:
   lint-and-test:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -19,6 +21,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Debug env
+        run: echo "STRAPI URL is ${NEXT_PUBLIC_API_URL}"
 
       - name: Build
         run: npm run build
