@@ -21,17 +21,17 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
   titleButton,
 }) => {
   return (
-    <section className="flex flex-col bg-beige p-4 rounded-lg items-center w-full">
-      <div className="relative w-full h-56 flex flex-col items-center justify-center">
+    <section className="bg-beige rounded-lg overflow-hidden h-full flex flex-col">
+      <div className="relative h-56">
         <h3
-          className="absolute bottom-2 z-50 text-2xl text-dark-green bg-white font-subtitle bg-opacity-75 w-full p-2 text-center"
+          className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-75 text-dark-green text-2xl font-subtitle p-2 text-center"
           aria-level={3}
         >
           {title}
         </h3>
 
         <Image
-          className="absolute inset-0 w-full h-full object-cover rounded-lg"
+          className="w-full h-full object-cover"
           loading="lazy"
           src={image}
           alt={alt}
@@ -39,13 +39,11 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
           height="600"
         />
       </div>
-      <div className="flex-auto p-4">
-        <div className="flex flex-wrap justify-center">
-          <div className="text-sm text-justify">{description}</div>
-        </div>
+      <div className="flex-1 p-4">
+        <div className="text-sm text-justify mb-4">{description}</div>
       </div>
 
-      <div className="flex space-x-4 mb-5 justify-center">
+      <div className="flex space-x-4 pb-5 justify-center">
         <Button
           titleButton={titleButton}
           link={link}
