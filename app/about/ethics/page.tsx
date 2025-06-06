@@ -1,96 +1,50 @@
-"use client";
-
-import Image from "next/image";
-import { Button } from "@/src/components/Button";
-import { Accordion } from "@/src/components/Accordion";
-import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
-import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
-import usePageData from "@/app/api/utils/usePageData";
+import { pageMetadata } from "@/app/lib/metadata";
+import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
+import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";
+import EthicsClient from "@/src/pageComponents/EthicsClient";
 import ErrorDisplay from "@/src/components/ErrorDisplay";
-import Loader from "@/src/components/Loader";
+import { StrapiBlockContent } from "@/app/api/types/strapi";
 
-const Ethics: React.FC = () => {
-  const blockIds = ["p4rfvz92wvfp1avhdpmnmmgp"];
-  const accordionSlugs = [
-    "mon-ethique-en-communication-animale",
-    "mon-ethique-en-soins-energetiques",
-    "mon-ethique-pour-les-services-aux-gardiens",
-  ];
+export const metadata = pageMetadata.ethics;
+export const revalidate = 7200;
 
-  const { blockContents, accordions, error } = usePageData(
-    blockIds,
-    accordionSlugs
-  );
+export default async function EthicsServer() {
+  try {
+    const blockIds = ["p4rfvz92wvfp1avhdpmnmmgp"]; // ma-facon-de-travailler
+    const accordionSlugs = [
+      "mon-ethique-en-communication-animale",
+      "mon-ethique-en-soins-energetiques",
+      "mon-ethique-pour-les-services-aux-gardiens",
+    ];
 
-  if (error)
-    return (
-      <ErrorDisplay message={error} onRetry={() => window.location.reload()} />
+    const [blockContents, accordions] = await Promise.all([
+      Promise.all(blockIds.map((id) => fetchBlockContentById(id))),
+      fetchMultipleAccordions(accordionSlugs),
+    ]);
+
+    const validBlockContents = blockContents.filter(
+      (block): block is StrapiBlockContent => block !== null
     );
-  if (!blockContents || !accordions) return <Loader />;
+    const validAccordions = accordions;
 
-  const wayOfWorking = blockContents.find(
-    (block) => block.slug === "ma-facon-de-travailler"
-  );
-
-  const ethicsContents = accordions.filter((block) =>
-    accordionSlugs.includes(block.slug || "")
-  );
-
-  return (
-    <div className="pt-16 space-y-12">
-      <h2 className="text-center text-3xl font-subtitle font-bold px-4">
-        Mon éthique
-      </h2>
-
-      <div className="flex justify-center bg-beige">
-        <div className="w-full md:w-3/5 py-8 px-4">
-          {wayOfWorking && (
-            <>
-              <CardTitlePhoto
-                title={wayOfWorking.title}
-                image={wayOfWorking.picture?.url || ""}
-                alt={wayOfWorking.picture?.alternativeText || ""}
-              />
-              <section className="pt-8 text-justify">
-                <BlockRendererClient content={wayOfWorking.content} />
-                <div className="flex justify-center py-8">
-                  <Image
-                    className="w-1/2 md:w-1/6 object-cover"
-                    loading="lazy"
-                    src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720859313/dog-1532627_1920_soflbg.png"
-                    alt=""
-                    aria-hidden="true"
-                    width={1920}
-                    height={1180}
-                  />
-                </div>
-              </section>
-            </>
-          )}
-
-          <div className="bg-dark-beige rounded-lg my-8 p-4">
-            <h3 className="text-center font-bold bg-white bg-opacity-50 rounded-lg p-2">
-              Les détails de ma pratique pour chaque discipline :
-            </h3>
-            <div className="text-justify">
-              {ethicsContents.map((content) => (
-                <Accordion key={content.slug} title={content.title}>
-                  <BlockRendererClient content={content.content} />
-                </Accordion>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex justify-center pb-12">
-        <Button
-          titleButton="Me contacter"
-          link="/contact"
+    return (
+      <EthicsClient
+        blockContents={validBlockContents}
+        accordions={validAccordions}
+      />
+    );
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Une erreur est survenue lors du chargement de la page.";
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <ErrorDisplay
+          message={errorMessage}
+          onRetry={() => window.location.reload()}
         />
       </div>
-    </div>
-  );
-};
-
-export default Ethics;
+    );
+  }
+}

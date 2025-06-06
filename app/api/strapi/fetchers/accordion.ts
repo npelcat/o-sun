@@ -1,5 +1,5 @@
 import { StrapiBlockContent } from "../../types/strapi";
-import { fetchFromStrapi } from "../helpers/strapi";
+import { fetchFromStrapi } from "./strapi";
 
 const formatAccordion = (block: any): StrapiBlockContent => ({
   slug: block.slug,
