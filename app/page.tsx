@@ -9,7 +9,7 @@ import ErrorDisplay from "@/src/components/ErrorDisplay";
 
 export const metadata = pageMetadata.home;
 
-export const revalidate = 3600;
+export const revalidate = 7200;
 export const dynamic = "force-dynamic";
 
 export default async function HomeServer() {

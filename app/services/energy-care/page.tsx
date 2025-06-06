@@ -6,9 +6,7 @@ import ErrorDisplay from "@/src/components/ErrorDisplay";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 export const metadata = pageMetadata.energyCare;
-
-export const revalidate = 3600;
-export const dynamic = "force-dynamic";
+export const revalidate = 7200;
 
 export default async function EnergyCareServer() {
   try {

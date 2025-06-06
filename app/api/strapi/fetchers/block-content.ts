@@ -1,4 +1,4 @@
-import { fetchFromStrapi } from "../helpers/strapi";
+import { fetchFromStrapi } from "./strapi";
 import { formatPicture } from "../helpers/formatPicture";
 import { StrapiBlockContent } from "../../types/strapi";
 

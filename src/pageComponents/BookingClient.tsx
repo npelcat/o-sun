@@ -3,51 +3,14 @@
 import Image from "next/image";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
-import { useEffect, useState } from "react";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
-import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
 import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
-import Loader from "@/src/components/Loader";
-import ErrorDisplay from "@/src/components/ErrorDisplay";
 
-const BookingClient: React.FC = () => {
-  const [blockContent, setBlockContent] = useState<StrapiBlockContent | null>(
-    null
-  );
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const blockId = "dwml9tiykiv5r7yjtglsef1x";
+interface BookingClientProps {
+  blockContent: StrapiBlockContent;
+}
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const content = await fetchBlockContentById(blockId);
-        setBlockContent(content);
-        setError(null);
-      } catch (error) {
-        console.error("Error fetching content:", error);
-        setError("Erreur lors du chargement des informations de réservation.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchContent();
-  }, []);
-
-  if (loading) return <Loader />;
-  if (error)
-    return (
-      <div aria-live="polite">
-        <ErrorDisplay
-          message={error}
-          onRetry={() => window.location.reload()}
-        />
-      </div>
-    );
-
+export default function BookingClient({ blockContent }: BookingClientProps) {
   const bookingOptions = [
     {
       title: "Réserver une communication animale",
@@ -87,21 +50,19 @@ const BookingClient: React.FC = () => {
       <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
         Réservations
       </h2>
+
       <div className="flex justify-center bg-beige">
-        <div className="py-8 w-full md:w-3/5  px-4">
+        <div className="py-8 w-full md:w-3/5 px-4">
           <div>
-            {blockContent && (
-              <>
-                <CardTitlePhoto
-                  title={blockContent.title}
-                  image={blockContent.picture?.url || ""}
-                  alt={blockContent.picture?.alternativeText || ""}
-                />
-                <div className="text-justify">
-                  <BlockRendererClient content={blockContent.content} />
-                </div>
-              </>
-            )}
+            <CardTitlePhoto
+              title={blockContent.title}
+              image={blockContent.picture?.url || ""}
+              alt={blockContent.picture?.alternativeText || ""}
+            />
+            <div className="text-justify">
+              <BlockRendererClient content={blockContent.content} />
+            </div>
+
             <div className="bg-dark-beige rounded-lg p-2 my-8">
               <h3 className="font-bold py-4 px-2 bg-white bg-opacity-50 rounded-lg">
                 Les réservations par services :
@@ -130,6 +91,7 @@ const BookingClient: React.FC = () => {
                 ))}
               </div>
             </div>
+
             <div className="flex justify-center py-8">
               <Image
                 className="w-1/2 h-full md:w-1/6 item-center object-cover"
@@ -155,6 +117,4 @@ const BookingClient: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default BookingClient;
+}

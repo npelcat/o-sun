@@ -4,38 +4,17 @@ import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import BlockRendererClient from "@/app/api/utils/BlockRendererClient";
-import usePageData from "@/app/api/utils/usePageData";
-import ErrorDisplay from "@/src/components/ErrorDisplay";
-import Loader from "@/src/components/Loader";
+import { StrapiBlockContent } from "@/app/api/types/strapi";
 
-const GuardiansClient: React.FC = () => {
-  const blockIds = [
-    "e6kkmhe424iko1zevz8wo51z",
-    "g5lgt0mnb1dxj57jt74pg1fd",
-    "kc8jct496l1snx0r4vttadjn",
-  ];
-  const accordionSlugs = [
-    "en-pratique-premier-service",
-    "en-pratique-deuxieme-service",
-    "gardiens-type-de-seance-et-tarifs",
-  ];
+interface GuardiansClientProps {
+  blockContents: StrapiBlockContent[];
+  accordions: StrapiBlockContent[];
+}
 
-  const { blockContents, accordions, error } = usePageData(
-    blockIds,
-    accordionSlugs
-  );
-
-  if (error)
-    return (
-      <div aria-live="polite">
-        <ErrorDisplay
-          message={error}
-          onRetry={() => window.location.reload()}
-        />
-      </div>
-    );
-  if (!blockContents || !accordions) return <Loader />;
-
+export default function GuardiansClient({
+  blockContents,
+  accordions,
+}: GuardiansClientProps) {
   const whatAreTheyContent = blockContents.find(
     (block) => block.slug === "gardiens-quels-sont-ils"
   );
@@ -47,13 +26,13 @@ const GuardiansClient: React.FC = () => {
   );
 
   const practicalInfosAccordions = accordions.filter(
-    (block) =>
-      block.slug &&
+    (accordion) =>
+      accordion.slug &&
       [
         "en-pratique-premier-service",
         "en-pratique-deuxieme-service",
         "gardiens-type-de-seance-et-tarifs",
-      ].includes(block.slug)
+      ].includes(accordion.slug)
   );
 
   return (
@@ -64,7 +43,7 @@ const GuardiansClient: React.FC = () => {
 
       {whatAreTheyContent && (
         <div className="flex justify-center bg-beige">
-          <div className=" py-8 w-full md:w-3/5 px-4">
+          <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatAreTheyContent.title}
               image={whatAreTheyContent.picture?.url || ""}
@@ -83,7 +62,7 @@ const GuardiansClient: React.FC = () => {
 
       {whatIsItForContent && (
         <div className="flex justify-center bg-beige">
-          <div className=" py-8 w-full md:w-3/5  px-4">
+          <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatIsItForContent.title}
               image={whatIsItForContent.picture?.url || ""}
@@ -103,7 +82,7 @@ const GuardiansClient: React.FC = () => {
       )}
 
       <div className="flex justify-center bg-dark-beige">
-        <div className=" py-8 w-full md:w-3/5  px-4">
+        <div className="py-8 w-full md:w-3/5 px-4">
           {practicalInfosContent && (
             <>
               <CardTitlePhoto
@@ -122,6 +101,7 @@ const GuardiansClient: React.FC = () => {
           )}
         </div>
       </div>
+
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une Moon Guidance ou un soin énergétique humain"
@@ -132,6 +112,4 @@ const GuardiansClient: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default GuardiansClient;
+}

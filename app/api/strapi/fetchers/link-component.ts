@@ -1,5 +1,5 @@
 import { StrapiLinkComponent } from "../../types/strapi";
-import { fetchFromStrapi } from "../helpers/strapi";
+import { fetchFromStrapi } from "./strapi";
 import { formatPicture } from "../helpers/formatPicture";
 
 export const fetchLinkComponentById = async (
