@@ -44,7 +44,7 @@ The site includes a service showcase, a contact form, and calls-to-action for bo
    ```bash
    git clone https://github.com/npelcat/o-sun.git
    cd o-sun
-````
+   ```
 
 2. **Install dependencies**:
 
@@ -59,8 +59,6 @@ The site includes a service showcase, a contact form, and calls-to-action for bo
    ```bash
    cp .env.example .env.local
    ```
-
-   Then fill in your credentials.
 
 4. **Run the development server**:
 
@@ -86,8 +84,6 @@ The site includes a service showcase, a contact form, and calls-to-action for bo
    ```bash
    cp .env.example .env.local
    ```
-
-   Fill in your values (e.g. API keys, database URLs, etc.).
 
 3. **Start the container**:
 
@@ -123,8 +119,8 @@ The site is currently deployed on **Vercel**:
 
 ## 🔒 Security
 
-* Session management and admin role (**in progress**)
-* Secured API via authentication (**upcoming feature**)
+- Session management and admin role (**in progress**)
+- Secured API via authentication (**upcoming feature**)
 
 ---
 
@@ -137,6 +133,5 @@ Feel free to open an issue or submit a pull request.
 
 ## \:octocat: Author
 
-* **@nad\_cat** – Passionate Full Stack Developer, France
-* Learn more about my experience: [LinkedIn](https://www.linkedin.com/in/nadege-pelcat/)
-
+- **@nad_cat** – Passionate Full Stack Developer, France
+- Learn more about my experience: [LinkedIn](https://www.linkedin.com/in/nadege-pelcat/)
