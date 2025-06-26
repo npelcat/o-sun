@@ -3,6 +3,7 @@ import { Header } from "../src/components/Header";
 import { Footer } from "../src/components/Footer";
 import ClientLayout from "./ClientLayout";
 import type { Metadata } from "next";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "O'Sun ~ Voix Animale ~ Communication animale, Soins énergétiques",
@@ -43,9 +44,11 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <body className="bg-white text-black font-text">
-        <Header />
-        <ClientLayout>{children}</ClientLayout>
-        <Footer />
+        <Providers>
+          <Header />
+          <ClientLayout>{children}</ClientLayout>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
