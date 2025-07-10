@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/app/lib/metadata";
+import { pageMetadata } from "@/lib/metadata";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
 import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";
 import AnimalCommunicationClient from "@/src/pageComponents/AnimalCommunicationClient";
