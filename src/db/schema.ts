@@ -18,16 +18,16 @@ export const users = bookingSchema.table("users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   role: varchar("role", { length: 50 }).notNull().default("admin"),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const timeSlots = bookingSchema.table("time_slots", {
   id: uuid("id").primaryKey().defaultRandom(),
   startTime: timestamp("start_time").notNull(),
   endTime: timestamp("end_time").notNull(),
-  isActive: boolean("is_active").default(true),
-  lockedAt: timestamp("locked_at"), // <-- ici
-  createdAt: timestamp("created_at").defaultNow(),
+  isActive: boolean("is_active").default(true).notNull(),
+  lockedAt: timestamp("locked_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const formData = bookingSchema.table("form_data", {
@@ -35,7 +35,7 @@ export const formData = bookingSchema.table("form_data", {
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   content: text("content"),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const bookingStatusEnum = pgEnum("booking_status", [
@@ -53,5 +53,5 @@ export const bookings = bookingSchema.table("bookings", {
   formId: uuid("form_id")
     .notNull()
     .references(() => formData.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
