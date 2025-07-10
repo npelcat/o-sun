@@ -1,6 +1,7 @@
 "use client";
 import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import BookingsTable from "../components/BookingTable";
+import { BookingWithDetails } from "@/app/api/types/booking";
 
 interface AdminUser {
   id: string;
@@ -11,13 +12,13 @@ interface AdminUser {
 
 interface AdminDashboardClientProps {
   adminUser: AdminUser;
+  bookings: BookingWithDetails[];
 }
 
 export default function AdminDashboardClient({
   adminUser,
+  bookings,
 }: AdminDashboardClientProps) {
-  const router = useRouter();
-
   return (
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-4xl mx-auto">
@@ -53,11 +54,30 @@ export default function AdminDashboardClient({
           </div>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="text-2xl font-bold text-blue-600">
+              {bookings.length}
+            </div>
+            <div className="text-gray-600">Total réservations</div>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="text-2xl font-bold text-green-600">
+              {bookings.filter((b) => b.status === "confirmed").length}
+            </div>
+            <div className="text-gray-600">Confirmées</div>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="text-2xl font-bold text-yellow-600">
+              {bookings.filter((b) => b.status === "pending").length}
+            </div>
+            <div className="text-gray-600">En attente</div>
+          </div>
+        </div>
+
         <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">Tableau de bord</h2>
-          <p className="text-gray-600">
-            Prochaine étape : affichage des réservations
-          </p>
+          <h2 className="text-xl font-semibold mb-4">Réservations</h2>
+          <BookingsTable bookings={bookings} />
         </div>
       </div>
     </div>

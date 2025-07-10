@@ -1,15 +1,10 @@
-import { NextResponse, NextRequest } from "next/server";
 import db from "@/src/db/index";
 import { bookings, timeSlots, formData } from "@/src/db/schema";
-import { withErrorHandler } from "@/utils/withErrorHandler";
-import logger from "@/utils/logger";
 import { eq, desc } from "drizzle-orm";
+import { BookingWithDetails } from "@/app/api/types/booking";
 
-export async function GET(req: NextRequest) {
-  return withErrorHandler(req, async () => {
-    logger.info("GET /booking - Retrieving all reservations with full details");
-
-    // JOIN to retrieve all related information
+export async function getAllBookings(): Promise<BookingWithDetails[]> {
+  try {
     const reservations = await db
       .select({
         id: bookings.id,
@@ -30,11 +25,11 @@ export async function GET(req: NextRequest) {
       .from(bookings)
       .innerJoin(timeSlots, eq(bookings.timeSlotId, timeSlots.id))
       .innerJoin(formData, eq(bookings.formId, formData.id))
-      .orderBy(desc(bookings.createdAt)); // Most recent first
+      .orderBy(desc(bookings.createdAt));
 
-    logger.info(
-      `GET /booking - Retrieved ${reservations.length} reservations with full details`
-    );
-    return NextResponse.json({ reservations });
-  });
+    return reservations;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des réservations:", error);
+    throw new Error("Impossible de récupérer les réservations");
+  }
 }
