@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/app/lib/metadata";
+import { pageMetadata } from "@/lib/metadata";
 import ContactClient from "@/src/pageComponents/ContactClient";
 
 export const metadata = pageMetadata.contact;

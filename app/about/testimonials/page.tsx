@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/app/lib/metadata";
+import { pageMetadata } from "@/lib/metadata";
 import { fetchFromStrapi } from "@/app/api/strapi/fetchers/strapi";
 import TestimonialsClient from "@/src/pageComponents/TestimonialsClient";
 import { StrapiTestimonials } from "@/app/api/types/strapi";
