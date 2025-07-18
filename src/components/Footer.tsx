@@ -59,9 +59,7 @@ export const Footer: React.FC = () => {
           </Link>
           -
           <Link
-            href="https://www.canva.com/design/DAGbEzwC-u0/514YdctT5gPv8yheMS2dAQ/view?utm_content=DAGbEzwC-u0&amp;utm_campaign=designshare&amp;utm_medium=link2&amp;utm_source=uniquelinks&amp;utlId=hfdde280f6d"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/cgv"
             className="p-1 ml-2 font-semibold text-sm hover:bg-dark-beige rounded-lg transition duration-300 ease-in-out"
             aria-label="Conditions générales de vente"
           >
