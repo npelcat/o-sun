@@ -5,6 +5,59 @@ import { withErrorHandler, HttpError } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
 import { eq } from "drizzle-orm";
 
+/**
+ * @swagger
+ * /api/booking/confirm:
+ *   post:
+ *     summary: Confirme une réservation provisoire
+ *     description: Valide définitivement un créneau verrouillé et crée la réservation
+ *     tags:
+ *       - Booking
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - timeSlotId
+ *               - name
+ *               - email
+ *             properties:
+ *               timeSlotId:
+ *                 type: string
+ *                 description: ID du créneau à confirmer
+ *               name:
+ *                 type: string
+ *                 description: Nom du client
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email du client
+ *               content:
+ *                 type: string
+ *                 description: Message optionnel du client
+ *     responses:
+ *       201:
+ *         description: Réservation confirmée avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Réservation confirmée"
+ *       400:
+ *         description: Données manquantes ou invalides
+ *       404:
+ *         description: Créneau introuvable
+ *       409:
+ *         description: Créneau déjà confirmé ou non réservé
+ *       410:
+ *         description: Temps de réservation expiré
+ */
+
 export async function POST(req: NextRequest) {
   return withErrorHandler(req, async () => {
     const { timeSlotId, name, email, content } = await req.json();
