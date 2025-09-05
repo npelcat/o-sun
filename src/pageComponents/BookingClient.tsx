@@ -13,35 +13,26 @@ interface BookingClientProps {
 export default function BookingClient({ blockContent }: BookingClientProps) {
   const bookingOptions = [
     {
-      title: "Réserver une communication animale",
+      title: "💌 Réserver une communication animale",
       lien: "https://calendly.com/o-sun-voixanimale",
     },
     {
-      title: "Réserver un séance énergétique animal",
-      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-ani?back=1&month=2025-05",
+      title: "✨ Réserver un soin énergétique animal, humain ou duo",
+      lien: "https://form.jotform.com/252464023594356",
     },
     {
-      title:
-        "Réserver le Pack animal : communication animale + séance énergétique",
-      lien: "https://calendly.com/o-sun-voixanimale/pack-profondeur?back=1&month=2025-05",
-    },
-    {
-      title: "Réserver une séance énergétique humain - Appel",
-      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-humain?back=1&month=2025-05",
-    },
-    {
-      title: "Réserver une séance énergétique DUO gardien/animal - Appel",
-      lien: "https://calendly.com/o-sun-voixanimale/seance-energetique-duo-appel?back=1&month=2025-05",
-    },
-    {
-      title: "Réserver une Moon Guidance",
+      title: "🌙 Réserver une Moon Guidance",
       lien: "https://calendly.com/o-sun-voixanimale/moon-guidance?back=1&month=2025-02",
       note: "(pour les gardiens)",
     },
     {
-      title: "Réserver un appel découverte de 15 minutes",
+      title: "📞 Réserver un appel découverte de 15 minutes",
       lien: "https://calendly.com/o-sun-voixanimale/on-s-appelle?back=1&month=2025-05",
       note: "(Pour en savoir plus avant réservation d'un service)",
+    },
+    {
+      title: "🚨 Urgence communication animale",
+      lien: "https://form.jotform.com/232924829211052",
     },
   ];
 
