@@ -4,6 +4,63 @@ import logger from "@/utils/logger";
 import { getSlotById } from "@/lib/booking";
 import { formatDate, formatTime } from "@/lib/date";
 
+/**
+ * @swagger
+ * /api/booking/confirm-email:
+ *   post:
+ *     summary: Envoie les emails de confirmation de réservation
+ *     description: Envoie un email de confirmation au client et une notification à l'administrateur
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - name
+ *               - timeSlotId
+ *               - content
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email du client pour recevoir la confirmation
+ *               name:
+ *                 type: string
+ *                 description: Nom du client
+ *               timeSlotId:
+ *                 type: string
+ *                 description: ID du créneau réservé
+ *               content:
+ *                 type: string
+ *                 description: Message/demande du client
+ *     responses:
+ *       200:
+ *         description: Emails envoyés avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Ta réservation a bien été confirmée. Un email de confirmation t'a été envoyé."
+ *       500:
+ *         description: Erreur lors de l'envoi des emails
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erreur interne, réservation non confirmée."
+ *     tags:
+ *       - Email
+ *       - Booking
+ */
+
 export async function POST(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   try {
