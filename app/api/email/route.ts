@@ -3,6 +3,71 @@ import { Resend } from "resend";
 import { contactSchema } from "./contactSchema";
 import logger from "@/utils/logger";
 
+/**
+ * @swagger
+ * /api/email:
+ *   post:
+ *     summary: Envoie un message via le formulaire de contact
+ *     description: Envoie un email de contact à l'administrateur avec copie au client
+ *     tags:
+ *       - Email
+ *       - Contact
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - message
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nom du client
+ *                 minLength: 1
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email du client (recevra une copie)
+ *               message:
+ *                 type: string
+ *                 description: Message du client
+ *                 minLength: 1
+ *     responses:
+ *       200:
+ *         description: Email envoyé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Ton e-mail a bien été envoyé, je te répondrai dans les plus brefs délais. En attendant, n'hésite pas à me suivre sur Instagram @o.sun.voixanimale (lien en bas de page) pour rester au courant de mes actualités."
+ *       400:
+ *         description: Données invalides (validation Zod échouée)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Détails de l'erreur de validation
+ *       500:
+ *         description: Erreur lors de l'envoi de l'email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erreur lors de l'envoi de l'e-mail."
+ */
+
 export async function POST(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   try {
