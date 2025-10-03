@@ -10,7 +10,6 @@ export default function CGVPage() {
 
       <div className="flex justify-center bg-beige">
         <div className="w-full md:w-4/5 lg:w-3/5 py-8 px-4 space-y-8 text-justify">
-          {/* Préambule */}
           <section className="space-y-4">
             <h2 className="text-2xl font-bold font-subtitle text-center mb-6">
               O&apos;Sun Voix Animale
@@ -43,7 +42,6 @@ export default function CGVPage() {
             </div>
           </section>
 
-          {/* Éthique */}
           <section className="bg-dark-beige p-6 rounded-lg">
             <h3 className="text-xl font-bold font-subtitle mb-4 text-center">
               Mon éthique : une posture consciente, respectueuse et engagée
@@ -166,7 +164,6 @@ export default function CGVPage() {
             </div>
           </section>
 
-          {/* Décoration */}
           <div className="flex justify-center py-8">
             <Image
               src="https://res.cloudinary.com/dqpkzbkca/image/upload/v1720856658/fox-7405603_1920_etg9z1.png"
@@ -179,7 +176,6 @@ export default function CGVPage() {
             />
           </div>
 
-          {/* Articles des CGV */}
           <div className="space-y-8">
             <article className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold mb-4">
@@ -442,7 +438,6 @@ export default function CGVPage() {
               </p>
             </article>
 
-            {/* Formulaire de rétractation */}
             <article className="bg-dark-beige p-6 rounded-lg">
               <h3 className="text-lg font-semibold mb-4">
                 Annexe : Formulaire de rétractation
@@ -473,7 +468,6 @@ export default function CGVPage() {
         </div>
       </div>
 
-      {/* Bouton de contact */}
       <div className="flex justify-center mt-16 pb-12">
         <Button titleButton="Réserver un service" link="/contact/booking" />
       </div>

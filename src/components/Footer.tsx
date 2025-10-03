@@ -49,9 +49,7 @@ export const Footer: React.FC = () => {
         </div>
         <div className="flex-col items-center mt-4 text-center">
           <Link
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/mentions-legales"
             className="p-1 mr-2 text-sm font-semibold  hover:bg-dark-beige rounded-lg transition duration-300 ease-in-out"
             aria-label="Mentions légales"
           >
