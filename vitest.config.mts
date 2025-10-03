@@ -4,7 +4,6 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      // “@” pointe vers la racine de ton projet
       "@": resolve(__dirname),
     },
   },
