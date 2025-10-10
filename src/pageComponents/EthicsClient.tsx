@@ -60,7 +60,7 @@ export default function EthicsClient({
             </>
           )}
 
-          <div className="bg-dark-beige rounded-lg my-8 p-4">
+          <div className="bg-green rounded-lg my-8 p-4">
             <h3 className="text-center font-bold bg-white bg-opacity-50 rounded-lg p-2">
               Les détails de ma pratique pour chaque discipline :
             </h3>

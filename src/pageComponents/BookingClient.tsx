@@ -54,7 +54,7 @@ export default function BookingClient({ blockContent }: BookingClientProps) {
               <BlockRendererClient content={blockContent.content} />
             </div>
 
-            <div className="bg-dark-beige rounded-lg p-2 my-8">
+            <div className="bg-white rounded-lg p-2 my-8">
               <h3 className="font-bold py-4 px-2 bg-white bg-opacity-50 rounded-lg">
                 Les réservations par services :
               </h3>

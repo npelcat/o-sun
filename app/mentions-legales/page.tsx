@@ -36,7 +36,7 @@ export default function MentionsLegalesPage() {
             </div>
           </section>
 
-          <section className="bg-dark-beige p-6 rounded-lg">
+          <section className="bg-green p-6 rounded-lg">
             <h2 className="text-xl font-bold font-subtitle mb-4 text-center">
               Responsable de la publication
             </h2>
@@ -85,7 +85,7 @@ export default function MentionsLegalesPage() {
             </div>
           </section>
 
-          <section className="bg-dark-beige p-6 rounded-lg">
+          <section className="bg-green p-6 rounded-lg">
             <h2 className="text-xl font-bold font-subtitle mb-4 text-center">
               Crédits
             </h2>
@@ -129,7 +129,7 @@ export default function MentionsLegalesPage() {
             </p>
           </section>
 
-          <section className="bg-dark-beige p-6 rounded-lg">
+          <section className="bg-green p-6 rounded-lg">
             <h2 className="text-xl font-bold font-subtitle mb-4 text-center">
               Données personnelles
             </h2>

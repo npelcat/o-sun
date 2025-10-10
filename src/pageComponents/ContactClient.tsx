@@ -77,12 +77,12 @@ export default function ContactClient() {
           )}
         </div>
         <div className="flex justify-center">
-          <button className="text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-dark-beige hover:text-dark-green">
+          <button className="text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-green hover:text-dark-green">
             Envoyer
           </button>
         </div>
         {confirmationMessage && (
-          <p className="mt-10 bg-dark-beige bg-opacity-20 p-2 rounded-lg text-center w-full">
+          <p className="mt-10 bg-green bg-opacity-20 p-2 rounded-lg text-center w-full">
             {confirmationMessage}
           </p>
         )}

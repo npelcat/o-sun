@@ -75,7 +75,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ title, items }) => {
               <Link
                 key={index}
                 href={item.href}
-                className="block px-4 py-2 hover:bg-dark-beige/30 rounded-lg focus:bg-dark-beige focus:text-black"
+                className="block px-4 py-2 hover:bg-green/30 rounded-lg focus:bg-green focus:text-black"
                 onClick={() => setIsOpen(false)}
                 role="menuitem"
                 tabIndex={0}

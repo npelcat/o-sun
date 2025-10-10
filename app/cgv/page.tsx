@@ -42,7 +42,7 @@ export default function CGVPage() {
             </div>
           </section>
 
-          <section className="bg-dark-beige p-6 rounded-lg">
+          <section className="bg-green p-6 rounded-lg">
             <h3 className="text-xl font-bold font-subtitle mb-4 text-center">
               Mon éthique : une posture consciente, respectueuse et engagée
             </h3>
@@ -438,7 +438,7 @@ export default function CGVPage() {
               </p>
             </article>
 
-            <article className="bg-dark-beige p-6 rounded-lg">
+            <article className="bg-green p-6 rounded-lg">
               <h3 className="text-lg font-semibold mb-4">
                 Annexe : Formulaire de rétractation
               </h3>

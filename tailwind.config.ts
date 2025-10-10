@@ -11,11 +11,11 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        black: "#1e1d1d",
+        black: "#4B4137",
         white: "#f3efef",
         beige: "#e1d8d6",
-        "dark-beige": "#b6beb8",
-        "dark-green": "#5b6353",
+        green: "#D6E1DB",
+        "dark-green": "#6D7764",
       },
       fontFamily: {
         title: ["Great Vibes", "cursive"],

@@ -97,7 +97,7 @@ export default function AnimalCommunicationClient({
         </div>
       )}
 
-      <div className="flex justify-center bg-dark-beige">
+      <div className="flex justify-center bg-green">
         <div className="py-8 w-full md:w-3/5 px-4">
           {practicalInfosContent && (
             <>

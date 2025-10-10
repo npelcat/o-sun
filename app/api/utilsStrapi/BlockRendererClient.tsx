@@ -6,7 +6,6 @@ import {
   type BlocksContent,
 } from "@strapi/blocks-react-renderer";
 
-// Typage de la prop `content` en tant que `BlocksContent`
 interface BlockRendererClientProps {
   content: BlocksContent;
 }
@@ -20,7 +19,6 @@ export default function BlockRendererClient({
     <BlocksRenderer
       content={content}
       blocks={{
-        // Typage du bloc image pour le définir correctement
         image: ({
           image,
         }: {
