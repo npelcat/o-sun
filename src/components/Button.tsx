@@ -25,7 +25,7 @@ export const Button: React.FC<ButtonInterface> = ({
   const baseClasses = clsx(
     "text-xl font-subtitle text-white bg-dark-green rounded-full p-4 max-w-xs",
     "text-center transition duration-300 ease-in-out",
-    "hover:bg-dark-beige hover:text-black border-2 border-transparent",
+    "hover:bg-green hover:text-black border-2 border-transparent",
     "focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2",
     className
   );

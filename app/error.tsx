@@ -16,7 +16,7 @@ export default function GlobalError({
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center px-4">
-      <h2 className="text-2xl font-bold mb-2 text-dark-beige">Oups !</h2>
+      <h2 className="text-2xl font-bold mb-2 text-green">Oups !</h2>
       <p className="mb-4 text-black max-w-md">
         {error.message || "Une erreur inconnue est survenue."}
       </p>

@@ -49,7 +49,7 @@ export const Header: React.FC = () => {
       </div>
 
       <section className="relative h-screen pt-32">
-        <h1 className="z-40 absolute top-9 left-1/2  transform -translate-x-1/2 text-6xl md:text-7xl text-dark-green font-title py-25 text-center rounded-lg p-5 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-white">
+        <h1 className="z-40 absolute top-9 left-1/2  transform -translate-x-1/2 text-6xl md:text-7xl text-dark-green font-title py-25 text-center rounded-lg p-5">
           O&apos;Sun
           <br />
           Voix Animale

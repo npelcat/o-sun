@@ -65,7 +65,7 @@ export default function AboutClient({
       )}
 
       {diplomesEtFormations && (
-        <section className="flex justify-center bg-dark-beige">
+        <section className="flex justify-center bg-green">
           <div className="w-full md:w-3/5 py-8 px-4 space-y-8 text-justify">
             <CardTitlePhoto
               title={diplomesEtFormations.title}
