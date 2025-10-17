@@ -58,26 +58,24 @@ export default function BookingClient({ blockContent }: BookingClientProps) {
               <h3 className="font-bold py-4 px-2 bg-white bg-opacity-50 rounded-lg">
                 Les réservations par services :
               </h3>
-              <div className="flex flex-col justify-center items-center gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
                 {bookingOptions.map((option, index) => (
                   <div
                     key={index}
-                    className="flex flex-col gap-1 pt-6 item-center text-center"
+                    className="flex flex-col items-center text-center gap-2 w-full max-w-xs"
                   >
                     <Button
                       titleButton={option.title}
                       link={option.lien}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:border-2 hover:border-beige hover:shadow-xs"
+                      className="w-full"
                     />
                     {option.note && (
                       <p className="max-w-xs">
                         <i>{option.note}</i>
                       </p>
                     )}
-                    <br />
-                    <span aria-hidden="true">🍃</span>
                   </div>
                 ))}
               </div>
