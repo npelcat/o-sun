@@ -1,4 +1,5 @@
-import { StrapiLinkComponent } from "../../types/strapi";
+import { StrapiLinkComponent, StrapiPicture } from "../../types/strapi";
+import type { BlocksContent } from "@strapi/blocks-react-renderer";
 import { fetchFromStrapi } from "./strapi";
 import { formatPicture } from "../helpers/formatPicture";
 
@@ -45,11 +46,19 @@ export const fetchMultipleLinkComponents = async (
 
     const data = await response.json();
 
-    return data.data.map((linkComponent: any) => ({
+    type LinkComponentItem = {
+      title: string;
+      link: string;
+      picture: StrapiPicture | null | undefined;
+      description?: BlocksContent | null;
+      slug: string;
+    };
+
+    return data.data.map((linkComponent: LinkComponentItem) => ({
       title: linkComponent.title,
       link: linkComponent.link,
       picture: formatPicture(linkComponent.picture),
-      description: linkComponent.description || null,
+      description: linkComponent.description ?? ([] as BlocksContent),
       slug: linkComponent.slug,
     }));
   } catch (error) {

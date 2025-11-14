@@ -8,16 +8,21 @@ const withMDX = require("@next/mdx")({
 const nextConfig = withMDX({
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   images: {
-    domains: [
-      "res.cloudinary.com",
-      "localhost",
-      "annual-bessie-nadcat-17feb7ed.koyeb.app",
-    ],
     remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+        pathname: "/**",
+      },
       {
         protocol: "http",
         hostname: "localhost",
         port: "1337",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "annual-bessie-nadcat-17feb7ed.koyeb.app",
         pathname: "/**",
       },
     ],

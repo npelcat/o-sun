@@ -1,7 +1,14 @@
 import { StrapiBlockContent } from "../../types/strapi";
+import type { BlocksContent } from "@strapi/blocks-react-renderer";
 import { fetchFromStrapi } from "./strapi";
 
-const formatAccordion = (block: any): StrapiBlockContent => ({
+type AccordionBlock = {
+  slug: string;
+  title: string;
+  content: BlocksContent;
+};
+
+const formatAccordion = (block: AccordionBlock): StrapiBlockContent => ({
   slug: block.slug,
   title: block.title,
   content: block.content,

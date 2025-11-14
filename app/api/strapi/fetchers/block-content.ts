@@ -1,6 +1,7 @@
 import { fetchFromStrapi } from "./strapi";
 import { formatPicture } from "../helpers/formatPicture";
-import { StrapiBlockContent } from "../../types/strapi";
+import { StrapiBlockContent, StrapiPicture } from "../../types/strapi";
+import type { BlocksContent } from "@strapi/blocks-react-renderer";
 
 export const fetchBlockContentById = async (
   id: string
@@ -41,7 +42,14 @@ export const fetchMultipleBlockContents = async (
 
     const data = await response.json();
 
-    return data.data.map((block: any) => ({
+    type BlockItem = {
+      slug: string;
+      title: string;
+      picture: StrapiPicture | null | undefined;
+      content: BlocksContent;
+    };
+
+    return data.data.map((block: BlockItem) => ({
       slug: block.slug,
       title: block.title,
       picture: formatPicture(block.picture),

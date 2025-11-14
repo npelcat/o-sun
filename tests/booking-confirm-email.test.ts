@@ -19,7 +19,7 @@ vi.mock("resend", () => {
   }
   return { __esModule: true, Resend: MockResend, mockSend };
 });
-// @ts-ignore
+// @ts-expect-error: import du mock 'mockSend' depuis vi.mock(\"resend\")
 import { mockSend } from "resend";
 
 // Mock du logger pour ne pas polluer la console

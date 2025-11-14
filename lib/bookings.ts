@@ -1,10 +1,10 @@
-import db from "@/src/db/index";
 import { bookings, timeSlots, formData } from "@/src/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
 
 export async function getAllBookings(): Promise<BookingWithDetails[]> {
   try {
+    const { default: db } = await import("@/src/db/index");
     const reservations = await db
       .select({
         id: bookings.id,

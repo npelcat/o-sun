@@ -12,7 +12,7 @@ vi.mock("@/utils/logger", () => ({
 
 // --- Mock withErrorHandler to just invoke the handler directly ---
 vi.mock("@/utils/withErrorHandler", () => ({
-  withErrorHandler: async (_req: unknown, fn: () => Promise<any>) => {
+  withErrorHandler: async (_req: unknown, fn: () => Promise<unknown>) => {
     return fn();
   },
 }));
@@ -29,8 +29,8 @@ const fakeSlots = [
 vi.mock("@/src/db/index", () => {
   const chain = {
     select: () => chain,
-    from: (_: any) => chain,
-    where: (_: any) => chain,
+    from: (_: unknown) => chain,
+    where: (_: unknown) => chain,
     execute: async () => fakeSlots,
   };
   return { default: chain };

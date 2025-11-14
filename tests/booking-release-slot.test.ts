@@ -18,7 +18,7 @@ beforeEach(() => {
 });
 
 // --- helper to create false request ---
-const createRequest = (body: any) =>
+const createRequest = (body: Record<string, unknown>) =>
   ({
     json: async () => body,
   }) as unknown as NextRequest;

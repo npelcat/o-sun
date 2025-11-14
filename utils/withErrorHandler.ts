@@ -43,7 +43,7 @@ export async function withErrorHandler(
 ): Promise<NextResponse> {
   try {
     return await handler();
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
     if (error instanceof HttpError) {
       return NextResponse.json(
