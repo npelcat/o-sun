@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { NextRequest, NextResponse } from "next/server";
 import { POST } from "@/app/api/booking/confirm/route";
 import { HttpError } from "@/utils/withErrorHandler";
 import { createRequest } from "@/tests/utils/test-utils";
@@ -15,7 +14,7 @@ vi.mock("@/utils/logger", () => ({
 // Pour withErrorHandler, on va capturer les erreurs HTTP
 let thrownError: HttpError | null = null;
 vi.mock("@/utils/withErrorHandler", () => ({
-  withErrorHandler: async (_req: unknown, fn: () => Promise<any>) => {
+  withErrorHandler: async (_req: unknown, fn: () => Promise<unknown>) => {
     try {
       return await fn();
     } catch (error) {
@@ -35,7 +34,7 @@ vi.mock("@/utils/withErrorHandler", () => ({
 
 // Définir les types pour les mocks de la base de données
 type MockFunction = ReturnType<typeof vi.fn>;
-type TransactionCallback = (trx: any) => Promise<void>;
+type TransactionCallback = (trx: unknown) => Promise<void>;
 
 // --- Mock pour la base de données ---
 const mockSelect: MockFunction = vi.fn();

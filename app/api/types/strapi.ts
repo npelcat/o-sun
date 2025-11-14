@@ -1,6 +1,4 @@
 import { BlocksContent } from "@strapi/blocks-react-renderer";
-
-// api/types/strapi.ts
 export interface StrapiPicture {
   url: string;
   alternativeText?: string | null;

@@ -32,8 +32,15 @@ const NewBooking: React.FC = () => {
       }
       const data = await response.json();
 
+      type ApiSlot = {
+        id: string;
+        startTime: string;
+        endTime: string;
+        isActive: boolean;
+      };
+
       setTimeSlots(
-        data.slots.map((slot: any) => {
+        data.slots.map((slot: ApiSlot) => {
           const start = DateTime.fromISO(slot.startTime, {
             zone: "utc",
           }).setZone("Europe/Paris");
@@ -52,9 +59,11 @@ const NewBooking: React.FC = () => {
           };
         })
       );
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
-      alert(error.message);
+      const message =
+        error instanceof Error ? error.message : "Erreur inattendue";
+      alert(message);
     } finally {
       setIsLoading(false);
     }
@@ -80,8 +89,10 @@ const NewBooking: React.FC = () => {
 
       setSelectedTimeSlot(slot);
       await fetchSlots();
-    } catch (error: any) {
-      alert(`Erreur : ${error.message}`);
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Erreur inattendue";
+      alert(`Erreur : ${message}`);
     } finally {
       setIsReserving(false);
     }

@@ -3,6 +3,10 @@ import { getAdminUser } from "@/lib/admin";
 import { getAllBookings } from "@/lib/bookings";
 import AdminDashboardClient from "@/src/pageComponents/AdminDashboardClient";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+
 export default async function AdminPage() {
   const adminUser = await getAdminUser();
 

@@ -81,7 +81,7 @@ vi.mock("./contactSchema", () => ({
   },
 }));
 
-// @ts-ignore
+// @ts-expect-error: import du mock 'mockSend' depuis vi.mock(\"resend\")
 import { mockSend } from "resend";
 import { POST } from "@/app/api/email/route";
 import { createRequest } from "@/tests/utils/test-utils";

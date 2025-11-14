@@ -1,4 +1,6 @@
 import type { Config } from "tailwindcss";
+import typography from "@tailwindcss/typography";
+import daisyui from "daisyui";
 
 const config: Config = {
   content: [
@@ -18,9 +20,9 @@ const config: Config = {
         "dark-green": "#6D7764",
       },
       fontFamily: {
-        title: ["Great Vibes", "cursive"],
-        subtitle: ["Arsenal SC", "serif"],
-        text: ["Montserrat", "sans-serif"],
+        title: ["var(--font-title)", "cursive"],
+        subtitle: ["var(--font-subtitle)", "serif"],
+        text: ["var(--font-text)", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -29,7 +31,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("@tailwindcss/typography"), require("daisyui")],
+  plugins: [typography, daisyui],
 };
 
 export default config;

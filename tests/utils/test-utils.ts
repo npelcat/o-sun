@@ -2,11 +2,11 @@ import { NextRequest } from "next/server";
 
 export function createRequest(
   method: "POST" | "GET" | "PUT" | "DELETE",
-  body?: any
+  body?: unknown
 ) {
   return new NextRequest("http://localhost/api/booking/confirm", {
     method,
-    body: body ? JSON.stringify(body) : undefined,
+    body: body === undefined ? undefined : JSON.stringify(body),
     headers: {
       "Content-Type": "application/json",
     },

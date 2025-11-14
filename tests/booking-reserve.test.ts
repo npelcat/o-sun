@@ -11,7 +11,7 @@ vi.mock("@/utils/logger", () => ({
 }));
 
 vi.mock("@/utils/withErrorHandler", () => ({
-  withErrorHandler: async (_req: unknown, fn: () => Promise<any>) => {
+  withErrorHandler: async (_req: unknown, fn: () => Promise<unknown>) => {
     return fn();
   },
 }));
@@ -20,7 +20,7 @@ vi.mock("@/utils/withErrorHandler", () => ({
 vi.mock("@/src/db/index", () => {
   return {
     default: {
-      transaction: async (fn: any) => {
+      transaction: async (fn: (trx: unknown) => Promise<void>) => {
         await fn({
           select: () => ({
             from: () => ({

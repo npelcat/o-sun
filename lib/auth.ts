@@ -1,18 +1,15 @@
-import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
+import * as NextAuthNS from "next-auth";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import Google from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import db from "@/src/db/index";
 import { users } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 
-export const authOptions: NextAuthOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-    CredentialsProvider({
+// Build providers conditionally to avoid throwing during build if envs are missing
+const providers: Array<unknown> = [
+  Credentials({
       name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -23,6 +20,7 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
         try {
+          const { default: db } = await import("@/src/db/index");
           const userList = await db
             .select({
               id: users.id,
@@ -32,19 +30,23 @@ export const authOptions: NextAuthOptions = {
               role: users.role,
             })
             .from(users)
-            .where(eq(users.email, credentials.email))
+            .where(eq(users.email, credentials.email as string))
             .limit(1);
+
           if (userList.length === 0) {
             return null;
           }
+
           const user = userList[0];
           const isPasswordValid = await bcrypt.compare(
-            credentials.password,
+            credentials.password as string,
             user.passwordHash
           );
+
           if (!isPasswordValid || user.role !== "admin") {
             return null;
           }
+
           return {
             id: user.id,
             email: user.email,
@@ -56,11 +58,30 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
-  ],
+];
+
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  providers.unshift(
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    })
+  );
+}
+
+const config = {
+  providers,
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({
+      user,
+      account,
+    }: {
+      user: { id?: string; email?: string | null; name?: string | null };
+      account?: { provider?: string | null } | null;
+    }) {
       if (account?.provider === "google") {
         try {
+          const { default: db } = await import("@/src/db/index");
           const userList = await db
             .select({
               id: users.id,
@@ -71,6 +92,7 @@ export const authOptions: NextAuthOptions = {
             .from(users)
             .where(eq(users.email, user.email!))
             .limit(1);
+
           if (userList.length > 0 && userList[0].role === "admin") {
             user.name = userList[0].username;
             user.id = userList[0].id;
@@ -84,17 +106,23 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({
+      token,
+      user,
+    }: {
+      token: JWT;
+      user?: { id: string; name?: string | null } | null;
+    }) {
       if (user) {
         token.sub = user.id;
         token.username = user.name;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       if (token && session.user) {
         session.user.id = token.sub!;
-        session.user.name = token.username as string;
+        session.user.name = (token.username as string) ?? session.user.name;
       }
       return session;
     },
@@ -105,5 +133,23 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  // Fallback secret to allow building without secret in CI/local
+  secret: process.env.NEXTAUTH_SECRET || "dev-build-secret",
 };
+
+// Compatibilité ESM/CommonJS: utiliser default si présent, sinon la fonction du module
+const nextAuth =
+  (NextAuthNS as unknown as { default?: (cfg: unknown) => unknown }).default ??
+  ((NextAuthNS as unknown) as (cfg: unknown) => unknown);
+
+const nextAuthResult = nextAuth(config) as {
+  handlers: {
+    GET: (req: Request) => Promise<Response> | Response;
+    POST: (req: Request) => Promise<Response> | Response;
+  };
+  signIn: (...args: unknown[]) => Promise<unknown>;
+  signOut: (...args: unknown[]) => Promise<unknown>;
+  auth: (() => Promise<Session | null>) & ((...args: unknown[]) => unknown);
+};
+
+export const { handlers, signIn, signOut, auth } = nextAuthResult;

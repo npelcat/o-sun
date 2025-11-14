@@ -1,5 +1,4 @@
-import NextAuth from "next-auth";
-import { authOptions } from "@/lib/auth";
+import { handlers } from "@/lib/auth";
 
 /**
  * @swagger
@@ -18,6 +17,10 @@ import { authOptions } from "@/lib/auth";
  *         description: Varie selon l'endpoint NextAuth appelé
  */
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST };
+// Évite un crash au build si NextAuth ne fournit pas encore les handlers
+export const GET =
+  handlers?.GET ??
+  (async () => new Response("Auth not configured", { status: 500 }));
+export const POST =
+  handlers?.POST ??
+  (async () => new Response("Auth not configured", { status: 500 }));

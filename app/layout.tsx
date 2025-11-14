@@ -1,9 +1,33 @@
 import "../src/styles/globals.css";
+import { Great_Vibes, Arsenal_SC, Montserrat } from "next/font/google";
 import { Header } from "../src/components/Header";
 import { Footer } from "../src/components/Footer";
 import ClientLayout from "./ClientLayout";
 import type { Metadata } from "next";
 import Providers from "./providers";
+
+const greatVibes = Great_Vibes({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-title",
+  display: "swap",
+});
+
+const arsenalSC = Arsenal_SC({
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-subtitle",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  subsets: ["latin"],
+  variable: "--font-text",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "O'Sun ~ Voix Animale ~ Communication animale, Soins énergétiques",
@@ -42,7 +66,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html
+      lang="fr"
+      className={`${greatVibes.variable} ${arsenalSC.variable} ${montserrat.variable}`}
+    >
       <body className="bg-white text-black font-text">
         <Providers>
           <Header />

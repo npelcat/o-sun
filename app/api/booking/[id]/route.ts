@@ -106,10 +106,10 @@ import logger from "@/utils/logger";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withErrorHandler(req, async () => {
-    const { id } = params;
+    const { id } = await params;
     logger.info(`GET /booking/${id} - Retrieving reservation`);
     const reservation = await db
       .select()
@@ -126,10 +126,10 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withErrorHandler(req, async () => {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
     const { timeSlotId, status } = body;
 
@@ -160,10 +160,10 @@ export async function PUT(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   return withErrorHandler(req, async () => {
-    const { id } = params;
+    const { id } = await params;
     logger.info(`DELETE /booking/${id} - Deleting reservation`);
     const deletedReservation = await db
       .delete(bookings)
