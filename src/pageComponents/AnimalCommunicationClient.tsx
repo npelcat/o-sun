@@ -61,6 +61,21 @@ export default function AnimalCommunicationClient({
         </div>
       )}
 
+      {whatIsLookLike && (
+        <div className="flex justify-center bg-beige">
+          <div className="py-8 w-full md:w-3/5 px-4">
+            <CardTitlePhoto
+              title={whatIsLookLike.title}
+              image={whatIsLookLike.picture?.url || ""}
+              alt={whatIsLookLike.picture?.alternativeText || ""}
+            />
+            <div className="text-justify">
+              <BlockRendererClient content={whatIsLookLike.content} />
+            </div>
+          </div>
+        </div>
+      )}
+
       {whatIsItForContent && (
         <div className="flex justify-center bg-beige">
           <div className="py-8 w-full md:w-3/5 px-4">
@@ -78,21 +93,6 @@ export default function AnimalCommunicationClient({
               target="_blank"
               rel="noopener noreferrer"
             />
-          </div>
-        </div>
-      )}
-
-      {whatIsLookLike && (
-        <div className="flex justify-center bg-beige">
-          <div className="py-8 w-full md:w-3/5 px-4">
-            <CardTitlePhoto
-              title={whatIsLookLike.title}
-              image={whatIsLookLike.picture?.url || ""}
-              alt={whatIsLookLike.picture?.alternativeText || ""}
-            />
-            <div className="text-justify">
-              <BlockRendererClient content={whatIsLookLike.content} />
-            </div>
           </div>
         </div>
       )}
