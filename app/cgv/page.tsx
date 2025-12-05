@@ -236,8 +236,9 @@ export default function CGVPage() {
               <p className="text-gray-700 mb-4">
                 Les prestations sont réalisées dans le délai communiqué lors de
                 la commande, en fonction des disponibilités affichées. Ce délai
-                peut être prolongé (jusqu&apos;à 15 jours supplémentaires) en
-                cas de maladie ou d&apos;imprévu de la part de O&apos;Sun.
+                peut être prolongé jusqu’à 30 jours supplémentaires en cas
+                d’imprévu, de maladie ou de tout événement indépendant de la
+                volonté de O’Sun.
               </p>
               <p className="text-gray-700">
                 En cas de non-exécution à la date convenue, le client peut
@@ -256,13 +257,14 @@ export default function CGVPage() {
                 accord express avant la fin de ce délai.
               </p>
               <p className="text-gray-700 mb-4">
-                Plus aucune demande de remboursement ne pourra être faite à
-                partir de 48h avant le jour sélectionné de réservation,
-                représentant le premier jour de la période de rencontre.
-              </p>
-              <p className="text-gray-700">
+                {" "}
                 En cas d&apos;annulation après ce délai, une indemnité
                 forfaitaire de 20 % pourra être retenue.
+              </p>
+              <p className="text-gray-700">
+                Aucune demande d&apos;annulation et de remboursement ne pourra
+                être faite à partir du moment où la prestation a commencé à être
+                réalisée.
               </p>
             </article>
 
