@@ -5,52 +5,70 @@ import {
   text,
   timestamp,
   boolean,
-  pgEnum,
 } from "drizzle-orm/pg-core";
 
-// New schema different from "public" to avoid conflicts with the tables used in the Strapi backend
 export const bookingSchema = pgSchema("booking");
 
-export const users = bookingSchema.table("users", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  username: varchar("username", { length: 255 }).notNull().unique(),
-  email: varchar("email", { length: 255 }).notNull().unique(),
-  passwordHash: text("password_hash").notNull(),
-  role: varchar("role", { length: 50 }).notNull().default("admin"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const timeSlots = bookingSchema.table("time_slots", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  startTime: timestamp("start_time").notNull(),
-  endTime: timestamp("end_time").notNull(),
-  isActive: boolean("is_active").default(true).notNull(),
-  lockedAt: timestamp("locked_at"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const formData = bookingSchema.table("form_data", {
-  id: uuid("id").primaryKey().defaultRandom(),
-  name: varchar("name", { length: 255 }).notNull(),
-  email: varchar("email", { length: 255 }).notNull(),
-  content: text("content"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
-
-export const bookingStatusEnum = pgEnum("booking_status", [
+export const bookingStatusEnum = bookingSchema.enum("booking_status", [
   "pending",
   "confirmed",
   "canceled",
 ]);
 
+// Table : Admin
+export const admins = bookingSchema.table("admins", {
+  id: uuid("admin_id").primaryKey().defaultRandom(),
+  username: varchar("admin_name", { length: 255 }).notNull().unique(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Table : Client
+export const clients = bookingSchema.table("clients", {
+  id: uuid("client_id").primaryKey().defaultRandom(),
+  name: varchar("client_name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  phone: varchar("phone", { length: 20 }), // Optionnel
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Table : TimeSlot
+export const timeSlots = bookingSchema.table("time_slots", {
+  id: uuid("time_slot_id").primaryKey().defaultRandom(),
+  startTime: timestamp("start_time").notNull(),
+  endTime: timestamp("end_time").notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  lockedAt: timestamp("locked_at"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Table : FormData
+export const formData = bookingSchema.table("form_data", {
+  id: uuid("form_id").primaryKey().defaultRandom(),
+  animalName: varchar("animal_name", { length: 255 }).notNull(),
+  animalType: varchar("animal_type", { length: 100 }),
+  service: varchar("service", { length: 255 }).notNull(),
+  answers: text("answers"), // JSON stringifié si besoin
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Table : Booking
 export const bookings = bookingSchema.table("bookings", {
-  id: uuid("id").primaryKey().defaultRandom(),
+  id: uuid("booking_id").primaryKey().defaultRandom(),
   timeSlotId: uuid("time_slot_id")
     .notNull()
-    .references(() => timeSlots.id, { onDelete: "cascade" }),
-  status: bookingStatusEnum().notNull(),
+    .references(() => timeSlots.id, { onDelete: "restrict" }), // 🔒 Prevents cancellation of booking slots
+  clientId: uuid("client_id")
+    .notNull()
+    .references(() => clients.id, { onDelete: "cascade" }), // 🗑️ Cancel reservation if customer deleted
   formId: uuid("form_id")
     .notNull()
-    .references(() => formData.id, { onDelete: "cascade" }),
+    .unique() // Un formulaire = une seule réservation
+    .references(() => formData.id, { onDelete: "cascade" }), // 🗑️ Cancel reservation if form deleted
+  status: bookingStatusEnum().notNull().default("pending"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

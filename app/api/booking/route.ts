@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import db from "@/src/db/index";
-import { bookings, timeSlots, formData } from "@/src/db/schema";
+import { bookings, timeSlots, formData, clients } from "@/src/db/schema";
 import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
 import { eq, desc } from "drizzle-orm";
@@ -83,20 +83,28 @@ export async function GET(req: NextRequest) {
         id: bookings.id,
         status: bookings.status,
         createdAt: bookings.createdAt,
+        updatedAt: bookings.updatedAt,
 
         timeSlotId: timeSlots.id,
         startTime: timeSlots.startTime,
         endTime: timeSlots.endTime,
         isTimeSlotActive: timeSlots.isActive,
 
+        clientId: clients.id,
+        clientName: clients.name,
+        clientEmail: clients.email,
+        clientPhone: clients.phone,
+
         formId: formData.id,
-        clientName: formData.name,
-        clientEmail: formData.email,
-        clientContent: formData.content,
+        animalName: formData.animalName,
+        animalType: formData.animalType,
+        service: formData.service,
+        answers: formData.answers,
         formCreatedAt: formData.createdAt,
       })
       .from(bookings)
       .innerJoin(timeSlots, eq(bookings.timeSlotId, timeSlots.id))
+      .innerJoin(clients, eq(bookings.clientId, clients.id))
       .innerJoin(formData, eq(bookings.formId, formData.id))
       .orderBy(desc(bookings.createdAt)); // Most recent first
 

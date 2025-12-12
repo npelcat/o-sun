@@ -1,4 +1,4 @@
-import { bookings, timeSlots, formData } from "@/src/db/schema";
+import { bookings, timeSlots, formData, clients } from "@/src/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
 
@@ -10,20 +10,28 @@ export async function getAllBookings(): Promise<BookingWithDetails[]> {
         id: bookings.id,
         status: bookings.status,
         createdAt: bookings.createdAt,
+        updatedAt: bookings.updatedAt,
 
         timeSlotId: timeSlots.id,
         startTime: timeSlots.startTime,
         endTime: timeSlots.endTime,
         isTimeSlotActive: timeSlots.isActive,
 
+        clientId: clients.id,
+        clientName: clients.name,
+        clientEmail: clients.email,
+        clientPhone: clients.phone,
+
         formId: formData.id,
-        clientName: formData.name,
-        clientEmail: formData.email,
-        clientContent: formData.content,
+        animalName: formData.animalName,
+        animalType: formData.animalType,
+        service: formData.service,
+        answers: formData.answers,
         formCreatedAt: formData.createdAt,
       })
       .from(bookings)
       .innerJoin(timeSlots, eq(bookings.timeSlotId, timeSlots.id))
+      .innerJoin(clients, eq(bookings.clientId, clients.id))
       .innerJoin(formData, eq(bookings.formId, formData.id))
       .orderBy(desc(bookings.createdAt));
 
