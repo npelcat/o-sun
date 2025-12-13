@@ -59,6 +59,7 @@ vi.mock("@/src/db/index", () => {
         };
 
         // Configuration des chaînes pour select()
+        // select().from().where().limit().execute()
         mockSelect.mockReturnValue({
           from: () => ({
             where: mockWhere,
@@ -75,6 +76,7 @@ vi.mock("@/src/db/index", () => {
         });
 
         // Configuration des chaînes pour update()
+        // update().set().where().execute()
         mockUpdate.mockReturnValue({
           set: mockSet,
         });
@@ -86,6 +88,7 @@ vi.mock("@/src/db/index", () => {
         });
 
         // Configuration des chaînes pour insert()
+        // insert().values().returning()
         mockInsert.mockReturnValue({
           values: mockValues,
         });
@@ -115,16 +118,20 @@ describe("POST /api/booking/confirm", () => {
   // Interface pour représenter le body de la requête
   interface BookingRequestBody {
     timeSlotId?: string;
-    name?: string;
-    email?: string;
-    content?: string;
+    clientName?: string;
+    clientEmail?: string;
+    clientPhone?: string;
+    animalName?: string;
+    animalType?: string;
+    service?: string;
+    answers?: string | Record<string, unknown>;
   }
 
   it("renvoie une erreur 400 si des données sont manquantes", async () => {
     const req = createRequest("POST", {
       timeSlotId: "123",
       name: "Jean",
-    } as BookingRequestBody); // Email manquant
+    } as BookingRequestBody); // clientEmail / animalName / service manquants
 
     await expect(POST(req)).rejects.toThrow();
     expect(thrownError).toBeInstanceOf(HttpError);
@@ -133,11 +140,12 @@ describe("POST /api/booking/confirm", () => {
 
   it("renvoie une erreur 404 si le créneau n'existe pas", async () => {
     const req = createRequest("POST", {
-      timeSlotId: "not-exists",
-      name: "Jean",
-      email: "jean@example.com",
-      content: "Message de test",
-    });
+      timeSlotId: "abc",
+      clientName: "Jean",
+      clientEmail: "jean@example.com",
+      animalName: "Rex",
+      service: "communication",
+    } as BookingRequestBody);
 
     // Mock le résultat de la requête pour simuler un créneau inexistant
     mockExecute.mockResolvedValueOnce([]);
@@ -150,10 +158,11 @@ describe("POST /api/booking/confirm", () => {
   it("renvoie une erreur 409 si le créneau n'est pas actif", async () => {
     const req = createRequest("POST", {
       timeSlotId: "inactive-slot",
-      name: "Jean",
-      email: "jean@example.com",
-      content: "Message de test",
-    });
+      clientName: "Jean",
+      clientEmail: "jean@example.com",
+      animalName: "Rex",
+      service: "communication",
+    } as BookingRequestBody);
 
     // Mock le résultat de la requête pour simuler un créneau inactif
     mockExecute.mockResolvedValueOnce([
@@ -168,10 +177,11 @@ describe("POST /api/booking/confirm", () => {
   it("renvoie une erreur 409 si le créneau n'est pas verrouillé", async () => {
     const req = createRequest("POST", {
       timeSlotId: "unlocked-slot",
-      name: "Jean",
-      email: "jean@example.com",
-      content: "Message de test",
-    });
+      clientName: "Jean",
+      clientEmail: "jean@example.com",
+      animalName: "Rex",
+      service: "communication",
+    } as BookingRequestBody);
 
     // Mock le résultat de la requête pour simuler un créneau non verrouillé
     mockExecute.mockResolvedValueOnce([
@@ -186,10 +196,11 @@ describe("POST /api/booking/confirm", () => {
   it("renvoie une erreur 410 si le verrou est expiré", async () => {
     const req = createRequest("POST", {
       timeSlotId: "expired-slot",
-      name: "Jean",
-      email: "jean@example.com",
-      content: "Message de test",
-    });
+      clientName: "Jean",
+      clientEmail: "jean@example.com",
+      animalName: "Rex",
+      service: "communication",
+    } as BookingRequestBody);
 
     // Mock pour simuler un verrou expiré (plus de 15 minutes)
     const expiredDate = new Date(Date.now() - 16 * 60 * 1000);
@@ -205,10 +216,14 @@ describe("POST /api/booking/confirm", () => {
   it("confirme la réservation avec succès", async () => {
     const req = createRequest("POST", {
       timeSlotId: "valid-slot",
-      name: "Jean",
-      email: "jean@example.com",
-      content: "Message de test",
-    });
+      clientName: "Jean",
+      clientEmail: "jean@example.com",
+      clientPhone: "0600000000",
+      animalName: "Rex",
+      animalType: "chien",
+      service: "communication",
+      answers: { age: 5 },
+    } as BookingRequestBody);
 
     // Mock pour un créneau valide
     const validDate = new Date(Date.now() - 5 * 60 * 1000); // 5 minutes ago

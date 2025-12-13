@@ -4,60 +4,59 @@ import type { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { users } from "@/src/db/schema";
+import { admins } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 
 // Build providers conditionally to avoid throwing during build if envs are missing
 const providers: Array<unknown> = [
   Credentials({
-      name: "credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+    name: "credentials",
+    credentials: {
+      email: { label: "Email", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      if (!credentials?.email || !credentials?.password) {
+        return null;
+      }
+      try {
+        const { default: db } = await import("@/src/db/index");
+        const adminList = await db
+          .select({
+            id: admins.id,
+            email: admins.email,
+            username: admins.username,
+            passwordHash: admins.passwordHash,
+          })
+          .from(admins)
+          .where(eq(admins.email, credentials.email as string))
+          .limit(1);
+
+        if (adminList.length === 0) {
           return null;
         }
-        try {
-          const { default: db } = await import("@/src/db/index");
-          const userList = await db
-            .select({
-              id: users.id,
-              email: users.email,
-              username: users.username,
-              passwordHash: users.passwordHash,
-              role: users.role,
-            })
-            .from(users)
-            .where(eq(users.email, credentials.email as string))
-            .limit(1);
 
-          if (userList.length === 0) {
-            return null;
-          }
+        const admin = adminList[0];
+        const isPasswordValid = await bcrypt.compare(
+          credentials.password as string,
+          admin.passwordHash
+        );
 
-          const user = userList[0];
-          const isPasswordValid = await bcrypt.compare(
-            credentials.password as string,
-            user.passwordHash
-          );
-
-          if (!isPasswordValid || user.role !== "admin") {
-            return null;
-          }
-
-          return {
-            id: user.id,
-            email: user.email,
-            name: user.username,
-          };
-        } catch (error) {
-          console.error("Erreur auth:", error);
+        if (!isPasswordValid) {
           return null;
         }
-      },
-    }),
+
+        return {
+          id: admin.id,
+          email: admin.email,
+          name: admin.username,
+        };
+      } catch (error) {
+        console.error("Erreur auth:", error);
+        return null;
+      }
+    },
+  }),
 ];
 
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
@@ -82,23 +81,22 @@ const config = {
       if (account?.provider === "google") {
         try {
           const { default: db } = await import("@/src/db/index");
-          const userList = await db
+          const adminList = await db
             .select({
-              id: users.id,
-              email: users.email,
-              username: users.username,
-              role: users.role,
+              id: admins.id,
+              email: admins.email,
+              username: admins.username,
             })
-            .from(users)
-            .where(eq(users.email, user.email!))
+            .from(admins)
+            .where(eq(admins.email, user.email!))
             .limit(1);
 
-          if (userList.length > 0 && userList[0].role === "admin") {
-            user.name = userList[0].username;
-            user.id = userList[0].id;
+          if (adminList.length > 0) {
+            user.name = adminList[0].username;
+            user.id = adminList[0].id;
             return true;
           }
-          return false;
+          return false; // Google user not in admin table
         } catch (error) {
           console.error("Erreur signIn Google:", error);
           return false;
@@ -140,7 +138,7 @@ const config = {
 // Compatibilité ESM/CommonJS: utiliser default si présent, sinon la fonction du module
 const nextAuth =
   (NextAuthNS as unknown as { default?: (cfg: unknown) => unknown }).default ??
-  ((NextAuthNS as unknown) as (cfg: unknown) => unknown);
+  (NextAuthNS as unknown as (cfg: unknown) => unknown);
 
 const nextAuthResult = nextAuth(config) as {
   handlers: {

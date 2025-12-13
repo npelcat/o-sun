@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import db from "@/src/db/index";
-import { timeSlots } from "@/src/db/schema";
-import { eq } from "drizzle-orm";
+import logger from "@/utils/logger";
+import { releaseSlotSchema } from "@/lib/validation/booking";
+import { releaseSlot } from "@/lib/timeslots";
+import { withErrorHandler } from "@/utils/withErrorHandler";
 
 /**
  * @swagger
@@ -57,25 +58,21 @@ import { eq } from "drizzle-orm";
  */
 
 export async function POST(req: NextRequest) {
-  try {
-    const { timeSlotId } = await req.json();
+  return withErrorHandler(req, async () => {
+    const body = await req.json();
 
-    if (!timeSlotId) {
-      return NextResponse.json(
-        { error: "ID du créneau manquant" },
-        { status: 400 }
-      );
-    }
+    const { timeSlotId } = releaseSlotSchema.parse(body);
 
-    await db
-      .update(timeSlots)
-      .set({ isActive: true, lockedAt: null })
-      .where(eq(timeSlots.id, timeSlotId))
-      .execute();
+    logger.info("POST /booking/release-slot - Libération du créneau", {
+      timeSlotId,
+    });
+
+    await releaseSlot(timeSlotId);
+
+    logger.info("POST /booking/release-slot - Créneau libéré avec succès", {
+      timeSlotId,
+    });
 
     return NextResponse.json({ message: "Créneau libéré avec succès" });
-  } catch (error) {
-    console.error("Erreur API:", error);
-    return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
-  }
+  });
 }

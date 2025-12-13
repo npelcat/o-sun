@@ -1,9 +1,15 @@
 import { NextResponse, NextRequest } from "next/server";
 import db from "@/src/db/index";
-import { formData, bookings, timeSlots } from "@/src/db/schema";
-import { withErrorHandler, HttpError } from "@/utils/withErrorHandler";
+import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
-import { eq } from "drizzle-orm";
+import { confirmBookingSchema } from "@/lib/validation/booking";
+import {
+  confirmSlotPermanently,
+  validateSlotForConfirmation,
+} from "@/lib/timeslots";
+import { createOrUpdateClient } from "@/lib/clients";
+import { createFormData } from "@/lib/form-data";
+import { createBooking } from "@/lib/bookings";
 
 /**
  * @swagger
@@ -60,104 +66,77 @@ import { eq } from "drizzle-orm";
 
 export async function POST(req: NextRequest) {
   return withErrorHandler(req, async () => {
-    const { timeSlotId, name, email, content } = await req.json();
+    const body = await req.json();
 
-    if (!timeSlotId || !name || !email) {
-      logger.error("POST /booking/confirm - Données manquantes");
-      throw new HttpError(400, "Données manquantes ou invalides");
-    }
+    const validatedData = confirmBookingSchema.parse(body);
+
+    const {
+      timeSlotId,
+      clientName,
+      clientEmail,
+      clientPhone,
+      animalName,
+      animalType,
+      service,
+      answers,
+    } = validatedData;
+
     logger.info("POST /booking/confirm - Tentative de confirmation", {
       timeSlotId,
-      name,
-      email,
+      clientEmail,
+      animalName,
     });
 
-    await db.transaction(async (trx) => {
-      // 1️⃣ get the slot
-      const rows = await trx
-        .select()
-        .from(timeSlots)
-        .where(eq(timeSlots.id, timeSlotId))
-        .limit(1)
-        .execute();
+    const result = await db.transaction(async (trx) => {
+      await validateSlotForConfirmation(trx, timeSlotId);
+      logger.info("POST /booking/confirm - Créneau validé", { timeSlotId });
 
-      if (!rows.length) {
-        logger.error("POST /booking/confirm - Créneau introuvable", {
-          timeSlotId,
-        });
-        throw new HttpError(404, "Créneau introuvable");
-      }
+      const { client, isNew } = await createOrUpdateClient(trx, {
+        name: clientName,
+        email: clientEmail,
+        phone: clientPhone,
+      });
+      logger.info(
+        `POST /booking/confirm - Client ${isNew ? "créé" : "mis à jour"}`,
+        { clientId: client.id }
+      );
 
-      const slot = rows[0];
+      const form = await createFormData(trx, {
+        animalName,
+        animalType,
+        service,
+        answers,
+      });
+      logger.info("POST /booking/confirm - FormData créé", {
+        formId: form.id,
+      });
 
-      // 2️⃣ check isActive
-      if (!slot.isActive) {
-        logger.error(
-          "POST /booking/confirm - Créneau déjà confirmé ou annulé",
-          {
-            timeSlotId,
-          }
-        );
-        throw new HttpError(409, "Créneau déjà confirmé ou annulé");
-      }
+      const booking = await createBooking(trx, {
+        timeSlotId,
+        clientId: client.id,
+        formId: form.id,
+        status: "pending",
+      });
+      logger.info("POST /booking/confirm - Booking créé", {
+        bookingId: booking.id,
+      });
 
-      // 3️⃣ check lockedAt
-      if (!slot.lockedAt) {
-        logger.error(
-          "POST /booking/confirm - Créneau non verrouillé provisoirement",
-          { timeSlotId }
-        );
-        throw new HttpError(409, "Créneau non réservé précédemment");
-      }
-
-      // 4️⃣ check lock expiration (15 min max)
-      const now = Date.now();
-      const lockedTime = new Date(slot.lockedAt).getTime();
-      const elapsed = now - lockedTime;
-      if (elapsed > 15 * 60 * 1000) {
-        logger.error("POST /booking/confirm - Verrou expiré", { timeSlotId });
-        throw new HttpError(
-          410,
-          "Le temps de réservation a expiré, merci de re-sélectionner un créneau"
-        );
-      }
-
-      // 5️⃣ definitely mark the slot as reserved
-      await trx
-        .update(timeSlots)
-        .set({
-          isActive: false,
-          lockedAt: null,
-        })
-        .where(eq(timeSlots.id, timeSlotId))
-        .execute();
+      await confirmSlotPermanently(trx, timeSlotId);
       logger.info("POST /booking/confirm - Créneau confirmé", { timeSlotId });
 
-      // 6️⃣  create the linked form
-      const [insertedForm] = await trx
-        .insert(formData)
-        .values({ name, email, content })
-        .returning();
-      logger.info("POST /booking/confirm - Form data inséré", {
-        formId: insertedForm.id,
-      });
+      return {
+        booking,
+        client,
+        form,
+      };
+    });
 
-      // 7️⃣ create booking
-      const [insertedBooking] = await trx
-        .insert(bookings)
-        .values({
-          timeSlotId,
-          status: "pending",
-          formId: insertedForm.id,
-        })
-        .returning();
-      logger.info("POST /booking/confirm - Réservation créé", {
-        bookingId: insertedBooking.id,
-      });
+    logger.info("POST /booking/confirm - Réservation confirmée avec succès", {
+      bookingId: result.booking.id,
     });
 
     return NextResponse.json(
-      { message: "Réservation confirmée" },
+      { message: "Réservation confirmée", data: result },
       { status: 201 }
     );
   });

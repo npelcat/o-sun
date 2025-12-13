@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1740133851872,
-      "tag": "0000_stormy_jackpot",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1744962967015,
-      "tag": "0001_stormy_smasher",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1752142612250,
-      "tag": "0002_empty_bulldozer",
+      "when": 1765549952763,
+      "tag": "0000_previous_rockslide",
       "breakpoints": true
     }
   ]
