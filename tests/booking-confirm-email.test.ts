@@ -1,4 +1,3 @@
-// tests/reservation-email.test.ts
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { POST } from "@/app/api/booking/confirm-email/route";
 import { createRequest } from "@/tests/utils/test-utils";
@@ -31,7 +30,7 @@ vi.mock("@/utils/logger", () => ({
 vi.mock("@/lib/booking", () => ({ getSlotById: vi.fn() }));
 vi.mock("@/lib/date", () => ({ formatDate: vi.fn(), formatTime: vi.fn() }));
 
-import { getSlotById } from "@/lib/booking";
+import { getSlotById } from "@/lib/timeslots";
 import { formatDate, formatTime } from "@/lib/date";
 
 describe("POST /api/reservation", () => {

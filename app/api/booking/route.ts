@@ -1,9 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
-import db from "@/src/db/index";
-import { bookings, timeSlots, formData, clients } from "@/src/db/schema";
 import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
-import { eq, desc } from "drizzle-orm";
+import { getAllBookings } from "@/lib/bookings";
 
 /**
  * @swagger
@@ -75,42 +73,9 @@ import { eq, desc } from "drizzle-orm";
 
 export async function GET(req: NextRequest) {
   return withErrorHandler(req, async () => {
-    logger.info("GET /booking - Retrieving all reservations with full details");
-
-    // JOIN to retrieve all related information
-    const reservations = await db
-      .select({
-        id: bookings.id,
-        status: bookings.status,
-        createdAt: bookings.createdAt,
-        updatedAt: bookings.updatedAt,
-
-        timeSlotId: timeSlots.id,
-        startTime: timeSlots.startTime,
-        endTime: timeSlots.endTime,
-        isTimeSlotActive: timeSlots.isActive,
-
-        clientId: clients.id,
-        clientName: clients.name,
-        clientEmail: clients.email,
-        clientPhone: clients.phone,
-
-        formId: formData.id,
-        animalName: formData.animalName,
-        animalType: formData.animalType,
-        service: formData.service,
-        answers: formData.answers,
-        formCreatedAt: formData.createdAt,
-      })
-      .from(bookings)
-      .innerJoin(timeSlots, eq(bookings.timeSlotId, timeSlots.id))
-      .innerJoin(clients, eq(bookings.clientId, clients.id))
-      .innerJoin(formData, eq(bookings.formId, formData.id))
-      .orderBy(desc(bookings.createdAt)); // Most recent first
-
-    logger.info(
-      `GET /booking - Retrieved ${reservations.length} reservations with full details`
-    );
+    logger.info("GET /booking - Retrieving all reservations");
+    const reservations = await getAllBookings();
+    logger.info(`GET /booking - Retrieved ${reservations.length} reservations`);
     return NextResponse.json({ reservations });
   });
 }

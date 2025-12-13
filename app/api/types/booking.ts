@@ -1,7 +1,9 @@
 export interface BookingWithDetails {
+  // Booking
   id: string;
   status: "pending" | "confirmed" | "canceled";
   createdAt: Date;
+  updatedAt: Date;
 
   // Time slot
   timeSlotId: string;
@@ -17,7 +19,9 @@ export interface BookingWithDetails {
 
   // Form data
   formId: string;
+  animalName: string;
+  animalType: string | null;
   service: string;
-  answers: string | null; // JSON stringifié
+  answers: string | null;
   formCreatedAt: Date;
 }
