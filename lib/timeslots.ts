@@ -1,17 +1,19 @@
-import { DbTransaction } from "@/src/db/index";
+import db, { DbTransaction } from "@/src/db/index";
 import { timeSlots } from "@/src/db/schema";
 import { HttpError } from "@/utils/withErrorHandler";
 import { eq, and, or, isNull, lt } from "drizzle-orm";
 
 export async function getSlotById(id: string) {
-  const { default: db } = await import("@/src/db/index");
-  const [slot] = await db.select().from(timeSlots).where(eq(timeSlots.id, id));
+  const [slot] = await db
+    .select()
+    .from(timeSlots)
+    .where(eq(timeSlots.id, id))
+    .execute();
   if (!slot) throw new Error("Créneau non trouvé");
   return slot;
 }
 
 export async function getAvailableSlots() {
-  const { default: db } = await import("@/src/db/index");
   const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
 
   const availableSlots = await db
@@ -32,7 +34,6 @@ export async function getAvailableSlots() {
 }
 
 export async function lockSlot(timeSlotId: string) {
-  const { default: db } = await import("@/src/db/index");
   await db
     .update(timeSlots)
     .set({ lockedAt: new Date() })
@@ -41,7 +42,6 @@ export async function lockSlot(timeSlotId: string) {
 }
 
 export async function releaseSlot(timeSlotId: string) {
-  const { default: db } = await import("@/src/db/index");
   await db
     .update(timeSlots)
     .set({ isActive: true, lockedAt: null })
@@ -50,7 +50,6 @@ export async function releaseSlot(timeSlotId: string) {
 }
 
 export async function confirmSlot(timeSlotId: string) {
-  const { default: db } = await import("@/src/db/index");
   await db
     .update(timeSlots)
     .set({
@@ -63,12 +62,10 @@ export async function confirmSlot(timeSlotId: string) {
 }
 
 export async function reserveSlot(timeSlotId: string): Promise<void> {
-  const { default: db } = await import("@/src/db/index");
-
   const FIFTEEN_MINUTES_AGO = new Date(Date.now() - 15 * 60 * 1000);
 
   await db.transaction(async (trx) => {
-    const slot = await trx
+    const [slot] = await trx
       .select()
       .from(timeSlots)
       .where(
@@ -84,7 +81,7 @@ export async function reserveSlot(timeSlotId: string): Promise<void> {
       .limit(1)
       .execute();
 
-    if (!slot || slot.length === 0) {
+    if (!slot) {
       throw new Error("Créneau indisponible ou déjà réservé");
     }
 

@@ -1,3 +1,4 @@
+import { DbTransaction } from "@/src/db";
 import { clients } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -8,7 +9,7 @@ export interface CreateOrUpdateClientData {
 }
 
 export async function createOrUpdateClient(
-  trx: any,
+  trx: DbTransaction,
   data: CreateOrUpdateClientData
 ) {
   const { name, email, phone } = data;

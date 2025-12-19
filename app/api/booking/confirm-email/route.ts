@@ -76,16 +76,6 @@ export async function POST(request: NextRequest) {
 
     const booking = await getBookingById(bookingId);
 
-    if (!booking) {
-      logger.error("POST /booking/confirm-email - Booking not found", {
-        bookingId,
-      });
-      return NextResponse.json(
-        { error: "Réservation introuvable" },
-        { status: 404 }
-      );
-    }
-
     const {
       clientName,
       clientEmail,
