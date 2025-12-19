@@ -1,16 +1,27 @@
 export interface BookingWithDetails {
+  // Booking
   id: string;
   status: "pending" | "confirmed" | "canceled";
   createdAt: Date;
+  updatedAt: Date;
 
+  // Time slot
   timeSlotId: string;
   startTime: Date;
   endTime: Date;
   isTimeSlotActive: boolean;
 
-  formId: string;
+  // Client
+  clientId: string;
   clientName: string;
   clientEmail: string;
-  clientContent: string | null;
+  clientPhone: string | null;
+
+  // Form data
+  formId: string;
+  animalName: string;
+  animalType: string | null;
+  service: string;
+  answers: string | null;
   formCreatedAt: Date;
 }

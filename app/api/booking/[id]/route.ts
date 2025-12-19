@@ -1,9 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
-import db from "@/src/db/index";
-import { bookings } from "@/src/db/schema";
-import { eq } from "drizzle-orm";
-import { withErrorHandler, HttpError } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
+import {
+  deleteBooking,
+  getBookingByIdSimple,
+  updateBookingStatus,
+} from "@/lib/bookings";
+import { withErrorHandler } from "@/utils/withErrorHandler";
+import { updateBookingStatusSchema } from "@/lib/validation/booking";
 
 /**
  * @swagger
@@ -111,16 +114,11 @@ export async function GET(
   return withErrorHandler(req, async () => {
     const { id } = await params;
     logger.info(`GET /booking/${id} - Retrieving reservation`);
-    const reservation = await db
-      .select()
-      .from(bookings)
-      .where(eq(bookings.id, id));
-    if (!reservation.length) {
-      logger.error(`Reservation not found for id: ${id}`);
-      throw new HttpError(404, "Réservation introuvable");
-    }
+
+    const reservation = await getBookingByIdSimple(id);
+
     logger.info(`Reservation found for id: ${id}`);
-    return NextResponse.json({ reservation: reservation[0] });
+    return NextResponse.json({ reservation });
   });
 }
 
@@ -131,30 +129,15 @@ export async function PUT(
   return withErrorHandler(req, async () => {
     const { id } = await params;
     const body = await req.json();
-    const { timeSlotId, status } = body;
 
-    logger.info(`PUT /booking/${id} - Updating reservation`, {
-      timeSlotId,
-      status,
-    });
+    const { status } = updateBookingStatusSchema.parse(body);
 
-    if (!timeSlotId || !status) {
-      logger.error(`PUT /booking/${id} - Missing or invalid data`);
-      throw new HttpError(400, "Données manquantes ou invalides");
-    }
+    logger.info(`PUT /booking/${id} - Updating reservation status`, { status });
 
-    const updatedReservation = await db
-      .update(bookings)
-      .set({ timeSlotId, status })
-      .where(eq(bookings.id, id))
-      .returning();
+    const updatedReservation = await updateBookingStatus(id, status);
 
-    if (!updatedReservation.length) {
-      logger.error(`PUT /booking/${id} - Reservation not found or not updated`);
-      throw new HttpError(404, "Réservation introuvable ou non mise à jour");
-    }
-    logger.info(`PUT /booking/${id} - Reservation successfully updated`);
-    return NextResponse.json({ reservation: updatedReservation[0] });
+    logger.info(`PUT /booking/${id} - Reservation status updated to ${status}`);
+    return NextResponse.json({ reservation: updatedReservation });
   });
 }
 
@@ -165,17 +148,9 @@ export async function DELETE(
   return withErrorHandler(req, async () => {
     const { id } = await params;
     logger.info(`DELETE /booking/${id} - Deleting reservation`);
-    const deletedReservation = await db
-      .delete(bookings)
-      .where(eq(bookings.id, id))
-      .returning();
 
-    if (!deletedReservation.length) {
-      logger.error(
-        `DELETE /booking/${id} - Reservation not found or not deleted`
-      );
-      throw new HttpError(404, "Réservation introuvable ou non supprimée");
-    }
+    await deleteBooking(id);
+
     logger.info(`DELETE /booking/${id} - Reservation successfully deleted`);
     return NextResponse.json({ message: "Réservation supprimée" });
   });

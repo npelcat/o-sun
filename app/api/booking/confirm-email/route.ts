@@ -1,8 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import logger from "@/utils/logger";
-import { getSlotById } from "@/lib/booking";
 import { formatDate, formatTime } from "@/lib/date";
+import z from "zod";
+import { withErrorHandler } from "@/utils/withErrorHandler";
+import { getBookingById } from "@/lib/bookings";
 
 /**
  * @swagger
@@ -61,56 +63,108 @@ import { formatDate, formatTime } from "@/lib/date";
  *       - Booking
  */
 
+const confirmEmailSchema = z.object({
+  bookingId: z.string().uuid("ID de réservation invalide"),
+});
+
 export async function POST(request: NextRequest) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  try {
-    logger.info("POST /reservation - Received reservation request");
+  return withErrorHandler(request, async () => {
+    logger.info("POST /booking/confirm-email - Email confirmation request");
 
-    const data = await request.json();
+    const body = await request.json();
+    const { bookingId } = confirmEmailSchema.parse(body);
 
-    const { email, name, timeSlotId, content } = data;
-    logger.info("POST /reservation - Data validated", { name, email });
-    const slot = await getSlotById(timeSlotId);
-    const date = formatDate(slot.startTime);
-    const time = formatTime(slot.startTime);
+    const booking = await getBookingById(bookingId);
+
+    const {
+      clientName,
+      clientEmail,
+      startTime,
+      animalName,
+      animalType,
+      service,
+      answers,
+    } = booking;
+
+    const date = formatDate(startTime);
+    const time = formatTime(startTime);
+
+    let formContent = `
+      <p><strong>Animal :</strong> ${animalName}${animalType ? ` (${animalType})` : ""}</p>
+      <p><strong>Service :</strong> ${service}</p>
+    `;
+
+    if (answers) {
+      try {
+        const parsedAnswers =
+          typeof answers === "string" ? JSON.parse(answers) : answers;
+        formContent += `<p><strong>Informations supplémentaires :</strong></p><pre>${JSON.stringify(parsedAnswers, null, 2)}</pre>`;
+      } catch {
+        formContent += `<p><strong>Informations supplémentaires :</strong> ${answers}</p>`;
+      }
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const userEmailSubject = `Confirmation de votre réservation - O'Sun ~ Voix Animale`;
     const userEmailBody = `
-      <div style="font-family: Arial, sans-serif; line-height: 1.5;">
-        <h3 style="color: DarkKhaki;">Votre réservation a bien été confirmée !</h3>
-        <p>Bonjour ${name},</p>
-        <p>J'ai bien reçu votre réservation pour le ${date} à ${time}.</p>
-        <p>Voici les détails de votre message :</p>
-        <p>${content}</p>
-        <p style="font-style: italic; color: green;">Je vous répondrai très bientôt. Merci de votre confiance.</p>
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2 style="color: #DAA520;">✅ Votre réservation a bien été confirmée !</h2>
+        <p>Bonjour <strong>${clientName}</strong>,</p>
+        <p>J'ai bien reçu votre réservation pour le <strong>${date} à ${time}</strong>.</p>
+        
+        <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #DAA520; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #DAA520;">Détails de votre réservation :</h3>
+          ${formContent}
+        </div>
+        
+        <p style="font-style: italic; color: #2d5016;">Je vous répondrai très bientôt. Merci de votre confiance ! 🌿</p>
+        
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
+        <p style="font-size: 12px; color: #666;">
+          O'Sun ~ Voix Animale<br>
+          Communication animale intuitive
+        </p>
       </div>
     `;
 
-    const oceaneEmailSubject = `Nouvelle réservation reçue - O'Sun ~ Voix Animale`;
+    const oceaneEmailSubject = `🔔 Nouvelle réservation - ${clientName}`;
     const oceaneEmailBody = `
-      <div style="font-family: Arial, sans-serif; line-height: 1.5;">
-        <h3 style="color: DarkKhaki;">Nouvelle réservation reçue !</h3>
-        <p>Nom du client : ${name}</p>
-        <p>Email du client : ${email}</p>
-        <p>Date de la réservation : ${date} à ${time}</p>
-        <p>Détails supplémentaires :</p>
-        <p>${content}</p>
-        <p style="font-style: italic; color: green;">Merci de prendre cette réservation en compte.</p>
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h2 style="color: #DAA520;">📅 Nouvelle réservation reçue</h2>
+        
+        <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; margin: 20px 0;">
+          <p><strong>👤 Client :</strong> ${clientName}</p>
+          <p><strong>📧 Email :</strong> <a href="mailto:${clientEmail}">${clientEmail}</a></p>
+          <p><strong>📅 Date :</strong> ${date}</p>
+          <p><strong>🕐 Heure :</strong> ${time}</p>
+        </div>
+        
+        <div style="background-color: #fffef0; padding: 15px; border-left: 4px solid #DAA520; margin: 20px 0;">
+          <h3 style="margin-top: 0; color: #DAA520;">Détails de la réservation :</h3>
+          ${formContent}
+        </div>
+        
+        <p style="font-style: italic; color: #2d5016;">
+          Pense à confirmer cette réservation avec le client ! ✨
+        </p>
       </div>
     `;
 
     const { error: userError } = await resend.emails.send({
       from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
-      to: [email],
+      to: [clientEmail],
       subject: userEmailSubject,
       html: userEmailBody,
     });
+
     if (userError) {
-      logger.error("POST /reservation - Error sending user confirmation", {
+      logger.error("POST /booking/confirm-email - Error sending user email", {
         userError,
+        bookingId,
       });
       return NextResponse.json(
-        { error: "Erreur interne, réservation non confirmée." },
+        { error: "Erreur lors de l'envoi de l'email de confirmation" },
         { status: 500 }
       );
     }
@@ -121,28 +175,21 @@ export async function POST(request: NextRequest) {
       subject: oceaneEmailSubject,
       html: oceaneEmailBody,
     });
+
     if (adminError) {
-      logger.error("POST /reservation - Error sending admin notification", {
+      logger.error("POST /booking/confirm-email - Error sending admin email", {
         adminError,
+        bookingId,
       });
-      return NextResponse.json(
-        { error: "Erreur interne, réservation non confirmée." },
-        { status: 500 }
-      );
     }
 
-    logger.info("POST /reservation - Emails sent successfully");
+    logger.info("POST /booking/confirm-email - Emails sent successfully", {
+      bookingId,
+      clientEmail,
+    });
+
     return NextResponse.json({
-      message:
-        "Ta réservation a bien été confirmée. Un email de confirmation t'a été envoyé.",
+      message: "Emails de confirmation envoyés avec succès",
     });
-  } catch (error) {
-    logger.error("POST /reservation - Error sending reservation email", {
-      error,
-    });
-    return NextResponse.json(
-      { error: "Erreur interne, réservation non confirmée." },
-      { status: 500 }
-    );
-  }
+  });
 }
