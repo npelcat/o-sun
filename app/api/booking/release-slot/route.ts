@@ -9,9 +9,14 @@ import { withErrorHandler } from "@/utils/withErrorHandler";
  * /api/booking/release-slot:
  *   post:
  *     summary: Libère un créneau verrouillé
- *     description: Remet un créneau en disponibilité en annulant son verrouillage provisoire
+ *     description: |
+ *       Remet un créneau en disponibilité en supprimant son verrouillage.
+ *       Met à jour le créneau pour :
+ *       - isActive = true
+ *       - lockedAt = null
  *     tags:
  *       - Booking
+ *       - TimeSlots
  *     requestBody:
  *       required: true
  *       content:
@@ -24,6 +29,7 @@ import { withErrorHandler } from "@/utils/withErrorHandler";
  *               timeSlotId:
  *                 type: string
  *                 description: ID du créneau à libérer
+ *                 example: "550e8400-e29b-41d4-a716-446655440000"
  *     responses:
  *       200:
  *         description: Créneau libéré avec succès
@@ -36,7 +42,7 @@ import { withErrorHandler } from "@/utils/withErrorHandler";
  *                   type: string
  *                   example: "Créneau libéré avec succès"
  *       400:
- *         description: ID du créneau manquant
+ *         description: Données invalides (validation Zod échouée)
  *         content:
  *           application/json:
  *             schema:
@@ -44,7 +50,7 @@ import { withErrorHandler } from "@/utils/withErrorHandler";
  *               properties:
  *                 error:
  *                   type: string
- *                   example: "ID du créneau manquant"
+ *                   example: "timeSlotId est requis"
  *       500:
  *         description: Erreur interne du serveur
  *         content:

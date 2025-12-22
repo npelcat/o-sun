@@ -11,7 +11,14 @@ import { getBookingById } from "@/lib/bookings";
  * /api/booking/confirm-email:
  *   post:
  *     summary: Envoie les emails de confirmation de réservation
- *     description: Envoie un email de confirmation au client et une notification à l'administrateur
+ *     description: |
+ *       Récupère une réservation complète (avec client, créneau et formulaire)
+ *       et envoie deux emails :
+ *       - Un email de confirmation au client
+ *       - Un email de notification à l'administrateur
+ *     tags:
+ *       - Email
+ *       - Booking
  *     requestBody:
  *       required: true
  *       content:
@@ -19,24 +26,13 @@ import { getBookingById } from "@/lib/bookings";
  *           schema:
  *             type: object
  *             required:
- *               - email
- *               - name
- *               - timeSlotId
- *               - content
+ *               - bookingId
  *             properties:
- *               email:
+ *               bookingId:
  *                 type: string
- *                 format: email
- *                 description: Email du client pour recevoir la confirmation
- *               name:
- *                 type: string
- *                 description: Nom du client
- *               timeSlotId:
- *                 type: string
- *                 description: ID du créneau réservé
- *               content:
- *                 type: string
- *                 description: Message/demande du client
+ *                 format: uuid
+ *                 description: ID de la réservation (avec toutes les infos enrichies)
+ *                 example: "550e8400-e29b-41d4-a716-446655440000"
  *     responses:
  *       200:
  *         description: Emails envoyés avec succès
@@ -47,9 +43,9 @@ import { getBookingById } from "@/lib/bookings";
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Ta réservation a bien été confirmée. Un email de confirmation t'a été envoyé."
- *       500:
- *         description: Erreur lors de l'envoi des emails
+ *                   example: "Emails de confirmation envoyés avec succès"
+ *       400:
+ *         description: ID de réservation invalide (validation Zod échouée)
  *         content:
  *           application/json:
  *             schema:
@@ -57,10 +53,27 @@ import { getBookingById } from "@/lib/bookings";
  *               properties:
  *                 error:
  *                   type: string
- *                   example: "Erreur interne, réservation non confirmée."
- *     tags:
- *       - Email
- *       - Booking
+ *                   example: "ID de réservation invalide"
+ *       404:
+ *         description: Réservation introuvable
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Réservation non trouvée"
+ *       500:
+ *         description: Erreur lors de l'envoi des emails (API Resend)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erreur lors de l'envoi de l'email de confirmation"
  */
 
 const confirmEmailSchema = z.object({
