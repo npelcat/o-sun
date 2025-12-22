@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ZodError } from "zod";
 
 export class HttpError extends Error {
   status: number;
@@ -45,15 +46,28 @@ export async function withErrorHandler(
     return await handler();
   } catch (error: unknown) {
     console.error(error);
+
+    if (error instanceof ZodError) {
+      return NextResponse.json(
+        {
+          error: "Données invalides",
+          details: error.errors,
+        },
+        { status: 400 }
+      );
+    }
+
     if (error instanceof HttpError) {
       return NextResponse.json(
         { error: error.message },
         { status: error.status }
       );
     }
+
     if (clientAcceptsHtml(req)) {
       return renderHtml500();
     }
+
     return NextResponse.json(
       { error: "Erreur interne du serveur" },
       { status: 500 }
