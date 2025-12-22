@@ -9,9 +9,15 @@ import { reserveSlot } from "@/lib/timeslots";
  * /api/booking/reserve:
  *   post:
  *     summary: Réserve provisoirement un créneau
- *     description: Verrouille un créneau pendant 15 minutes pour permettre à l'utilisateur de finaliser sa réservation
+ *     description: |
+ *       Verrouille un créneau pendant 15 minutes maximum via une transaction atomique.
+ *       Vérifie d'abord que le créneau est disponible :
+ *       - isActive = true
+ *       - lockedAt = null OU expiré (> 15 min)
+ *       Puis met à jour lockedAt = now()
  *     tags:
  *       - Booking
+ *       - TimeSlots
  *     requestBody:
  *       required: true
  *       content:
@@ -24,6 +30,7 @@ import { reserveSlot } from "@/lib/timeslots";
  *               timeSlotId:
  *                 type: string
  *                 description: ID du créneau à réserver provisoirement
+ *                 example: "550e8400-e29b-41d4-a716-446655440000"
  *     responses:
  *       200:
  *         description: Créneau réservé provisoirement avec succès
@@ -35,16 +42,20 @@ import { reserveSlot } from "@/lib/timeslots";
  *                 message:
  *                   type: string
  *                   example: "Créneau réservé provisoirement"
+ *                 timeSlotId:
+ *                   type: string
+ *                   description: ID du créneau verrouillé
+ *                   example: "550e8400-e29b-41d4-a716-446655440000"
  *       400:
- *         description: ID du créneau manquant
+ *         description: Données invalides (validation Zod échouée)
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 error:
  *                   type: string
- *                   example: "timeSlotId manquant"
+ *                   example: "timeSlotId est requis"
  *       409:
  *         description: Créneau indisponible ou déjà réservé
  *         content:
@@ -57,6 +68,14 @@ import { reserveSlot } from "@/lib/timeslots";
  *                   example: "Créneau indisponible ou déjà réservé"
  *       500:
  *         description: Erreur interne du serveur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Erreur interne"
  */
 
 export async function POST(request: NextRequest) {

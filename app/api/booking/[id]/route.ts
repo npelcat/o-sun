@@ -13,7 +13,7 @@ import { updateBookingStatusSchema } from "@/lib/validation/booking";
  * /api/booking/{id}:
  *   get:
  *     summary: Récupère une réservation par ID
- *     description: Retourne les détails d'une réservation spécifique
+ *     description: Retourne les informations basiques d'une réservation (sans les jointures)
  *     tags:
  *       - Booking
  *     parameters:
@@ -33,12 +33,29 @@ import { updateBookingStatusSchema } from "@/lib/validation/booking";
  *               properties:
  *                 reservation:
  *                   type: object
- *                   description: Données de la réservation
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     timeSlotId:
+ *                       type: string
+ *                     clientId:
+ *                       type: string
+ *                     formId:
+ *                       type: string
+ *                     status:
+ *                       type: string
+ *                       enum: [pending, confirmed, canceled]
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
  *       404:
  *         description: Réservation introuvable
  *   put:
- *     summary: Met à jour une réservation
- *     description: Modifie le créneau ou le statut d'une réservation existante
+ *     summary: Met à jour le statut d'une réservation
+ *     description: Modifie uniquement le statut d'une réservation existante
  *     tags:
  *       - Booking
  *     parameters:
@@ -55,19 +72,15 @@ import { updateBookingStatusSchema } from "@/lib/validation/booking";
  *           schema:
  *             type: object
  *             required:
- *               - timeSlotId
  *               - status
  *             properties:
- *               timeSlotId:
- *                 type: string
- *                 description: Nouveau créneau pour la réservation
  *               status:
  *                 type: string
  *                 description: Nouveau statut de la réservation
- *                 enum: [pending, confirmed, cancelled]
+ *                 enum: [pending, confirmed, canceled]
  *     responses:
  *       200:
- *         description: Réservation mise à jour
+ *         description: Statut mis à jour
  *         content:
  *           application/json:
  *             schema:
@@ -75,11 +88,18 @@ import { updateBookingStatusSchema } from "@/lib/validation/booking";
  *               properties:
  *                 reservation:
  *                   type: object
- *                   description: Données de la réservation mise à jour
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     status:
+ *                       type: string
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
  *       400:
- *         description: Données manquantes ou invalides
+ *         description: Données invalides
  *       404:
- *         description: Réservation introuvable ou non mise à jour
+ *         description: Réservation introuvable
  *   delete:
  *     summary: Supprime une réservation
  *     description: Supprime définitivement une réservation
@@ -104,7 +124,7 @@ import { updateBookingStatusSchema } from "@/lib/validation/booking";
  *                   type: string
  *                   example: "Réservation supprimée"
  *       404:
- *         description: Réservation introuvable ou non supprimée
+ *         description: Réservation introuvable
  */
 
 export async function GET(
