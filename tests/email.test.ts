@@ -1,28 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { POST } from "@/app/api/email/route";
+import { createRequest } from "./utils/test-utils";
 
-// Définir les variables d'environnement pour le test
-vi.stubEnv("RESEND_API_KEY", "mock-api-key");
-vi.stubEnv("RESEND_SENDER_EMAIL", "test@example.com");
-vi.stubEnv("MY_EMAIL", "admin@example.com");
-
-// Mock du module Resend
-vi.mock("resend", () => {
-  // Créer un mock complet pour Resend avec une fonction 'send' intégrée
-  const mockSend = vi.fn().mockResolvedValue({ error: null });
-  class MockResend {
-    // on déclare la propriété pour TS
-    public emails: { send: typeof mockSend };
-    constructor() {
-      this.emails = { send: mockSend };
-    }
-  }
-  return {
-    __esModule: true,
-    Resend: MockResend,
-    // on exporte mockSend pour pouvoir l’importer plus bas
-    mockSend,
-  };
-});
+// Mock de Resend
+const mockResendSend = vi.fn();
+vi.mock("resend", () => ({
+  Resend: vi.fn().mockImplementation(() => ({
+    emails: {
+      send: mockResendSend,
+    },
+  })),
+}));
 
 // Mock logger
 vi.mock("@/utils/logger", () => ({
@@ -32,74 +20,48 @@ vi.mock("@/utils/logger", () => ({
   },
 }));
 
-// Mock contactSchema
-vi.mock("./contactSchema", () => ({
-  contactSchema: {
-    parse: vi.fn((data) => {
-      // Validation basée sur la définition de votre schéma
-      if (!data.name || data.name.length < 2) {
-        throw new ZodError([
-          {
-            code: "too_small",
-            minimum: 2,
-            type: "string",
-            inclusive: true,
-            exact: false,
-            message: "Le nom est requis",
-            path: ["name"],
-          },
-        ]);
-      }
-
-      if (!data.email || !data.email.includes("@")) {
-        throw new ZodError([
-          {
-            code: "invalid_string",
-            validation: "email",
-            message: "Email invalide",
-            path: ["email"],
-          },
-        ]);
-      }
-
-      if (!data.message || data.message.length < 20) {
-        throw new ZodError([
-          {
-            code: "too_small",
-            minimum: 20,
-            type: "string",
-            inclusive: true,
-            exact: false,
-            message: "Le message doit comporter au moins 20 caractères",
-            path: ["message"],
-          },
-        ]);
-      }
-
-      return data;
-    }),
-  },
-}));
-
-// @ts-expect-error: import du mock 'mockSend' depuis vi.mock(\"resend\")
-import { mockSend } from "resend";
-import { POST } from "@/app/api/email/route";
-import { createRequest } from "@/tests/utils/test-utils";
-import { ZodError } from "zod";
+// Variables d'environnement
+vi.stubEnv("RESEND_API_KEY", "test-api-key");
+vi.stubEnv("RESEND_SENDER_EMAIL", "noreply@example.com");
+vi.stubEnv("MY_EMAIL", "oceane@example.com");
 
 describe("POST /api/email", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Réinitialiser le comportement par défaut
-    mockSend.mockReset();
-    mockSend.mockResolvedValue({ error: null });
+    mockResendSend.mockResolvedValue({ error: null });
   });
 
-  it("renvoie une erreur 400 si les données sont invalides", async () => {
-    // Données incomplètes (email manquant)
+  it("should send contact email successfully", async () => {
     const req = createRequest("POST", {
-      name: "Jean Test",
-      message: "Ceci est un message de test pour validation",
+      name: "Jane Dupont",
+      email: "jane@example.com",
+      message:
+        "Bonjour, je souhaiterais avoir plus d'informations sur vos services.",
+    });
+
+    const response = await POST(req);
+
+    expect(response.status).toBe(200);
+    const body = await response.json();
+    expect(body.message).toContain("Ton e-mail a bien été envoyé");
+
+    // Vérifier l'appel à Resend
+    expect(mockResendSend).toHaveBeenCalledTimes(1);
+    expect(mockResendSend).toHaveBeenCalledWith(
+      expect.objectContaining({
+        from: "O'Sun ~ Voix Animale <noreply@example.com>",
+        to: ["oceane@example.com"],
+        cc: ["jane@example.com"],
+        subject: "Message de Jane Dupont (jane@example.com)",
+        html: expect.stringContaining("Jane Dupont"),
+      })
+    );
+  });
+
+  it("should return 400 when name is missing", async () => {
+    const req = createRequest("POST", {
+      email: "jane@example.com",
+      message: "Message sans nom, cela devrait échouer.",
     });
 
     const response = await POST(req);
@@ -107,18 +69,44 @@ describe("POST /api/email", () => {
     expect(response.status).toBe(400);
     const body = await response.json();
     expect(body).toHaveProperty("error");
+    expect(mockResendSend).not.toHaveBeenCalled();
   });
 
-  it("renvoie une erreur 500 si Resend renvoie une erreur", async () => {
-    // Override du mock pour simuler une erreur de Resend
-    mockSend.mockResolvedValueOnce({
+  it("should return 400 when email is invalid", async () => {
+    const req = createRequest("POST", {
+      name: "Jane Dupont",
+      email: "invalid-email",
+      message: "Message avec email invalide.",
+    });
+
+    const response = await POST(req);
+
+    expect(response.status).toBe(400);
+    expect(mockResendSend).not.toHaveBeenCalled();
+  });
+
+  it("should return 400 when message is too short", async () => {
+    const req = createRequest("POST", {
+      name: "Jane Dupont",
+      email: "jane@example.com",
+      message: "Court", // moins de 20 caractères
+    });
+
+    const response = await POST(req);
+
+    expect(response.status).toBe(400);
+    expect(mockResendSend).not.toHaveBeenCalled();
+  });
+
+  it("should return 500 when Resend fails", async () => {
+    mockResendSend.mockResolvedValueOnce({
       error: { message: "API error", name: "ResendError" },
     });
 
     const req = createRequest("POST", {
-      name: "Jean Test",
-      email: "jean@example.com",
-      message: "Ceci est un message de test pour tester l'envoi d'emails",
+      name: "Jane Dupont",
+      email: "jane@example.com",
+      message: "Message valide mais l'envoi va échouer.",
     });
 
     const response = await POST(req);
@@ -128,49 +116,16 @@ describe("POST /api/email", () => {
     expect(body.error).toBe("Erreur lors de l'envoi de l'e-mail.");
   });
 
-  it("envoie un email avec succès et renvoie un message de confirmation", async () => {
+  it("should convert line breaks to <br> tags", async () => {
     const req = createRequest("POST", {
-      name: "Jean Test",
-      email: "jean@example.com",
-      message: "Ceci est un message de test pour tester l'envoi d'emails",
-    });
-
-    const response = await POST(req);
-
-    // Vérifier que la réponse est correcte
-    expect(response.status).toBe(200);
-    const body = await response.json();
-    expect(body).toHaveProperty("message");
-    expect(body.message).toContain("Ton e-mail a bien été envoyé");
-
-    // Vérifier que l'appel à Resend a été fait avec les bons paramètres
-    expect(mockSend).toHaveBeenCalledTimes(1);
-    expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        from: expect.stringContaining("O'Sun ~ Voix Animale"),
-        to: [expect.any(String)],
-        cc: ["jean@example.com"],
-        subject: expect.stringContaining("Jean Test"),
-        html: expect.stringContaining("Ceci est un message de test"),
-      })
-    );
-  });
-
-  it("gère correctement les sauts de ligne dans le message", async () => {
-    const req = createRequest("POST", {
-      name: "Jean Test",
-      email: "jean@example.com",
-      message:
-        "Ligne 1\nLigne 2\nLigne 3 plus longue pour respecter la validation",
+      name: "Jane Dupont",
+      email: "jane@example.com",
+      message: "Ligne 1\nLigne 2\nLigne 3 avec du contenu supplémentaire",
     });
 
     await POST(req);
 
-    // Vérifier que les sauts de ligne sont convertis en <br>
-    expect(mockSend).toHaveBeenCalledWith(
-      expect.objectContaining({
-        html: expect.stringContaining("Ligne 1<br>Ligne 2<br>Ligne 3"),
-      })
-    );
+    const emailCall = mockResendSend.mock.calls[0][0];
+    expect(emailCall.html).toContain("Ligne 1<br>Ligne 2<br>Ligne 3");
   });
 });
