@@ -1,0 +1,15 @@
+/* Personnalisation du calendrier */
+.rdp {
+  --rdp-cell-size: 45px;
+  --rdp-accent-color: #2d5016;
+  --rdp-background-color: #f0f8ff;
+}
+
+.rdp-day_selected:not([disabled]) {
+  background-color: #2d5016;
+  color: white;
+}
+
+.rdp-day_selected:hover:not([disabled]) {
+  background-color: #1f3810;
+}
