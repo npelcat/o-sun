@@ -119,10 +119,10 @@ export async function POST(request: NextRequest) {
 
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    const userEmailSubject = `Confirmation de votre réservation - O'Sun ~ Voix Animale`;
+    const userEmailSubject = `Confirmation de votre demande de réservation - O'Sun ~ Voix Animale`;
     const userEmailBody = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-        <h2 style="color: #DAA520;">✅ Votre réservation a bien été confirmée !</h2>
+        <h2 style="color: #DAA520;">✅ Votre demande de réservation m'a été envoyée !</h2>
         <p>Bonjour <strong>${clientName}</strong>,</p>
         <p>J'ai bien reçu votre réservation pour le <strong>${date} à ${time}</strong>.</p>
         
@@ -136,12 +136,12 @@ export async function POST(request: NextRequest) {
         <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
         <p style="font-size: 12px; color: #666;">
           O'Sun ~ Voix Animale<br>
-          Communication animale intuitive
+          Communication animale
         </p>
       </div>
     `;
 
-    const oceaneEmailSubject = `🔔 Nouvelle réservation - ${clientName}`;
+    const oceaneEmailSubject = `🔔 Nouvelle demande de réservation - ${clientName}`;
     const oceaneEmailBody = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <h2 style="color: #DAA520;">📅 Nouvelle réservation reçue</h2>
@@ -159,7 +159,7 @@ export async function POST(request: NextRequest) {
         </div>
         
         <p style="font-style: italic; color: #2d5016;">
-          Pense à confirmer cette réservation avec le client ! ✨
+          Pense à confirmer cette réservation avec le client en le contactant directement via ses coordonnées ! ✨
         </p>
       </div>
     `;

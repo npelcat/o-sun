@@ -93,7 +93,9 @@ describe("POST /api/booking/confirm-email", () => {
       expect.objectContaining({
         from: "O'Sun ~ Voix Animale <noreply@example.com>",
         to: ["marie@example.com"],
-        subject: expect.stringContaining("Confirmation de votre réservation"),
+        subject: expect.stringContaining(
+          "Confirmation de votre demande de réservation"
+        ),
         html: expect.stringContaining("Marie Dupont"),
       })
     );
@@ -104,7 +106,9 @@ describe("POST /api/booking/confirm-email", () => {
       expect.objectContaining({
         from: "O'Sun ~ Voix Animale <noreply@example.com>",
         to: ["oceane@example.com"],
-        subject: expect.stringContaining("Nouvelle réservation - Marie Dupont"),
+        subject: expect.stringContaining(
+          "Nouvelle demande de réservation - Marie Dupont"
+        ),
         html: expect.stringContaining("marie@example.com"),
       })
     );

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
 import { reserveSlotSchema } from "@/lib/validation/booking";
-import { reserveSlot } from "@/lib/timeslots";
+import { getSlotById, reserveSlot } from "@/lib/timeslots";
 
 /**
  * @swagger
@@ -81,22 +81,28 @@ import { reserveSlot } from "@/lib/timeslots";
 export async function POST(request: NextRequest) {
   return withErrorHandler(request, async () => {
     const body = await request.json();
-
     const { timeSlotId } = reserveSlotSchema.parse(body);
-
     logger.info("POST /booking/reserve - Réservation provisoire demandée", {
       timeSlotId,
     });
 
     await reserveSlot(timeSlotId);
 
+    const slot = await getSlotById(timeSlotId);
+
+    const expiresAt = slot.lockedAt
+      ? new Date(new Date(slot.lockedAt).getTime() + 15 * 60 * 1000)
+      : null;
+
     logger.info("POST /booking/reserve - Créneau verrouillé provisoirement", {
       timeSlotId,
+      expiresAt,
     });
 
     return NextResponse.json({
       message: "Créneau réservé provisoirement",
       timeSlotId,
+      expiresAt,
     });
   });
 }
