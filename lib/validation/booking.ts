@@ -2,7 +2,7 @@ import { z } from "zod";
 
 // Regex pour téléphones francophones (France, Belgique, Suisse, Canada, etc.)
 // Accepte les formats avec ou sans indicatif international
-const francophonesPhoneRegex = /^(\+|00)?[1-9]\d{7,14}$/;
+const francophonesPhoneRegex = /^(?:0\d{9}|(?:\+|00)[1-9]\d{7,14})$/;
 
 // Validation pour réserver provisoirement un créneau
 export const reserveSlotSchema = z.object({
@@ -64,6 +64,7 @@ export const confirmBookingSchema = z.object({
     .nullable()
     .optional()
     .or(z.literal("")),
+  turnstileToken: z.string().min(1, "Token de sécurité requis"),
 });
 
 // Validation pour modifier le statut d'une réservation

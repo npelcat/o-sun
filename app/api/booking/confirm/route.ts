@@ -10,6 +10,8 @@ import {
 import { createOrUpdateClient } from "@/lib/clients";
 import { createFormData } from "@/lib/form-data";
 import { createBooking } from "@/lib/bookings";
+import { validateEmail } from "@/lib/validation/email";
+import { verifyTurnstileToken } from "@/lib/validation/turnstile";
 
 /**
  * @swagger
@@ -150,6 +152,7 @@ export async function POST(req: NextRequest) {
       animalType,
       service,
       answers,
+      turnstileToken,
     } = validatedData;
 
     logger.info("POST /booking/confirm - Tentative de confirmation", {
@@ -157,6 +160,41 @@ export async function POST(req: NextRequest) {
       clientEmail,
       animalName,
     });
+
+    const turnstileCheck = await verifyTurnstileToken(turnstileToken);
+
+    if (!turnstileCheck.success) {
+      logger.warn("POST /booking/confirm - Turnstile échoué");
+      return NextResponse.json(
+        { message: turnstileCheck.error || "Vérification de sécurité échouée" },
+        { status: 400 }
+      );
+    }
+
+    logger.info("POST /booking/confirm - Turnstile validé ✅");
+
+    const emailValidation = await validateEmail(clientEmail);
+
+    if (!emailValidation.isValid) {
+      logger.warn("POST /booking/confirm - Email invalide", {
+        email: clientEmail,
+        reason: emailValidation.message,
+      });
+
+      return NextResponse.json(
+        { message: emailValidation.message },
+        { status: 400 }
+      );
+    }
+
+    if (emailValidation.message) {
+      logger.info("POST /booking/confirm - Email accepté avec avertissement", {
+        email: clientEmail,
+        warning: emailValidation.message,
+      });
+    }
+
+    logger.info("POST /booking/confirm - Email validé", { clientEmail });
 
     const result = await db.transaction(async (trx) => {
       await validateSlotForConfirmation(trx, timeSlotId);
