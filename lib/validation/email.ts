@@ -1,5 +1,3 @@
-// lib/email-validation.ts
-
 const POPULAR_DOMAINS = [
   "gmail.com",
   "gmail.fr",

@@ -1,4 +1,4 @@
-import { ContactFormData } from "@/app/api/email/contactSchema";
+import { ContactFormData } from "@/lib/validation/contact";
 
 export async function sendEmail(data: ContactFormData) {
   const apiEndpoint = "/api/email";

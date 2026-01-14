@@ -69,6 +69,7 @@ export const bookings = bookingSchema.table("bookings", {
     .unique() // Un formulaire = une seule réservation
     .references(() => formData.id, { onDelete: "cascade" }), // 🗑️ Cancel reservation if form deleted
   status: bookingStatusEnum().notNull().default("pending"),
+  adminNotes: text("admin_notes"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

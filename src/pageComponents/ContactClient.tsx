@@ -1,9 +1,9 @@
 "use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { contactSchema, ContactFormData } from "@/app/api/email/contactSchema";
+import { Turnstile } from "@marsidev/react-turnstile";
+import { contactSchema, ContactFormData } from "@/lib/validation/contact";
 import { sendEmail } from "@/utils/send-email";
 
 export default function ContactClient() {
@@ -11,6 +11,7 @@ export default function ContactClient() {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -19,15 +20,36 @@ export default function ContactClient() {
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(
     null
   );
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (data: ContactFormData) => {
-    const result = await sendEmail(data);
-    if (result.message) setConfirmationMessage(result.message);
-    else
+    if (!turnstileToken) {
+      setConfirmationMessage("Veuillez compléter la vérification de sécurité.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await sendEmail(data);
+
+      if (result.message) {
+        setConfirmationMessage(result.message);
+        reset();
+        setTurnstileToken(null);
+      } else {
+        setConfirmationMessage(
+          "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer."
+        );
+      }
+    } catch {
       setConfirmationMessage(
         "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer."
       );
-    reset();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -48,6 +70,7 @@ export default function ContactClient() {
           />
           {errors.name && <p className="text-red-500">{errors.name.message}</p>}
         </div>
+
         <div className="mb-5">
           <label htmlFor="email" className="mb-3 block font-bold">
             Votre adresse e-mail
@@ -62,6 +85,7 @@ export default function ContactClient() {
             <p className="text-red-500">{errors.email.message}</p>
           )}
         </div>
+
         <div className="mb-5">
           <label htmlFor="message" className="mb-3 block font-bold">
             Votre message
@@ -76,13 +100,55 @@ export default function ContactClient() {
             <p className="text-red-500">{errors.message.message}</p>
           )}
         </div>
+
+        <div className="mb-5">
+          <label className="block mb-3 font-bold">
+            Vérification de sécurité <span className="text-red-500">*</span>
+          </label>
+          <Turnstile
+            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            onSuccess={(token) => {
+              setTurnstileToken(token);
+              setValue("turnstileToken", token);
+            }}
+            onError={() => {
+              setTurnstileToken(null);
+              setValue("turnstileToken", "");
+              setConfirmationMessage(
+                "Erreur de vérification de sécurité. Veuillez réessayer."
+              );
+            }}
+            onExpire={() => {
+              setTurnstileToken(null);
+              setValue("turnstileToken", "");
+              setConfirmationMessage(
+                "La vérification a expiré. Veuillez revalider."
+              );
+            }}
+          />
+          {errors.turnstileToken && (
+            <p className="text-red-500">{errors.turnstileToken.message}</p>
+          )}
+        </div>
+
         <div className="flex justify-center">
-          <button className="text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-green hover:text-dark-green">
-            Envoyer
+          <button
+            type="submit"
+            disabled={isSubmitting || !turnstileToken}
+            className="text-xl text-white bg-dark-green font-subtitle rounded-full p-4 transition duration-300 ease-in-out hover:bg-green hover:text-dark-green disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isSubmitting ? "Envoi en cours..." : "Envoyer"}
           </button>
         </div>
+
         {confirmationMessage && (
-          <p className="mt-10 bg-green bg-opacity-20 p-2 rounded-lg text-center w-full">
+          <p
+            className={`mt-10 p-2 rounded-lg text-center w-full ${
+              confirmationMessage.includes("Erreur")
+                ? "bg-red-100 text-red-700"
+                : "bg-green bg-opacity-20"
+            }`}
+          >
             {confirmationMessage}
           </p>
         )}
