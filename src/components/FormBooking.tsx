@@ -107,7 +107,6 @@ const FormBooking: React.FC = () => {
               siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
               onSuccess={(token) => {
                 setTurnstileToken(token);
-                console.log("Turnstile validé ✅");
               }}
               onError={() => {
                 setTurnstileToken(null);

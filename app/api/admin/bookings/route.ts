@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
       status: searchParams.get("status") || undefined,
       month: searchParams.get("month") || undefined,
       clientEmail: searchParams.get("clientEmail") || undefined,
+      period: searchParams.get("period") || undefined,
     };
 
     // Valider les filtres avec Zod

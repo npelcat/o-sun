@@ -110,7 +110,7 @@ export const createBookingAdminSchema = z.object({
     .max(5000, "Les réponses sont trop longues")
     .nullable()
     .optional(),
-  status: z.enum(["pending", "confirmed", "canceled"]).default("confirmed"), // Par défaut confirmée si créée par admin
+  status: z.enum(["pending", "confirmed", "canceled"]).default("confirmed"),
   adminNotes: z
     .string()
     .max(2000, "Les notes sont trop longues")
@@ -124,7 +124,7 @@ export const createBookingAdminSchema = z.object({
 
 /**
  * Schéma pour filtrer les réservations
- * Exemple: GET /api/admin/bookings?status=pending&month=2026-01
+ * Filtre période (à venir / passées / toutes)
  */
 export const bookingFiltersSchema = z.object({
   status: z.enum(["pending", "confirmed", "canceled"]).optional(),
@@ -133,6 +133,7 @@ export const bookingFiltersSchema = z.object({
     .regex(/^\d{4}-\d{2}$/, "Format de mois invalide (YYYY-MM attendu)")
     .optional(),
   clientEmail: z.string().email().optional(),
+  period: z.enum(["upcoming", "past", "all"]).optional(), // ✅ NOUVEAU
 });
 
 /**

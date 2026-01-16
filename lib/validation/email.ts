@@ -70,7 +70,6 @@ export function validateEmail(email: string): {
   }
 
   // 3. Pour les autres : on accepte mais on log
-  console.log(`⚠️ Domaine inhabituel accepté: ${domain}`);
   return {
     isValid: true,
     shouldBlock: false,

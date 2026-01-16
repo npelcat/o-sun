@@ -1,6 +1,6 @@
 import db from "@/src/db/index";
 import { bookings, clients, timeSlots, formData } from "@/src/db/schema";
-import { eq, and, gte, lte, desc } from "drizzle-orm";
+import { eq, and, gte, lte, lt, desc } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
 
 // ============================================
@@ -29,6 +29,7 @@ export interface BookingFilters {
   status?: "pending" | "confirmed" | "canceled";
   month?: string; // Format: "YYYY-MM"
   clientEmail?: string;
+  period?: "upcoming" | "past" | "all";
 }
 
 // ============================================
@@ -74,6 +75,15 @@ export async function getAllBookingsAdmin(
   // Filtre par statut
   if (filters?.status) {
     conditions.push(eq(bookings.status, filters.status));
+  }
+
+  // Filtre par période
+  if (filters?.period === "upcoming") {
+    const now = new Date();
+    conditions.push(gte(timeSlots.startTime, now));
+  } else if (filters?.period === "past") {
+    const now = new Date();
+    conditions.push(lt(timeSlots.startTime, now));
   }
 
   // Filtre par mois

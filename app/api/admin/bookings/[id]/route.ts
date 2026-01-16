@@ -33,12 +33,7 @@ export async function GET(
 /**
  * PUT /api/admin/bookings/[id]
  * Met à jour une réservation (statut et/ou notes admin)
- *
- * Body attendu :
- * {
- *   "status": "confirmed" | "pending" | "canceled" (optionnel),
- *   "adminNotes": "Virement reçu le 15/01" (optionnel)
- * }
+ * Retourne le booking complet avec toutes les jointures
  */
 export async function PUT(
   req: NextRequest,
@@ -55,7 +50,11 @@ export async function PUT(
     // Valider les données avec Zod
     const validatedData = updateBookingAdminSchema.parse(body);
 
-    const updatedBooking = await updateBookingAdmin(id, validatedData);
+    // Mettre à jour
+    await updateBookingAdmin(id, validatedData);
+
+    // Re-fetch le booking complet avec toutes les jointures
+    const updatedBooking = await getBookingByIdAdmin(id);
 
     logger.info(
       `PUT /api/admin/bookings/${id} - Réservation mise à jour avec succès`,
@@ -67,7 +66,7 @@ export async function PUT(
 
     return NextResponse.json({
       message: "Réservation mise à jour avec succès",
-      booking: updatedBooking,
+      booking: updatedBooking, // Retourne le booking complet
     });
   });
 }
@@ -75,7 +74,6 @@ export async function PUT(
 /**
  * DELETE /api/admin/bookings/[id]
  * Supprime une réservation et libère le créneau associé
- *
  * ⚠️ Cette action est irréversible !
  */
 export async function DELETE(
