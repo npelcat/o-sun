@@ -79,6 +79,7 @@ export async function reserveSlot(timeSlotId: string): Promise<void> {
         )
       )
       .limit(1)
+      .for("update")
       .execute();
 
     if (!slot) {

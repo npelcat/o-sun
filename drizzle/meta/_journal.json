@@ -8,6 +8,13 @@
       "when": 1765549952763,
       "tag": "0000_previous_rockslide",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1768318933747,
+      "tag": "0001_good_master_chief",
+      "breakpoints": true
     }
   ]
 }

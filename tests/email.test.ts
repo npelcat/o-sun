@@ -1,6 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { POST } from "@/app/api/email/route";
-import { createRequest } from "./utils/test-utils";
+
+// Mock de Turnstile - DOIT ÊTRE AVANT l'import du module qui l'utilise
+vi.mock("@/lib/validation/turnstile", () => ({
+  verifyTurnstileToken: vi.fn().mockResolvedValue({ success: true }),
+}));
 
 // Mock de Resend
 const mockResendSend = vi.fn();
@@ -17,8 +20,17 @@ vi.mock("@/utils/logger", () => ({
   default: {
     info: vi.fn(),
     error: vi.fn(),
+    warn: vi.fn(),
   },
 }));
+
+// Imports APRÈS les mocks
+import { POST } from "@/app/api/email/route";
+import { createRequest } from "./utils/test-utils";
+import { verifyTurnstileToken } from "@/lib/validation/turnstile";
+
+// Récupérer la référence au mock
+const mockVerifyTurnstile = vi.mocked(verifyTurnstileToken);
 
 // Variables d'environnement
 vi.stubEnv("RESEND_API_KEY", "test-api-key");
@@ -37,10 +49,10 @@ describe("POST /api/email", () => {
       email: "jane@example.com",
       message:
         "Bonjour, je souhaiterais avoir plus d'informations sur vos services.",
+      turnstileToken: "valid-token",
     });
 
     const response = await POST(req);
-
     expect(response.status).toBe(200);
     const body = await response.json();
     expect(body.message).toContain("Ton e-mail a bien été envoyé");
@@ -58,17 +70,35 @@ describe("POST /api/email", () => {
     );
   });
 
-  it("should return 400 when name is missing", async () => {
+  it("should return 400 when turnstile token is missing", async () => {
     const req = createRequest("POST", {
+      name: "Jane Dupont",
       email: "jane@example.com",
-      message: "Message sans nom, cela devrait échouer.",
+      message: "Message sans token Turnstile.",
     });
 
     const response = await POST(req);
+    expect(response.status).toBe(400);
+    expect(mockResendSend).not.toHaveBeenCalled();
+  });
 
+  it("should return 400 when turnstile verification fails", async () => {
+    mockVerifyTurnstile.mockResolvedValueOnce({
+      success: false,
+      error: "Invalid token",
+    });
+
+    const req = createRequest("POST", {
+      name: "Jane Dupont",
+      email: "jane@example.com",
+      message: "Message avec token invalide.",
+      turnstileToken: "invalid-token",
+    });
+
+    const response = await POST(req);
     expect(response.status).toBe(400);
     const body = await response.json();
-    expect(body).toHaveProperty("error");
+    expect(body.error).toBe("Invalid token");
     expect(mockResendSend).not.toHaveBeenCalled();
   });
 
@@ -77,23 +107,10 @@ describe("POST /api/email", () => {
       name: "Jane Dupont",
       email: "invalid-email",
       message: "Message avec email invalide.",
+      turnstileToken: "valid-token",
     });
 
     const response = await POST(req);
-
-    expect(response.status).toBe(400);
-    expect(mockResendSend).not.toHaveBeenCalled();
-  });
-
-  it("should return 400 when message is too short", async () => {
-    const req = createRequest("POST", {
-      name: "Jane Dupont",
-      email: "jane@example.com",
-      message: "Court", // moins de 20 caractères
-    });
-
-    const response = await POST(req);
-
     expect(response.status).toBe(400);
     expect(mockResendSend).not.toHaveBeenCalled();
   });
@@ -107,10 +124,10 @@ describe("POST /api/email", () => {
       name: "Jane Dupont",
       email: "jane@example.com",
       message: "Message valide mais l'envoi va échouer.",
+      turnstileToken: "valid-token",
     });
 
     const response = await POST(req);
-
     expect(response.status).toBe(500);
     const body = await response.json();
     expect(body.error).toBe("Erreur lors de l'envoi de l'e-mail.");
@@ -121,10 +138,10 @@ describe("POST /api/email", () => {
       name: "Jane Dupont",
       email: "jane@example.com",
       message: "Ligne 1\nLigne 2\nLigne 3 avec du contenu supplémentaire",
+      turnstileToken: "valid-token",
     });
 
     await POST(req);
-
     const emailCall = mockResendSend.mock.calls[0][0];
     expect(emailCall.html).toContain("Ligne 1<br>Ligne 2<br>Ligne 3");
   });

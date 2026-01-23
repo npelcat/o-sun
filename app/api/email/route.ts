@@ -1,7 +1,8 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
-import { contactSchema } from "./contactSchema";
 import logger from "@/utils/logger";
+import { verifyTurnstileToken } from "@/lib/validation/turnstile";
+import { contactSchema } from "@/lib/validation/contact";
 
 /**
  * @swagger
@@ -70,12 +71,25 @@ import logger from "@/utils/logger";
 
 export async function POST(request: NextRequest) {
   const resend = new Resend(process.env.RESEND_API_KEY);
+
   try {
     logger.info("POST /email - Received email request");
     const data = await request.json();
 
-    const { name, email, message } = contactSchema.parse(data);
+    const { name, email, message, turnstileToken } = contactSchema.parse(data);
     logger.info("POST /email - Data validated", { name, email });
+
+    const turnstileCheck = await verifyTurnstileToken(turnstileToken);
+    if (!turnstileCheck.success) {
+      logger.warn("POST /email - Turnstile verification failed");
+      return NextResponse.json(
+        {
+          error: turnstileCheck.error || "Vérification de sécurité échouée",
+        },
+        { status: 400 }
+      );
+    }
+    logger.info("POST /email - Turnstile validated ✅");
 
     const { error } = await resend.emails.send({
       from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,

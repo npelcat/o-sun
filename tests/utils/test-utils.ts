@@ -29,12 +29,14 @@ export interface MockTransaction {
   from: Mock;
   where: Mock;
   limit: Mock;
+  for: Mock;
   insert: Mock;
   values: Mock;
   returning: Mock;
   update: Mock;
   set: Mock;
   execute: Mock;
+  delete: Mock;
 }
 
 /**
@@ -58,12 +60,14 @@ export function createMockTransaction(): MockTransaction {
     from: vi.fn().mockReturnThis(),
     where: vi.fn().mockReturnThis(),
     limit: vi.fn().mockReturnThis(),
+    for: vi.fn().mockReturnThis(),
     insert: vi.fn().mockReturnThis(),
     values: vi.fn().mockReturnThis(),
     returning: vi.fn().mockReturnThis(),
     update: vi.fn().mockReturnThis(),
     set: vi.fn().mockReturnThis(),
     execute: vi.fn().mockResolvedValue([]),
+    delete: vi.fn().mockReturnThis(),
   };
 }
 
