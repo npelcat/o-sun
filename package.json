@@ -9,7 +9,9 @@
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --report-unused-disable-directives",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
-    "test": "vitest"
+    "test": "vitest",
+    "admin:create": "tsx scripts/create-admin.ts",
+    "admin:update-password": "tsx scripts/update-admin-password.ts"
   },
   "engines": {
     "node": ">=22.0.0"
