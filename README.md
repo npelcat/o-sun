@@ -2,28 +2,69 @@
 
 ## 📜 Description
 
-Creation of a showcase website for a self-employed woman offering services related to animals.  
-The site includes a service showcase, a contact form, and calls-to-action for booking one or more services.
+Showcase website and booking platform for a self-employed professional offering animal communication services. The site includes service presentations, an online booking system, and an admin area for managing appointments and time slots.
+
+---
 
 ## 🎉 Current Features
 
-- Home Page (`index.tsx` in the `pages/` folder)
-- Navigation between different pages via Next.js routing
-- Contact form allowing users to send messages
+### Client Side
+
+- **Presentation pages**: services, ethics, testimonials
+- **Booking system**: select time slots and submit detailed forms
+- **Contact form**: send messages with automatic email confirmation
+- **Legal pages**: terms & conditions, legal notices
+
+### Admin Side (in development)
+
+- **Secure authentication**: admin login via NextAuth.js with Google OAuth
+- **Booking management**: view, confirm, cancel, and add private notes
+- **Time slot management**: create, edit, and disable availability _(in development)_
+
+### Technical
+
+- **REST API**: secure routes for data management
+- **API documentation**: integrated Swagger accessible via `/api-docs`
+- **Data validation**: Zod schemas on client and server side
+- **Email notifications**: automatic emails via Resend (client confirmations and admin alerts)
+
+---
 
 ## ⏳ Upcoming Features
 
-- **Admin Account Management**: admin roles allowing content editing by the site owner, with PostgreSQL database
-- **Online Service Booking**: directly from the site
-- **Online Payment**: ability to pay directly through the site and track orders
+- **Online payment**: integration of secure payment solution (Stripe/PayPal)
+- **Google reviews integration**: display customer testimonials
+
+---
 
 ## 🔬 Technologies Used
 
-- **Next.js**: for server-side rendering and dynamic page management
-- **React**: for creating a responsive user interface
-- **TypeScript**: for stronger, more maintainable code with static typing
-- **PostgreSQL**: relational database to manage users, services, and bookings
-- **Next.js API Routes**: for backend API management within the same project
+### Frontend
+
+- **Next.js 16**: App Router for server rendering and page management
+- **React**: interactive and responsive user interface
+- **TypeScript**: static typing for robust and maintainable code
+- **Tailwind CSS**: custom design system with DaisyUI
+
+### Backend & Database
+
+- **Next.js API Routes**: backend endpoint management
+- **PostgreSQL**: database hosted on Supabase (production and test)
+- **Drizzle ORM**: SQL migrations and query management
+- **Zod**: data validation in frontend and backend
+
+### External Services
+
+- **Strapi CMS**: content management (hosted on Koyeb)
+- **Resend**: transactional email service
+- **NextAuth.js**: authentication with Google OAuth
+- **Supabase**: PostgreSQL database hosting
+
+### Development Tools
+
+- **Docker**: containerization for easy installation and development
+- **Swagger**: interactive API documentation
+- **Vitest**: unit testing framework
 
 ---
 
@@ -31,107 +72,239 @@ The site includes a service showcase, a contact form, and calls-to-action for bo
 
 ### 🔧 Prerequisites
 
-- [Node.js](https://nodejs.org/)
-- [Docker](https://www.docker.com/) (optional but recommended for local development)
-- PostgreSQL (only if not using Docker)
+- **Node.js** (v22+ recommended)
+- **npm** or **pnpm**
+- **Docker** (optional but recommended for development)
 
 ---
 
-### 📦 Option 1 – Install Without Docker
+### 📦 Option 1 – Installation Without Docker
 
-1. **Clone this repository**:
+#### 1. Clone the repository
 
-   ```bash
-   git clone https://github.com/npelcat/o-sun.git
-   cd o-sun
-   ```
+```bash
+git clone https://github.com/npelcat/o-sun.git
+cd o-sun
+```
 
-2. **Install dependencies**:
+#### 2. Install dependencies
 
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
-3. **Set up your environment variables**:
+#### 3. Configure environment variables
 
-   Create a `.env.local` file at the root of the project based on the `.env.example` provided:
+Create a `.env.local` file at the project root:
 
-   ```bash
-   cp .env.example .env.local
-   ```
+```bash
+cp .env.example .env.local
+```
 
-4. **Run the development server**:
+Then fill in the required values (see **Environment Variables** section below).
 
-   ```bash
-   npm run dev
-   ```
+#### 4. Run the development server
 
-5. Open your browser at [http://localhost:3000](http://localhost:3000)
+```bash
+npm run dev
+```
+
+#### 5. Access the application
+
+Open your browser at: **http://localhost:3000**
 
 ---
 
-### 🐳 Option 2 – Install With Docker (recommended for dev)
+### 🐳 Option 2 – Installation With Docker (Recommended)
 
-1. **Clone this repository**:
+#### 1. Clone the repository
 
-   ```bash
-   git clone https://github.com/npelcat/o-sun.git
-   cd o-sun
-   ```
+```bash
+git clone https://github.com/npelcat/o-sun.git
+cd o-sun
+```
 
-2. **Set up your environment variables**:
+#### 2. Configure environment variables
 
-   ```bash
-   cp .env.example .env.local
-   ```
+```bash
+cp .env.example .env.local
+```
 
-3. **Start the container**:
+Fill in the values in `.env.local` (see **Environment Variables** section).
 
-   ```bash
-   docker-compose up
-   ```
+#### 3. Start the container
 
-4. Visit your app at [http://localhost:3001](http://localhost:3001) (or the port defined in your `docker-compose.yml`)
+```bash
+docker-compose up
+```
 
-5. To stop the container:
+#### 4. Access the application
 
-   ```bash
-   docker-compose down
-   ```
+The app will be available at: **http://localhost:3001**
 
-⚠️ Your code updates will be reflected live if volumes are correctly mounted (default behavior in development setup).
+#### 5. Stop the container
+
+```bash
+docker-compose down
+```
+
+---
+
+### 🔑 Environment Variables
+
+Create a `.env.local` file based on `.env.example`:
+
+```env
+# Environment
+NODE_ENV=development  # development | production | test
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=your-secret-here
+
+# Strapi CMS API
+NEXT_PUBLIC_API_URL=http://localhost:1337
+
+# Supabase Database
+DATABASE_URL=postgresql://user:password@host:5432/database
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
+
+# Email Service (Resend)
+RESEND_API_KEY=re_xxxxx
+RESEND_SENDER_EMAIL=sender@domain.com
+
+# Google OAuth Authentication
+GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=your-secret
+```
 
 ---
 
 ## 💾 Database
 
-🔜 The project will use **PostgreSQL** to manage data related to admin, bookings and services.
-A detailed database schema and SQL queries will be included in future updates.
+### Architecture
+
+- **Production**: PostgreSQL hosted on Supabase
+- **Test**: Dedicated Supabase database to validate migrations
+- **Development**: Local database with test data
+
+### Migration Management
+
+Migrations are managed via **Drizzle ORM**. Files are located in the `/drizzle` folder.
+
+#### Generate a migration
+
+```bash
+npm run drizzle:generate
+```
+
+#### Apply migrations
+
+```bash
+npm run drizzle:migrate
+```
+
+---
+
+## 🛠️ Available Scripts
+
+- `npm run dev` – Start development server
+- `npm run build` – Build the application for production
+- `npm run start` – Start the production application
+- `npm run test` – Run unit tests
+- `npm run lint` – Check code quality with ESLint
+- `npm run drizzle:generate` – Generate a Drizzle migration
+- `npm run drizzle:migrate` – Apply Drizzle migrations
 
 ---
 
 ## 🌱 Deployment
 
-The site is currently deployed on **Vercel**:
-👉 [https://www.osun-voixanimale.com/](https://www.osun-voixanimale.com/)
+### Production
+
+The site is deployed on **Vercel**:  
+👉 **https://www.osun-voixanimale.com/**
+
+### Connected Services
+
+- **Database**: Supabase (PostgreSQL)
+- **CMS**: Strapi hosted on Koyeb
+- **Emails**: Resend
+
+---
+
+## 📂 Project Structure
+
+```
+/app
+  /about              # Static pages (ethics, testimonials)
+  /admin              # Admin interface (protected)
+  /api                # API routes
+    /admin            # Time slots and bookings management
+    /auth             # NextAuth authentication
+    /bookings         # Client bookings
+    /email            # Contact form
+    /strapi           # Strapi CMS connection
+    /swagger          # API documentation
+  /api-docs           # Swagger interface
+  /booking            # Booking process
+  /contact            # Contact form
+  /login              # Admin login page
+  /services           # Services presentation
+  /cgv                # Terms and conditions
+  /mentions-legales   # Legal notices
+
+/drizzle              # Drizzle ORM migrations
+/lib                  # Services and business logic
+  /admin              # Admin functions
+  /validation         # Zod validation schemas
+
+/src
+  /components         # Reusable React components
+  /db                 # Drizzle + Supabase configuration
+  /hooks              # Custom hooks
+  /styles             # Global styles
+
+/tests                # Unit tests
+/utils                # Utilities (logger, emails, error handler)
+/scripts              # Admin scripts (not in git)
+```
+
+---
+
+## 🧪 Testing
+
+Unit tests are organized in the `/tests` folder:
+
+```bash
+npm run test
+```
 
 ---
 
 ## 🔒 Security
 
-- Session management and admin role (**in progress**)
-- Secured API via authentication (**upcoming feature**)
+- **Admin authentication**: NextAuth.js with Google OAuth
+- **Data validation**: Zod (frontend + backend)
+- **Environment variables**: never exposed client-side (except `NEXT_PUBLIC_*`)
+- **Secure APIs**: session verification for `/api/admin/*` routes
 
 ---
 
 ## 📫 Contributing
 
-All feedback, improvement suggestions, and contributions are welcome!
-Feel free to open an issue or submit a pull request.
+Feedback, improvement suggestions, and contributions are welcome!  
+Feel free to open an **issue** or submit a **pull request**.
 
 ---
 
-## \:octocat: Author
+## 👩‍💻 Author
 
-- **@nad_cat** – Passionate Full Stack Developer, France
-- Learn more about my experience: [LinkedIn](https://www.linkedin.com/in/nadege-pelcat/)
+**@nad_cat** – Passionate Full Stack Developer, France  
+📧 [LinkedIn](https://www.linkedin.com/in/nadege-pelcat)
+
+---
+
+## 📄 License
+
+This project is under private license. All rights reserved.

@@ -45,3 +45,8 @@ next-env.d.ts
 #logs and automatic drizzle generation
 /logs
 /drizzle
+
+# Scripts sensibles
+/scripts/create-admin*.ts
+/scripts/*-credentials.ts
+/scripts/temp-*.ts
