@@ -267,7 +267,6 @@ The site is deployed on **Vercel**:
 
 /tests                # Unit tests
 /utils                # Utilities (logger, emails, error handler)
-/scripts              # Admin scripts (not in git)
 ```
 
 ---
