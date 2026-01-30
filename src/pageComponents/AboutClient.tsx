@@ -1,8 +1,8 @@
 "use client";
-
 import { Accordion } from "@/src/components/Accordion";
 import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
+import { TableOfContents } from "@/src/components/TableOfContents";
 import Image from "next/image";
 import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
@@ -18,17 +18,28 @@ export default function AboutClient({
 }: AboutClientProps) {
   const oceaneContent = blockContents.find((b) => b.slug === "oceane");
   const diplomesEtFormations = blockContents.find(
-    (b) => b.slug === "mes-diplomes-et-formations"
+    (b) => b.slug === "mes-diplomes-et-formations",
   );
-
   const trainingContents = accordions.filter((b) =>
     [
       "ma-formation-en-communication-animale",
       "ma-formation-en-soins-energetiques",
       "ma-formation-pour-les-services-aux-gardiens",
       "mon-ancienne-vie",
-    ].includes(b.slug || "")
+    ].includes(b.slug || ""),
   );
+
+  // Table des matières - uniquement les gros blocs
+  const tocItems = [
+    oceaneContent && {
+      id: "oceane",
+      title: oceaneContent.title,
+    },
+    diplomesEtFormations && {
+      id: "diplomes-formations",
+      title: diplomesEtFormations.title,
+    },
+  ].filter(Boolean) as { id: string; title: string }[];
 
   return (
     <div className="pt-16 space-y-12 text-center">
@@ -36,8 +47,14 @@ export default function AboutClient({
         Qui suis-je ?
       </h2>
 
+      {/* Table des matières */}
+      <TableOfContents items={tocItems} />
+
       {oceaneContent && (
-        <section className="flex justify-center bg-beige">
+        <section
+          id="oceane"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="w-full md:w-3/5 py-8 px-4 space-y-8 text-justify">
             <CardTitlePhoto
               title={oceaneContent.title}
@@ -65,7 +82,10 @@ export default function AboutClient({
       )}
 
       {diplomesEtFormations && (
-        <section className="flex justify-center bg-green">
+        <section
+          id="diplomes-formations"
+          className="flex justify-center bg-green scroll-mt-24"
+        >
           <div className="w-full md:w-3/5 py-8 px-4 space-y-8 text-justify">
             <CardTitlePhoto
               title={diplomesEtFormations.title}

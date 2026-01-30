@@ -381,20 +381,31 @@ export default function CGVPage() {
 
             <article className="bg-white p-6 rounded-lg shadow-sm">
               <h3 className="text-lg font-semibold mb-4">
-                Article 14 – Médiation et litige
+                Article 14 – Litige – Médiation de la consommation
               </h3>
               <p className="text-gray-700">
-                Conformément à la législation, le client peut recourir à un
-                service de médiation ou à la plateforme de Règlement en Ligne
-                des Litiges de la Commission européenne :{" "}
+                En cas de litige entre le Client et l’entreprise, ceux-ci
+                s’efforceront de le résoudre à l’amiable (le Client adressera
+                une réclamation écrite auprès du professionnel ou, le cas
+                échéant, auprès du Service Relations Clientèle du
+                professionnel). A défaut d’accord amiable ou en l’absence de
+                réponse du professionnel dans un délai raisonnable d’un (1)
+                mois, le Client consommateur au sens de l’article L.612-2 du
+                code de la consommation a la possibilité de saisir gratuitement,
+                si un désaccord subsiste, le médiateur compétent inscrit sur la
+                liste des médiateurs établie par la Commission d’évaluation et
+                de contrôle de la médiation de la consommation en application de
+                l’article L.615-1 du code de la consommation, à savoir : La
+                Société Médiation Professionnelle
                 <a
                   href="https://webgate.ec.europa.eu/odr/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 underline"
                 >
-                  https://webgate.ec.europa.eu/odr/
+                  http://www.mediateur-consommation-smp.fr
                 </a>
+                Alteritae 5 rue Salvaing 12000 Rodez
               </p>
             </article>
 
