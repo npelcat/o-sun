@@ -3,6 +3,7 @@
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
+import { TableOfContents } from "@/src/components/TableOfContents";
 import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
@@ -16,16 +17,16 @@ export default function EnergyCareClient({
   accordions,
 }: EnergyCareClientProps) {
   const whatIsThisContent = blockContents.find(
-    (block) => block.slug === "soins-energetiques-qu-est-ce-que-c-est"
+    (block) => block.slug === "soins-energetiques-qu-est-ce-que-c-est",
   );
   const whatEffectsContent = blockContents.find(
-    (block) => block.slug === "quels-sont-les-effets-d-une-seance-energetique"
+    (block) => block.slug === "quels-sont-les-effets-d-une-seance-energetique",
   );
   const onWhatContent = blockContents.find(
-    (block) => block.slug === "sur-quoi-agit-une-seance-energetique"
+    (block) => block.slug === "sur-quoi-agit-une-seance-energetique",
   );
   const practicalInfosContent = blockContents.find(
-    (block) => block.slug === "soins-energetiques-infos-pratiques"
+    (block) => block.slug === "soins-energetiques-infos-pratiques",
   );
 
   const practicalInfosAccordions = accordions.filter(
@@ -35,8 +36,28 @@ export default function EnergyCareClient({
         "a-qui-s-adresse-mes-soins-energetiques",
         "soins-energetiques-une-seance-en-pratique",
         "soins-energetiques-type-de-seance-et-tarifs",
-      ].includes(accordion.slug)
+      ].includes(accordion.slug),
   );
+
+  // Table des matières
+  const tocItems = [
+    whatIsThisContent && {
+      id: "quest-ce-que-cest",
+      title: whatIsThisContent.title,
+    },
+    whatEffectsContent && {
+      id: "quels-effets",
+      title: whatEffectsContent.title,
+    },
+    onWhatContent && {
+      id: "sur-quoi-agit",
+      title: onWhatContent.title,
+    },
+    practicalInfosContent && {
+      id: "infos-pratiques",
+      title: practicalInfosContent.title,
+    },
+  ].filter(Boolean) as { id: string; title: string }[];
 
   return (
     <div className="text-center py-16 space-y-12">
@@ -44,8 +65,14 @@ export default function EnergyCareClient({
         Les soins énergétiques
       </h2>
 
+      {/* Table des matières */}
+      {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+
       {whatIsThisContent && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="quest-ce-que-cest"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatIsThisContent.title}
@@ -60,11 +87,14 @@ export default function EnergyCareClient({
               link="/about/ethics"
             />
           </div>
-        </div>
+        </section>
       )}
 
       {whatEffectsContent && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="quels-effets"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatEffectsContent.title}
@@ -76,16 +106,19 @@ export default function EnergyCareClient({
             </div>
             <Button
               titleButton="Réserver un soin énergétique"
-              link="https://calendly.com/o-sun-voixanimale"
+              link="https://form.jotform.com/252464023594356"
               target="_blank"
               rel="noopener noreferrer"
             />
           </div>
-        </div>
+        </section>
       )}
 
       {onWhatContent && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="sur-quoi-agit"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="text-justify py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={onWhatContent.title}
@@ -94,10 +127,13 @@ export default function EnergyCareClient({
             />
             <BlockRendererClient content={onWhatContent.content} />
           </div>
-        </div>
+        </section>
       )}
 
-      <div className="flex justify-center bg-green">
+      <section
+        id="infos-pratiques"
+        className="flex justify-center bg-green scroll-mt-24"
+      >
         <div className="py-8 w-full md:w-3/5 px-4">
           {practicalInfosContent && (
             <>
@@ -116,12 +152,12 @@ export default function EnergyCareClient({
             </>
           )}
         </div>
-      </div>
+      </section>
 
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver un soin énergétique"
-          link="https://calendly.com/o-sun-voixanimale"
+          link="https://form.jotform.com/252464023594356"
           target="_blank"
           rel="noopener noreferrer"
         />

@@ -1,8 +1,8 @@
 "use client";
-
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
+import { TableOfContents } from "@/src/components/TableOfContents";
 import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
@@ -16,13 +16,13 @@ export default function GuardiansClient({
   accordions,
 }: GuardiansClientProps) {
   const whatAreTheyContent = blockContents.find(
-    (block) => block.slug === "gardiens-quels-sont-ils"
+    (block) => block.slug === "gardiens-quels-sont-ils",
   );
   const whatIsItForContent = blockContents.find(
-    (block) => block.slug === "gardiens-a-quoi-ca-sert"
+    (block) => block.slug === "gardiens-a-quoi-ca-sert",
   );
   const practicalInfosContent = blockContents.find(
-    (block) => block.slug === "gardiens-infos-pratiques"
+    (block) => block.slug === "gardiens-infos-pratiques",
   );
 
   const practicalInfosAccordions = accordions.filter(
@@ -32,8 +32,24 @@ export default function GuardiansClient({
         "en-pratique-premier-service",
         "en-pratique-deuxieme-service",
         "gardiens-type-de-seance-et-tarifs",
-      ].includes(accordion.slug)
+      ].includes(accordion.slug),
   );
+
+  // Table des matières
+  const tocItems = [
+    whatAreTheyContent && {
+      id: "quels-sont-ils",
+      title: whatAreTheyContent.title,
+    },
+    whatIsItForContent && {
+      id: "a-quoi-ca-sert",
+      title: whatIsItForContent.title,
+    },
+    practicalInfosContent && {
+      id: "infos-pratiques",
+      title: practicalInfosContent.title,
+    },
+  ].filter(Boolean) as { id: string; title: string }[];
 
   return (
     <div className="text-center pt-16 space-y-12">
@@ -41,8 +57,14 @@ export default function GuardiansClient({
         Services aux gardiens
       </h2>
 
+      {/* Table des matières */}
+      {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+
       {whatAreTheyContent && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="quels-sont-ils"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatAreTheyContent.title}
@@ -57,11 +79,14 @@ export default function GuardiansClient({
               link="/about/ethics"
             />
           </div>
-        </div>
+        </section>
       )}
 
       {whatIsItForContent && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="a-quoi-ca-sert"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatIsItForContent.title}
@@ -73,15 +98,18 @@ export default function GuardiansClient({
             </div>
             <Button
               titleButton="Réserver un service pour moi"
-              link="https://calendly.com/o-sun-voixanimale"
+              link="https://linktr.ee/o.sun.voixanimale"
               target="_blank"
               rel="noopener noreferrer"
             />
           </div>
-        </div>
+        </section>
       )}
 
-      <div className="flex justify-center bg-green">
+      <section
+        id="infos-pratiques"
+        className="flex justify-center bg-green scroll-mt-24"
+      >
         <div className="py-8 w-full md:w-3/5 px-4">
           {practicalInfosContent && (
             <>
@@ -100,12 +128,12 @@ export default function GuardiansClient({
             </>
           )}
         </div>
-      </div>
+      </section>
 
       <div className="flex justify-center mt-16">
         <Button
-          titleButton="Réserver une Moon Guidance ou un soin énergétique humain"
-          link="https://calendly.com/o-sun-voixanimale"
+          titleButton="Réserver un soin énergétique humain"
+          link="https://linktr.ee/o.sun.voixanimale"
           target="_blank"
           rel="noopener noreferrer"
         />

@@ -9,6 +9,7 @@ import {
   StrapiBlockContent,
   StrapiLinkComponent,
 } from "@/app/api/types/strapi";
+import { HomeQuoteBanner } from "../components/HomeQuoteBanner";
 
 interface HomeClientProps {
   quoteBlock: StrapiBlockContent | null;
@@ -38,7 +39,7 @@ export default function HomeClient({
       {
         threshold: 0.1, // Triggers when 10% of the element is visible
         rootMargin: "0px 0px -50px 0px", // Triggers a little before
-      }
+      },
     );
 
     // Observe all elements with the "scroll-animate" class
@@ -53,23 +54,11 @@ export default function HomeClient({
   return (
     <main>
       {quoteBlock && (
-        <section className="mt-16 bg-dark-green bg-opacity-50 overflow-hidden scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
-          <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row md:items-center md:gap-8 lg:gap-12">
-            <h2 className="flex-1 text-xl leading-relaxed text-center md:text-left mb-6 md:mb-0">
-              <BlockRendererClient content={quoteBlock.content} />
-            </h2>
-            {quoteBlock.picture && (
-              <Image
-                className="flex-shrink-0 w-full max-w-sm md:w-80 lg:w-96 h-48 md:h-56 lg:h-64 rounded-lg object-cover shadow-lg mx-auto md:mx-0 transition-transform duration-300"
-                src={quoteBlock.picture.url}
-                width={600}
-                height={400}
-                alt={quoteBlock.picture.alternativeText || "Image"}
-                loading="lazy"
-              />
-            )}
-          </div>
-        </section>
+        <HomeQuoteBanner
+          quoteBlock={quoteBlock}
+          instagramUrl="https://instagram.com/o.sun.voixanimale"
+          instagramHandle="@o.sun.voixanimale"
+        />
       )}
 
       <section className="py-16">

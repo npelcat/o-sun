@@ -14,20 +14,15 @@ export default function BookingClient({ blockContent }: BookingClientProps) {
   const bookingOptions = [
     {
       title: "💌 Réserver une communication animale",
-      lien: "https://calendly.com/o-sun-voixanimale",
+      lien: "https://linktr.ee/o.sun.voixanimale",
     },
     {
       title: "✨ Réserver un soin énergétique animal, humain ou duo",
       lien: "https://form.jotform.com/252464023594356",
     },
     {
-      title: "🌙 Réserver une Moon Guidance",
-      lien: "https://calendly.com/o-sun-voixanimale/moon-guidance?back=1&month=2025-02",
-      note: "(pour les gardiens)",
-    },
-    {
       title: "📞 Réserver un appel découverte de 15 minutes",
-      lien: "https://calendly.com/o-sun-voixanimale/on-s-appelle?back=1&month=2025-05",
+      lien: "https://calendly.com/o-sun-voixanimale/on-s-appelle",
       note: "(Pour en savoir plus avant réservation d'un service)",
     },
     {

@@ -1,9 +1,9 @@
 "use client";
-
 import Image from "next/image";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
+import { TableOfContents } from "@/src/components/TableOfContents";
 import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
@@ -17,16 +17,26 @@ export default function EthicsClient({
   accordions,
 }: EthicsClientProps) {
   const wayOfWorking = blockContents.find(
-    (block) => block.slug === "ma-facon-de-travailler"
+    (block) => block.slug === "ma-facon-de-travailler",
   );
-
   const ethicsContents = accordions.filter((block) =>
     [
       "mon-ethique-en-communication-animale",
       "mon-ethique-en-soins-energetiques",
       "mon-ethique-pour-les-services-aux-gardiens",
-    ].includes(block.slug || "")
+    ].includes(block.slug || ""),
   );
+
+  const tocItems = [
+    wayOfWorking && {
+      id: "facon-de-travailler",
+      title: wayOfWorking.title,
+    },
+    ethicsContents.length > 0 && {
+      id: "details-pratique",
+      title: "Les détails de ma pratique",
+    },
+  ].filter(Boolean) as { id: string; title: string }[];
 
   return (
     <div className="pt-16 space-y-12">
@@ -34,16 +44,19 @@ export default function EthicsClient({
         Mon éthique
       </h2>
 
+      {/* Table des matières */}
+      {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+
       <div className="flex justify-center bg-beige">
         <div className="w-full md:w-3/5 py-8 px-4">
           {wayOfWorking && (
-            <>
+            <section id="facon-de-travailler" className="scroll-mt-24">
               <CardTitlePhoto
                 title={wayOfWorking.title}
                 image={wayOfWorking.picture?.url || ""}
                 alt={wayOfWorking.picture?.alternativeText || ""}
               />
-              <section className="pt-8 text-justify">
+              <div className="pt-8 text-justify">
                 <BlockRendererClient content={wayOfWorking.content} />
                 <div className="flex justify-center py-8">
                   <Image
@@ -56,11 +69,13 @@ export default function EthicsClient({
                     height={1180}
                   />
                 </div>
-              </section>
-            </>
+              </div>
+            </section>
           )}
-
-          <div className="bg-green rounded-lg my-8 p-4">
+          <div
+            id="details-pratique"
+            className="bg-green rounded-lg my-8 p-4 scroll-mt-24"
+          >
             <h3 className="text-center font-bold bg-white bg-opacity-50 rounded-lg p-2">
               Les détails de ma pratique pour chaque discipline :
             </h3>
@@ -74,7 +89,6 @@ export default function EthicsClient({
           </div>
         </div>
       </div>
-
       <div className="flex justify-center pb-12">
         <Button titleButton="Me contacter" link="/contact" />
       </div>

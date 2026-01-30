@@ -3,6 +3,7 @@
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
+import { TableOfContents } from "@/src/components/TableOfContents";
 import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
@@ -16,25 +17,45 @@ export default function AnimalCommunicationClient({
   accordions,
 }: AnimalCommunicationClientProps) {
   const whatIsThisContent = blockContents.find(
-    (block) => block.slug === "com-animale-qu-est-ce-que-c-est"
+    (block) => block.slug === "com-animale-qu-est-ce-que-c-est",
   );
   const whatIsItForContent = blockContents.find(
-    (block) => block.slug === "com-animale-a-quoi-ca-sert"
+    (block) => block.slug === "com-animale-a-quoi-ca-sert",
   );
   const whatIsLookLike = blockContents.find(
-    (block) => block.slug === "com-animale-a-quoi-ressemble-une-seance"
+    (block) => block.slug === "com-animale-a-quoi-ressemble-une-seance",
   );
   const practicalInfosContent = blockContents.find(
-    (block) => block.slug === "com-animale-infos-pratiques"
+    (block) => block.slug === "com-animale-infos-pratiques",
   );
 
   const practicalInfosAccordions = accordions.filter(
     (accordion) =>
       accordion.slug &&
       ["com-animale-limites", "com-animale-type-de-seance-et-tarifs"].includes(
-        accordion.slug
-      )
+        accordion.slug,
+      ),
   );
+
+  // Table des matières
+  const tocItems = [
+    whatIsThisContent && {
+      id: "quest-ce-que-cest",
+      title: whatIsThisContent.title,
+    },
+    whatIsLookLike && {
+      id: "a-quoi-ressemble-une-seance",
+      title: whatIsLookLike.title,
+    },
+    whatIsItForContent && {
+      id: "a-quoi-ca-sert",
+      title: whatIsItForContent.title,
+    },
+    practicalInfosContent && {
+      id: "infos-pratiques",
+      title: practicalInfosContent.title,
+    },
+  ].filter(Boolean) as { id: string; title: string }[];
 
   return (
     <div className="text-center py-16 space-y-12">
@@ -42,8 +63,14 @@ export default function AnimalCommunicationClient({
         La communication animale
       </h2>
 
+      {/* Table des matières */}
+      {tocItems.length > 0 && <TableOfContents items={tocItems} />}
+
       {whatIsThisContent && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="quest-ce-que-cest"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatIsThisContent.title}
@@ -58,11 +85,14 @@ export default function AnimalCommunicationClient({
               link="/about/ethics"
             />
           </div>
-        </div>
+        </section>
       )}
 
       {whatIsLookLike && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="a-quoi-ressemble-une-seance"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatIsLookLike.title}
@@ -73,11 +103,14 @@ export default function AnimalCommunicationClient({
               <BlockRendererClient content={whatIsLookLike.content} />
             </div>
           </div>
-        </div>
+        </section>
       )}
 
       {whatIsItForContent && (
-        <div className="flex justify-center bg-beige">
+        <section
+          id="a-quoi-ca-sert"
+          className="flex justify-center bg-beige scroll-mt-24"
+        >
           <div className="py-8 w-full md:w-3/5 px-4">
             <CardTitlePhoto
               title={whatIsItForContent.title}
@@ -89,15 +122,18 @@ export default function AnimalCommunicationClient({
             </div>
             <Button
               titleButton="Réserver une communication"
-              link="https://calendly.com/o-sun-voixanimale"
+              link="https://linktr.ee/o.sun.voixanimale"
               target="_blank"
               rel="noopener noreferrer"
             />
           </div>
-        </div>
+        </section>
       )}
 
-      <div className="flex justify-center bg-green">
+      <section
+        id="infos-pratiques"
+        className="flex justify-center bg-green scroll-mt-24"
+      >
         <div className="py-8 w-full md:w-3/5 px-4">
           {practicalInfosContent && (
             <>
@@ -116,12 +152,12 @@ export default function AnimalCommunicationClient({
             </>
           )}
         </div>
-      </div>
+      </section>
 
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une communication animale"
-          link="https://calendly.com/o-sun-voixanimale"
+          link="https://linktr.ee/o.sun.voixanimale"
           target="_blank"
           rel="noopener noreferrer"
         />
