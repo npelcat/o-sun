@@ -3,22 +3,16 @@
 import { useState } from "react";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import { formatDateTime, formatDateTimeRange } from "@/lib/date";
+import { BOOKING_STATUS, BookingStatus } from "@/lib/constants";
 
 interface BookingDetailModalProps {
   booking: BookingWithDetails;
   onClose: () => void;
-  onStatusChange: (
-    id: string,
-    status: "pending" | "confirmed" | "canceled"
-  ) => void;
+  onStatusChange: (id: string, status: BookingStatus) => void;
   onSaveNotes: (id: string, notes: string) => void;
   onDelete: (id: string) => void;
 }
 
-/**
- * Modal affichant tous les détails d'une réservation
- * Permet de modifier le statut, ajouter des notes et supprimer
- */
 export default function BookingDetailModal({
   booking,
   onClose,
@@ -78,22 +72,28 @@ export default function BookingDetailModal({
             <div className="flex space-x-2">
               <StatusButton
                 label="En attente"
-                isActive={booking.status === "pending"}
-                onClick={() => onStatusChange(booking.id, "pending")}
+                isActive={booking.status === BOOKING_STATUS.PENDING}
+                onClick={() =>
+                  onStatusChange(booking.id, BOOKING_STATUS.PENDING)
+                }
                 bgColor="bg-yellow-100 hover:bg-yellow-200"
                 activeColor="bg-yellow-300"
               />
               <StatusButton
                 label="Confirmée"
-                isActive={booking.status === "confirmed"}
-                onClick={() => onStatusChange(booking.id, "confirmed")}
+                isActive={booking.status === BOOKING_STATUS.CONFIRMED}
+                onClick={() =>
+                  onStatusChange(booking.id, BOOKING_STATUS.CONFIRMED)
+                }
                 bgColor="bg-green hover:bg-green/80"
                 activeColor="bg-dark-green text-white"
               />
               <StatusButton
                 label="Annulée"
-                isActive={booking.status === "canceled"}
-                onClick={() => onStatusChange(booking.id, "canceled")}
+                isActive={booking.status === BOOKING_STATUS.CANCELED}
+                onClick={() =>
+                  onStatusChange(booking.id, BOOKING_STATUS.CANCELED)
+                }
                 bgColor="bg-red-100 hover:bg-red-200"
                 activeColor="bg-red-300"
               />

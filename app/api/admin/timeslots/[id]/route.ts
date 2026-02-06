@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { withErrorHandler } from "@/utils/withErrorHandler";
+import { AdminBusinessError, withErrorHandler } from "@/utils/withErrorHandler";
 import {
   getTimeslotById,
   updateTimeslot,
@@ -17,7 +17,7 @@ import logger from "@/utils/logger";
  */
 export async function GET(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return withErrorHandler(req, async () => {
     const { id } = await params;
@@ -44,7 +44,7 @@ export async function GET(
  */
 export async function PUT(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return withErrorHandler(req, async () => {
     const { id } = await params;
@@ -63,7 +63,7 @@ export async function PUT(
       `PUT /api/admin/timeslots/${id} - Créneau mis à jour avec succès`,
       {
         isActive: updatedTimeslot.isActive,
-      }
+      },
     );
 
     return NextResponse.json({
@@ -82,7 +82,7 @@ export async function PUT(
  */
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   return withErrorHandler(req, async () => {
     const { id } = await params;
@@ -99,15 +99,11 @@ export async function DELETE(
     if (linkedBookings.length > 0) {
       logger.warn(
         `DELETE /api/admin/timeslots/${id} - Suppression refusée : réservation liée`,
-        { bookingId: linkedBookings[0].id }
+        { bookingId: linkedBookings[0].id },
       );
 
-      return NextResponse.json(
-        {
-          message:
-            "Impossible de supprimer ce créneau : une réservation y est liée. Veuillez d'abord supprimer la réservation.",
-        },
-        { status: 409 } // Conflict
+      throw new AdminBusinessError(
+        "Impossible de supprimer ce créneau : une réservation y est liée. Veuillez d'abord supprimer la réservation.",
       );
     }
 

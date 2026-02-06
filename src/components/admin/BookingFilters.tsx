@@ -1,19 +1,17 @@
 "use client";
 
+import { BOOKING_STATUS, BookingStatusFilter } from "@/lib/constants";
+
 interface BookingFiltersProps {
-  statusFilter: string;
+  statusFilter: BookingStatusFilter;
   monthFilter: string;
   emailFilter: string;
-  onStatusChange: (status: string) => void;
+  onStatusChange: (status: BookingStatusFilter) => void;
   onMonthChange: (month: string) => void;
   onEmailChange: (email: string) => void;
   onReset: () => void;
 }
 
-/**
- * Composant de filtrage des réservations
- * Statut, mois et email client
- */
 export default function BookingFilters({
   statusFilter,
   monthFilter,
@@ -33,13 +31,15 @@ export default function BookingFilters({
           </label>
           <select
             value={statusFilter}
-            onChange={(e) => onStatusChange(e.target.value)}
+            onChange={(e) =>
+              onStatusChange(e.target.value as BookingStatusFilter)
+            }
             className="w-full px-3 py-2 border border-dark-green/20 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-dark-green"
           >
             <option value="">Tous</option>
-            <option value="pending">En attente</option>
-            <option value="confirmed">Confirmées</option>
-            <option value="canceled">Annulées</option>
+            <option value={BOOKING_STATUS.PENDING}>En attente</option>
+            <option value={BOOKING_STATUS.CONFIRMED}>Confirmées</option>
+            <option value={BOOKING_STATUS.CANCELED}>Annulées</option>
           </select>
         </div>
 

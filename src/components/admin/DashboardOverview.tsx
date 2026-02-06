@@ -5,6 +5,8 @@ import { useToast } from "@/src/hooks/useToast";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import Loader from "@/src/components/Loader";
 import { formatDateTime } from "@/lib/date";
+import { calculateBookingStats } from "@/lib/admin/stats";
+import { BOOKING_PERIOD } from "@/lib/constants";
 
 interface DashboardStats {
   total: number;
@@ -22,7 +24,7 @@ export default function DashboardOverview() {
   const { error } = useToast();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentBookings, setRecentBookings] = useState<BookingWithDetails[]>(
-    []
+    [],
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,32 +32,27 @@ export default function DashboardOverview() {
     setIsLoading(true);
     try {
       // Récupérer TOUTES les réservations (pour le total)
-      const allResponse = await fetch("/api/admin/bookings?period=all");
+      const allResponse = await fetch(
+        `/api/admin/bookings?period=${BOOKING_PERIOD.ALL}`,
+      );
       if (!allResponse.ok) throw new Error("Erreur lors du chargement");
       const allData = await allResponse.json();
       const allBookings = allData.bookings;
 
       // Récupérer les réservations À VENIR (pour les stats détaillées)
       const upcomingResponse = await fetch(
-        "/api/admin/bookings?period=upcoming"
+        `/api/admin/bookings?period=${BOOKING_PERIOD.UPCOMING}`,
       );
       if (!upcomingResponse.ok) throw new Error("Erreur lors du chargement");
       const upcomingData = await upcomingResponse.json();
       const upcomingBookings = upcomingData.bookings;
 
       // Calculer les stats
+      const upcomingStats = calculateBookingStats(upcomingBookings);
       const statsData: DashboardStats = {
-        total: allBookings.length, // Total absolu
-        upcoming: upcomingBookings.length, // Total à venir
-        pending: upcomingBookings.filter(
-          (b: BookingWithDetails) => b.status === "pending"
-        ).length,
-        confirmed: upcomingBookings.filter(
-          (b: BookingWithDetails) => b.status === "confirmed"
-        ).length,
-        canceled: upcomingBookings.filter(
-          (b: BookingWithDetails) => b.status === "canceled"
-        ).length,
+        total: allBookings.length,
+        upcoming: upcomingBookings.length,
+        ...upcomingStats,
       };
 
       setStats(statsData);

@@ -1,21 +1,16 @@
 "use client";
 
 import { BookingWithDetails } from "@/app/api/types/booking";
+import { BOOKING_STATUS, BookingStatus } from "@/lib/constants";
 import { formatDateTime } from "@/lib/date";
 
 interface BookingsTableProps {
   bookings: BookingWithDetails[];
   onViewDetails: (booking: BookingWithDetails) => void;
-  onStatusChange: (
-    id: string,
-    status: "pending" | "confirmed" | "canceled"
-  ) => void;
+  onStatusChange: (id: string, status: BookingStatus) => void;
   onDelete: (id: string) => void;
 }
 
-/**
- * Tableau des réservations avec actions rapides
- */
 export default function BookingsTable({
   bookings,
   onViewDetails,
@@ -113,7 +108,7 @@ function StatusSelect({
   onChange,
 }: {
   currentStatus: string;
-  onChange: (status: "pending" | "confirmed" | "canceled") => void;
+  onChange: (status: BookingStatus) => void;
 }) {
   const statusStyles = {
     pending: "bg-yellow-100 text-yellow-800 border-yellow-300",
@@ -131,9 +126,9 @@ function StatusSelect({
         statusStyles[currentStatus as keyof typeof statusStyles]
       }`}
     >
-      <option value="pending">En attente</option>
-      <option value="confirmed">Confirmée</option>
-      <option value="canceled">Annulée</option>
+      <option value={BOOKING_STATUS.PENDING}>En attente</option>
+      <option value={BOOKING_STATUS.CONFIRMED}>Confirmée</option>
+      <option value={BOOKING_STATUS.CANCELED}>Annulée</option>
     </select>
   );
 }
