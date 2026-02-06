@@ -8,6 +8,12 @@ export class HttpError extends Error {
     this.status = status;
   }
 }
+export class AdminBusinessError extends HttpError {
+  constructor(message: string) {
+    super(400, message);
+    this.name = "AdminBusinessError";
+  }
+}
 
 function clientAcceptsHtml(req: NextRequest): boolean {
   const accept = req.headers.get("Accept") || "";
@@ -34,18 +40,27 @@ function renderHtml500(): NextResponse {
     {
       status: 500,
       headers: { "Content-Type": "text/html" },
-    }
+    },
   );
 }
 
 export async function withErrorHandler(
   req: NextRequest,
-  handler: () => Promise<NextResponse>
+  handler: () => Promise<NextResponse>,
 ): Promise<NextResponse> {
   try {
     return await handler();
   } catch (error: unknown) {
     console.error(error);
+
+    if (error instanceof AdminBusinessError) {
+      return NextResponse.json(
+        {
+          message: error.message, // Message détaillé pour l'admin
+        },
+        { status: error.status },
+      );
+    }
 
     if (error instanceof ZodError) {
       return NextResponse.json(
@@ -53,14 +68,14 @@ export async function withErrorHandler(
           error: "Données invalides",
           details: error.errors,
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (error instanceof HttpError) {
       return NextResponse.json(
         { error: error.message },
-        { status: error.status }
+        { status: error.status },
       );
     }
 
@@ -70,7 +85,7 @@ export async function withErrorHandler(
 
     return NextResponse.json(
       { error: "Erreur interne du serveur" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

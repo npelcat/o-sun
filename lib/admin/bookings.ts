@@ -2,13 +2,16 @@ import db from "@/src/db/index";
 import { bookings, clients, timeSlots, formData } from "@/src/db/schema";
 import { eq, and, gte, lte, lt, desc } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
+import { DateTime } from "luxon";
+import { AdminBusinessError } from "@/utils/withErrorHandler";
+import { BOOKING_PERIOD, BookingPeriod, BookingStatus } from "../constants";
 
 // ============================================
 // TYPES
 // ============================================
 
 export interface UpdateBookingAdminData {
-  status?: "pending" | "confirmed" | "canceled";
+  status?: BookingStatus;
   adminNotes?: string | null;
 }
 
@@ -21,15 +24,15 @@ export interface CreateBookingAdminData {
   animalType?: string | null;
   service: string;
   answers?: string | null;
-  status?: "pending" | "confirmed" | "canceled";
+  status?: BookingStatus;
   adminNotes?: string | null;
 }
 
 export interface BookingFilters {
-  status?: "pending" | "confirmed" | "canceled";
+  status?: BookingStatus;
   month?: string; // Format: "YYYY-MM"
   clientEmail?: string;
-  period?: "upcoming" | "past" | "all";
+  period?: BookingPeriod;
 }
 
 // ============================================
@@ -41,7 +44,7 @@ export interface BookingFilters {
  * Version admin : inclut TOUTES les réservations (même annulées)
  */
 export async function getAllBookingsAdmin(
-  filters?: BookingFilters
+  filters?: BookingFilters,
 ): Promise<BookingWithDetails[]> {
   let query = db
     .select({
@@ -78,19 +81,21 @@ export async function getAllBookingsAdmin(
   }
 
   // Filtre par période
-  if (filters?.period === "upcoming") {
+  if (filters?.period === BOOKING_PERIOD.UPCOMING) {
     const now = new Date();
     conditions.push(gte(timeSlots.startTime, now));
-  } else if (filters?.period === "past") {
+  } else if (filters?.period === BOOKING_PERIOD.PAST) {
     const now = new Date();
     conditions.push(lt(timeSlots.startTime, now));
   }
 
   // Filtre par mois
   if (filters?.month) {
-    const [year, month] = filters.month.split("-");
-    const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
-    const endOfMonth = new Date(parseInt(year), parseInt(month), 0, 23, 59, 59);
+    const monthDT = DateTime.fromFormat(filters.month, "yyyy-MM", {
+      zone: "Europe/Paris",
+    });
+    const startOfMonth = monthDT.startOf("month").toJSDate();
+    const endOfMonth = monthDT.endOf("month").toJSDate();
 
     conditions.push(gte(timeSlots.startTime, startOfMonth));
     conditions.push(lte(timeSlots.startTime, endOfMonth));
@@ -114,7 +119,7 @@ export async function getAllBookingsAdmin(
  * Récupère une réservation par ID (version admin avec adminNotes)
  */
 export async function getBookingByIdAdmin(
-  bookingId: string
+  bookingId: string,
 ): Promise<BookingWithDetails> {
   const [booking] = await db
     .select({
@@ -146,7 +151,7 @@ export async function getBookingByIdAdmin(
     .limit(1);
 
   if (!booking) {
-    throw new Error("Réservation non trouvée");
+    throw new AdminBusinessError("Réservation non trouvée");
   }
 
   return booking as BookingWithDetails;
@@ -157,7 +162,7 @@ export async function getBookingByIdAdmin(
  */
 export async function updateBookingAdmin(
   bookingId: string,
-  data: UpdateBookingAdminData
+  data: UpdateBookingAdminData,
 ) {
   const { status, adminNotes } = data;
 
@@ -180,7 +185,7 @@ export async function updateBookingAdmin(
     .returning();
 
   if (!updated) {
-    throw new Error("Réservation non trouvée");
+    throw new AdminBusinessError("Réservation non trouvée");
   }
 
   return updated;
@@ -201,7 +206,7 @@ export async function deleteBookingAdmin(bookingId: string) {
       .limit(1);
 
     if (!booking) {
-      throw new Error("Réservation non trouvée");
+      throw new AdminBusinessError("Réservation non trouvée");
     }
 
     // 2. Supprimer la réservation
@@ -239,11 +244,11 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
       .limit(1);
 
     if (!slot) {
-      throw new Error("Créneau non trouvé");
+      throw new AdminBusinessError("Créneau non trouvé");
     }
 
     if (!slot.isActive) {
-      throw new Error("Ce créneau n'est pas disponible");
+      throw new AdminBusinessError("Ce créneau n'est pas disponible");
     }
 
     // 2. Créer ou récupérer le client

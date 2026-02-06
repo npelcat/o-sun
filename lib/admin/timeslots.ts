@@ -1,6 +1,8 @@
 import db from "@/src/db/index";
 import { timeSlots } from "@/src/db/schema";
-import { eq, and, gte, lte, desc } from "drizzle-orm";
+import { AdminBusinessError } from "@/utils/withErrorHandler";
+import { eq, and, gte, lte, desc, gt, lt, not } from "drizzle-orm";
+import { DateTime } from "luxon";
 
 // ============================================
 // TYPES
@@ -37,11 +39,13 @@ export async function getAllTimeslotsAdmin(filters?: TimeslotFilters) {
 
   const conditions = [];
 
-  // Filtre par mois (ex: "2026-01")
+  // Filtre par mois
   if (filters?.month) {
-    const [year, month] = filters.month.split("-");
-    const startOfMonth = new Date(parseInt(year), parseInt(month) - 1, 1);
-    const endOfMonth = new Date(parseInt(year), parseInt(month), 0, 23, 59, 59);
+    const monthDT = DateTime.fromFormat(filters.month, "yyyy-MM", {
+      zone: "Europe/Paris",
+    });
+    const startOfMonth = monthDT.startOf("month").toJSDate();
+    const endOfMonth = monthDT.endOf("month").toJSDate();
 
     conditions.push(gte(timeSlots.startTime, startOfMonth));
     conditions.push(lte(timeSlots.startTime, endOfMonth));
@@ -80,7 +84,7 @@ export async function getTimeslotById(id: string) {
     .execute();
 
   if (!slot) {
-    throw new Error("Créneau non trouvé");
+    throw new AdminBusinessError("Créneau non trouvé");
   }
 
   return slot;
@@ -102,16 +106,16 @@ export async function createTimeslot(data: CreateTimeslotData) {
         eq(timeSlots.isActive, true),
         // Chevauchement si :
         // nouveau start < existing end ET nouveau end > existing start
-        lte(timeSlots.startTime, new Date(endTime)),
-        gte(timeSlots.endTime, new Date(startTime))
-      )
+        lt(timeSlots.startTime, new Date(endTime)),
+        gt(timeSlots.endTime, new Date(startTime)),
+      ),
     )
     .limit(1)
     .execute();
 
   if (overlapping.length > 0) {
-    throw new Error(
-      "Ce créneau chevauche un créneau existant. Veuillez choisir d'autres horaires."
+    throw new AdminBusinessError(
+      "Ce créneau chevauche un créneau existant. Veuillez choisir d'autres horaires.",
     );
   }
 
@@ -136,7 +140,37 @@ export async function updateTimeslot(id: string, data: UpdateTimeslotData) {
   const { startTime, endTime, isActive } = data;
 
   // Vérifier que le créneau existe
-  await getTimeslotById(id);
+  const existingSlot = await getTimeslotById(id);
+
+  // Vérifier le chevauchement si on modifie les dates
+  if (startTime || endTime) {
+    // Utiliser les nouvelles valeurs si fournies, sinon garder les anciennes
+    const newStart = startTime ? new Date(startTime) : existingSlot.startTime;
+    const newEnd = endTime ? new Date(endTime) : existingSlot.endTime;
+
+    // Vérifier qu'il n'y a pas de chevauchement avec un autre créneau actif
+    const overlapping = await db
+      .select()
+      .from(timeSlots)
+      .where(
+        and(
+          eq(timeSlots.isActive, true),
+          // Exclure le créneau qu'on est en train de modifier
+          not(eq(timeSlots.id, id)),
+          // Chevauchement si :
+          lt(timeSlots.startTime, newEnd),
+          gt(timeSlots.endTime, newStart),
+        ),
+      )
+      .limit(1)
+      .execute();
+
+    if (overlapping.length > 0) {
+      throw new AdminBusinessError(
+        "Ces nouvelles dates chevauchent un créneau existant. Veuillez choisir d'autres horaires.",
+      );
+    }
+  }
 
   const updateData: Partial<typeof timeSlots.$inferInsert> = {
     updatedAt: new Date(),
@@ -159,7 +193,7 @@ export async function updateTimeslot(id: string, data: UpdateTimeslotData) {
     .returning();
 
   if (!updated) {
-    throw new Error("Erreur lors de la mise à jour du créneau");
+    throw new AdminBusinessError("Erreur lors de la mise à jour du créneau");
   }
 
   return updated;
@@ -179,7 +213,7 @@ export async function deleteTimeslot(id: string) {
     .returning();
 
   if (!deleted) {
-    throw new Error("Créneau non trouvé");
+    throw new AdminBusinessError("Créneau non trouvé");
   }
 
   return deleted;
@@ -190,16 +224,11 @@ export async function deleteTimeslot(id: string) {
  * Utile pour afficher des stats dans le dashboard admin
  */
 export async function countAvailableSlotsForMonth(month: string) {
-  const [year, monthNum] = month.split("-");
-  const startOfMonth = new Date(parseInt(year), parseInt(monthNum) - 1, 1);
-  const endOfMonth = new Date(
-    parseInt(year),
-    parseInt(monthNum),
-    0,
-    23,
-    59,
-    59
-  );
+  const monthDT = DateTime.fromFormat(month, "yyyy-MM", {
+    zone: "Europe/Paris",
+  });
+  const startOfMonth = monthDT.startOf("month").toJSDate();
+  const endOfMonth = monthDT.endOf("month").toJSDate();
 
   const slots = await db
     .select()
@@ -208,8 +237,8 @@ export async function countAvailableSlotsForMonth(month: string) {
       and(
         eq(timeSlots.isActive, true),
         gte(timeSlots.startTime, startOfMonth),
-        lte(timeSlots.startTime, endOfMonth)
-      )
+        lte(timeSlots.startTime, endOfMonth),
+      ),
     )
     .execute();
 

@@ -8,11 +8,12 @@ import { getCurrentMonth } from "@/lib/date";
 import BookingFilters from "./BookingFilters";
 import BookingsTable from "./BookingTable";
 import BookingDetailModal from "./BookingDetailModal";
+import {
+  BOOKING_PERIOD,
+  BookingStatus,
+  BookingStatusFilter,
+} from "@/lib/constants";
 
-/**
- * Composant de gestion des réservations À VENIR
- * Filtre automatique sur period=upcoming
- */
 export default function BookingsManagement() {
   const { error, success } = useToast();
   const [bookings, setBookings] = useState<BookingWithDetails[]>([]);
@@ -21,7 +22,7 @@ export default function BookingsManagement() {
     useState<BookingWithDetails | null>(null);
 
   // Filtres
-  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<BookingStatusFilter>("");
   const [monthFilter, setMonthFilter] = useState<string>(getCurrentMonth());
   const [emailFilter, setEmailFilter] = useState<string>("");
 
@@ -30,7 +31,7 @@ export default function BookingsManagement() {
     try {
       // Construire les paramètres de query
       const params = new URLSearchParams();
-      params.append("period", "upcoming");
+      params.append("period", BOOKING_PERIOD.UPCOMING);
       if (statusFilter) params.append("status", statusFilter);
       if (monthFilter) params.append("month", monthFilter);
       if (emailFilter) params.append("clientEmail", emailFilter);
@@ -54,14 +55,14 @@ export default function BookingsManagement() {
   // Changement de statut avec update optimiste
   const handleStatusChange = async (
     bookingId: string,
-    newStatus: "pending" | "confirmed" | "canceled"
+    newStatus: BookingStatus,
   ) => {
     // Update optimiste : changer le statut immédiatement dans l'UI
     const previousBookings = [...bookings];
     setBookings(
       bookings.map((b) =>
-        b.id === bookingId ? { ...b, status: newStatus } : b
-      )
+        b.id === bookingId ? { ...b, status: newStatus } : b,
+      ),
     );
 
     try {

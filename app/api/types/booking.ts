@@ -1,7 +1,9 @@
+import { BookingStatus } from "@/lib/constants";
+
 export interface BookingWithDetails {
   // Booking
   id: string;
-  status: "pending" | "confirmed" | "canceled";
+  status: BookingStatus;
   adminNotes: string | null;
   createdAt: Date;
   updatedAt: Date;

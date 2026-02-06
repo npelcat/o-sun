@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BOOKING_STATUS } from "../constants";
 
 // ============================================
 // SCHÉMAS POUR LES TIMESLOTS (CRÉNEAUX)
@@ -15,7 +16,7 @@ export const createTimeslotSchema = z
       .datetime({ message: "Format de date invalide (ISO 8601 requis)" })
       .refine(
         (date) => new Date(date) > new Date(),
-        "La date doit être dans le futur"
+        "La date doit être dans le futur",
       ),
     endTime: z
       .string()
@@ -53,7 +54,7 @@ export const updateTimeslotSchema = z
     {
       message: "La date de fin doit être après la date de début",
       path: ["endTime"],
-    }
+    },
   );
 
 // ============================================
@@ -66,9 +67,16 @@ export const updateTimeslotSchema = z
  */
 export const updateBookingAdminSchema = z.object({
   status: z
-    .enum(["pending", "confirmed", "canceled"], {
-      errorMap: () => ({ message: "Statut invalide" }),
-    })
+    .enum(
+      [
+        BOOKING_STATUS.PENDING,
+        BOOKING_STATUS.CONFIRMED,
+        BOOKING_STATUS.CANCELED,
+      ],
+      {
+        errorMap: () => ({ message: "Statut invalide" }),
+      },
+    )
     .optional(),
   adminNotes: z
     .string()
@@ -110,7 +118,13 @@ export const createBookingAdminSchema = z.object({
     .max(5000, "Les réponses sont trop longues")
     .nullable()
     .optional(),
-  status: z.enum(["pending", "confirmed", "canceled"]).default("confirmed"),
+  status: z
+    .enum([
+      BOOKING_STATUS.PENDING,
+      BOOKING_STATUS.CONFIRMED,
+      BOOKING_STATUS.CANCELED,
+    ])
+    .default(BOOKING_STATUS.CONFIRMED),
   adminNotes: z
     .string()
     .max(2000, "Les notes sont trop longues")
@@ -127,7 +141,13 @@ export const createBookingAdminSchema = z.object({
  * Filtre période (à venir / passées / toutes)
  */
 export const bookingFiltersSchema = z.object({
-  status: z.enum(["pending", "confirmed", "canceled"]).optional(),
+  status: z
+    .enum([
+      BOOKING_STATUS.PENDING,
+      BOOKING_STATUS.CONFIRMED,
+      BOOKING_STATUS.CANCELED,
+    ])
+    .optional(),
   month: z
     .string()
     .regex(/^\d{4}-\d{2}$/, "Format de mois invalide (YYYY-MM attendu)")
