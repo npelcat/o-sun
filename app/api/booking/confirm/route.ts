@@ -12,6 +12,7 @@ import { createFormData } from "@/lib/form-data";
 import { createBooking } from "@/lib/bookings";
 import { validateEmail } from "@/lib/validation/email";
 import { verifyTurnstileToken } from "@/lib/validation/turnstile";
+import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
 
 /**
  * @swagger
@@ -139,6 +140,21 @@ import { verifyTurnstileToken } from "@/lib/validation/turnstile";
 
 export async function POST(req: NextRequest) {
   return withErrorHandler(req, async () => {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0] ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+
+    const isAllowed = apiRateLimiter.check(ip);
+
+    if (!isAllowed) {
+      logger.warn(`Rate limit dépassé pour IP: ${ip} sur /api/booking/confirm`);
+      return NextResponse.json(
+        { message: "Trop de requêtes, réessayez dans quelques instants" },
+        { status: 429 },
+      );
+    }
+
     const body = await req.json();
 
     const validatedData = confirmBookingSchema.parse(body);
@@ -167,7 +183,7 @@ export async function POST(req: NextRequest) {
       logger.warn("POST /booking/confirm - Turnstile échoué");
       return NextResponse.json(
         { message: turnstileCheck.error || "Vérification de sécurité échouée" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -183,7 +199,7 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json(
         { message: emailValidation.message },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -207,7 +223,7 @@ export async function POST(req: NextRequest) {
       });
       logger.info(
         `POST /booking/confirm - Client ${isNew ? "créé" : "mis à jour"}`,
-        { clientId: client.id }
+        { clientId: client.id },
       );
 
       const form = await createFormData(trx, {
@@ -246,7 +262,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(
       { message: "Réservation confirmée", data: result },
-      { status: 201 }
+      { status: 201 },
     );
   });
 }
