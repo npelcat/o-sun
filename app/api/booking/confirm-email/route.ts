@@ -5,6 +5,7 @@ import { formatDate, formatTime } from "@/lib/date";
 import z from "zod";
 import { withErrorHandler } from "@/utils/withErrorHandler";
 import { getBookingById } from "@/lib/bookings";
+import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
 
 /**
  * @swagger
@@ -82,6 +83,23 @@ const confirmEmailSchema = z.object({
 
 export async function POST(request: NextRequest) {
   return withErrorHandler(request, async () => {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+
+    const isAllowed = apiRateLimiter.check(ip);
+
+    if (!isAllowed) {
+      logger.warn(
+        `Rate limit dépassé pour IP: ${ip} sur /api/booking/confirm-email`,
+      );
+      return NextResponse.json(
+        { error: "Trop de requêtes, réessayez dans quelques instants" },
+        { status: 429 },
+      );
+    }
+
     logger.info("POST /booking/confirm-email - Email confirmation request");
 
     const body = await request.json();
@@ -178,7 +196,7 @@ export async function POST(request: NextRequest) {
       });
       return NextResponse.json(
         { error: "Erreur lors de l'envoi de l'email de confirmation" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 

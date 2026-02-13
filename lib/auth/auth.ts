@@ -6,6 +6,7 @@ import Credentials from "next-auth/providers/credentials";
 import { admins } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 import { verifyPassword } from "./password";
+import { loginRateLimiter } from "../security/rate-limit-simple";
 
 // Build providers conditionally to avoid throwing during build if envs are missing
 const providers: Array<unknown> = [
@@ -20,6 +21,17 @@ const providers: Array<unknown> = [
         return null;
       }
       try {
+        const normalizedEmail = (credentials.email as string)
+          .toLowerCase()
+          .trim();
+
+        const isAllowed = loginRateLimiter.check(normalizedEmail);
+
+        if (!isAllowed) {
+          console.warn(`Rate limit dépassé pour email: ${normalizedEmail}`);
+          return null; // Même réponse qu'un login échoué
+        }
+
         const { default: db } = await import("@/src/db/index");
         const adminList = await db
           .select({

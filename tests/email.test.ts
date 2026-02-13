@@ -5,6 +5,13 @@ vi.mock("@/lib/validation/turnstile", () => ({
   verifyTurnstileToken: vi.fn().mockResolvedValue({ success: true }),
 }));
 
+// Mock Rate limiter
+vi.mock("@/lib/security/rate-limit-simple", () => ({
+  contactRateLimiter: {
+    check: vi.fn().mockReturnValue(true),
+  },
+}));
+
 // Mock de Resend
 const mockResendSend = vi.fn();
 vi.mock("resend", () => ({
@@ -66,7 +73,7 @@ describe("POST /api/email", () => {
         cc: ["jane@example.com"],
         subject: "Message de Jane Dupont (jane@example.com)",
         html: expect.stringContaining("Jane Dupont"),
-      })
+      }),
     );
   });
 

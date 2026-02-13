@@ -39,6 +39,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^16.6.1",
     "drizzle-orm": "^0.39.3",
+    "lru-cache": "^11.2.6",
     "lucide-react": "^0.563.0",
     "luxon": "^3.7.2",
     "markdown-to-jsx": "^7.7.13",

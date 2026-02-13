@@ -6,6 +6,7 @@ import { generateResetToken, getTokenExpiration } from "@/lib/auth/tokens";
 import { sendPasswordResetEmail } from "@/lib/email/send-reset-email";
 import { hashPassword } from "@/lib/auth/password";
 import db from "@/src/db";
+import { resetPasswordRateLimiter } from "../security/rate-limit-simple";
 
 /**
  * Server Action : Demande de réinitialisation de mot de passe
@@ -16,6 +17,21 @@ export async function requestPasswordReset(email: string) {
       return { error: "Email requis" };
     }
 
+    const normalizedEmail = email.toLowerCase().trim();
+
+    // Rate limiting par email
+    const isAllowed = resetPasswordRateLimiter.check(normalizedEmail);
+
+    if (!isAllowed) {
+      console.warn(`Rate limit dépassé pour email: ${normalizedEmail}`);
+      // Réponse identique mais pas d'email envoyé
+      return {
+        success: true,
+        message:
+          "Si cet email existe, un lien de réinitialisation a été envoyé.",
+      };
+    }
+
     // Vérifie que l'email existe dans les admins
     const adminList = await db
       .select({ email: admins.email })
@@ -23,7 +39,7 @@ export async function requestPasswordReset(email: string) {
       .where(eq(admins.email, email.toLowerCase().trim()))
       .limit(1);
 
-    // ⚠️ SÉCURITÉ : Ne jamais révéler si l'email existe ou non
+    // SÉCURITÉ : Ne jamais révéler si l'email existe ou non
     const message =
       "Si cet email existe, un lien de réinitialisation a été envoyé.";
 

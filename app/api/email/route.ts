@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import logger from "@/utils/logger";
 import { verifyTurnstileToken } from "@/lib/validation/turnstile";
 import { contactSchema } from "@/lib/validation/contact";
+import { contactRateLimiter } from "@/lib/security/rate-limit-simple";
 
 /**
  * @swagger
@@ -70,6 +71,22 @@ import { contactSchema } from "@/lib/validation/contact";
  */
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const ip =
+    request.headers.get("x-forwarded-for")?.split(",")[0] ||
+    request.headers.get("x-real-ip") ||
+    "unknown";
+
+  const isAllowed = contactRateLimiter.check(ip);
+
+  if (!isAllowed) {
+    logger.warn(`Rate limit dépassé pour IP: ${ip} sur /api/contact`);
+    return NextResponse.json(
+      { error: "Trop de requêtes, réessayez dans quelques instants" },
+      { status: 429 },
+    );
+  }
+
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
@@ -86,7 +103,7 @@ export async function POST(request: NextRequest) {
         {
           error: turnstileCheck.error || "Vérification de sécurité échouée",
         },
-        { status: 400 }
+        { status: 400 },
       );
     }
     logger.info("POST /email - Turnstile validated ✅");
@@ -120,7 +137,7 @@ export async function POST(request: NextRequest) {
       console.error("Resend API error details:", error);
       return NextResponse.json(
         { error: "Erreur lors de l'envoi de l'e-mail." },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
