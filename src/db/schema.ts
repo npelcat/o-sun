@@ -73,3 +73,16 @@ export const bookings = bookingSchema.table("bookings", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// Table : Password Reset Tokens
+export const passwordResetTokens = bookingSchema.table(
+  "password_reset_tokens",
+  {
+    id: uuid("token_id").primaryKey().defaultRandom(),
+    email: varchar("email", { length: 255 }).notNull(),
+    token: varchar("token", { length: 255 }).notNull().unique(),
+    expiresAt: timestamp("expires_at").notNull(),
+    used: boolean("used").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+);

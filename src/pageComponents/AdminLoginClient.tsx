@@ -100,6 +100,14 @@ export default function AdminLogin() {
               className="w-full p-3 border rounded focus:ring-2 focus:ring-dark-green"
               required
             />
+            <div className="text-right mt-2">
+              <a
+                href="/forgot-password"
+                className="text-sm text-gray-600 hover:text-dark-green underline"
+              >
+                Mot de passe oublié ?
+              </a>
+            </div>
           </div>
 
           {error && <div className="text-red-600 text-sm">{error}</div>}
