@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { contactSchema, ContactFormData } from "@/lib/validation/contact";
-import { sendEmail } from "@/utils/send-email";
+import { sendEmail } from "@/lib/email/send-email";
 
 export default function ContactClient() {
   const {
@@ -18,7 +18,7 @@ export default function ContactClient() {
   });
 
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(
-    null
+    null,
   );
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,12 +40,12 @@ export default function ContactClient() {
         setTurnstileToken(null);
       } else {
         setConfirmationMessage(
-          "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer."
+          "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer.",
         );
       }
     } catch {
       setConfirmationMessage(
-        "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer."
+        "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer.",
       );
     } finally {
       setIsSubmitting(false);
@@ -115,14 +115,14 @@ export default function ContactClient() {
               setTurnstileToken(null);
               setValue("turnstileToken", "");
               setConfirmationMessage(
-                "Erreur de vérification de sécurité. Veuillez réessayer."
+                "Erreur de vérification de sécurité. Veuillez réessayer.",
               );
             }}
             onExpire={() => {
               setTurnstileToken(null);
               setValue("turnstileToken", "");
               setConfirmationMessage(
-                "La vérification a expiré. Veuillez revalider."
+                "La vérification a expiré. Veuillez revalider.",
               );
             }}
           />

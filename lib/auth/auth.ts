@@ -3,9 +3,9 @@ import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
-import bcrypt from "bcryptjs";
 import { admins } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
+import { verifyPassword } from "./password";
 
 // Build providers conditionally to avoid throwing during build if envs are missing
 const providers: Array<unknown> = [
@@ -37,9 +37,9 @@ const providers: Array<unknown> = [
         }
 
         const admin = adminList[0];
-        const isPasswordValid = await bcrypt.compare(
+        const isPasswordValid = await verifyPassword(
+          admin.passwordHash,
           credentials.password as string,
-          admin.passwordHash
         );
 
         if (!isPasswordValid) {
@@ -64,7 +64,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
   );
 }
 
