@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { Button } from "@/src/components/Button";
 import { FeatureCard } from "@/src/components/FeatureCard";
 import { HomeCTA } from "@/src/components/HomeCTA";
-import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/strapi/helpers/BlockRendererClient";
 import {
   StrapiBlockContent,
   StrapiLinkComponent,

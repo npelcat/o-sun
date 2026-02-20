@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Instagram, Sparkles, Calendar } from "lucide-react";
-import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/strapi/helpers/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 interface HomeQuoteBannerProps {
