@@ -98,7 +98,7 @@ export default function GuardiansClient({
             </div>
             <Button
               titleButton="Réserver un service pour moi"
-              link="https://linktr.ee/o.sun.voixanimale"
+              link="/contact/booking"
               target="_blank"
               rel="noopener noreferrer"
             />
@@ -133,7 +133,7 @@ export default function GuardiansClient({
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver un soin énergétique humain"
-          link="https://linktr.ee/o.sun.voixanimale"
+          link="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
         />

@@ -102,6 +102,12 @@ export default function AnimalCommunicationClient({
             <div className="text-justify">
               <BlockRendererClient content={whatIsLookLike.content} />
             </div>
+            <Button
+              titleButton="Réserver une communication"
+              link="/contact/booking"
+              target="_blank"
+              rel="noopener noreferrer"
+            />
           </div>
         </section>
       )}
@@ -120,12 +126,6 @@ export default function AnimalCommunicationClient({
             <div className="text-justify pb-10">
               <BlockRendererClient content={whatIsItForContent.content} />
             </div>
-            <Button
-              titleButton="Réserver une communication"
-              link="https://linktr.ee/o.sun.voixanimale"
-              target="_blank"
-              rel="noopener noreferrer"
-            />
           </div>
         </section>
       )}
@@ -157,7 +157,7 @@ export default function AnimalCommunicationClient({
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver une communication animale"
-          link="https://linktr.ee/o.sun.voixanimale"
+          link="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
         />
