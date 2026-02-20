@@ -10,9 +10,11 @@ import { contactRateLimiter } from "@/lib/security/rate-limit-simple";
  * /api/email:
  *   post:
  *     summary: Envoie un message via le formulaire de contact
- *     description: Envoie un email de contact à l'administrateur avec copie au client
+ *     description: |
+ *       Envoie un email à l'administrateur avec copie au client.
+ *       ⚠️ Cette route ne peut pas être testée depuis Swagger car elle requiert
+ *       un token Turnstile valide (anti-bot), généré uniquement via le formulaire web.
  *     tags:
- *       - Email
  *       - Contact
  *     requestBody:
  *       required: true
@@ -24,11 +26,11 @@ import { contactRateLimiter } from "@/lib/security/rate-limit-simple";
  *               - name
  *               - email
  *               - message
+ *               - turnstileToken
  *             properties:
  *               name:
  *                 type: string
  *                 description: Nom du client
- *                 minLength: 1
  *               email:
  *                 type: string
  *                 format: email
@@ -36,7 +38,9 @@ import { contactRateLimiter } from "@/lib/security/rate-limit-simple";
  *               message:
  *                 type: string
  *                 description: Message du client
- *                 minLength: 1
+ *               turnstileToken:
+ *                 type: string
+ *                 description: Token de vérification Cloudflare Turnstile (généré par le widget anti-bot)
  *     responses:
  *       200:
  *         description: Email envoyé avec succès
@@ -47,9 +51,9 @@ import { contactRateLimiter } from "@/lib/security/rate-limit-simple";
  *               properties:
  *                 message:
  *                   type: string
- *                   example: "Ton e-mail a bien été envoyé, je te répondrai dans les plus brefs délais. En attendant, n'hésite pas à me suivre sur Instagram @o.sun.voixanimale (lien en bas de page) pour rester au courant de mes actualités."
+ *                   example: "Ton e-mail a bien été envoyé..."
  *       400:
- *         description: Données invalides (validation Zod échouée)
+ *         description: Données invalides ou vérification Turnstile échouée
  *         content:
  *           application/json:
  *             schema:
@@ -57,7 +61,16 @@ import { contactRateLimiter } from "@/lib/security/rate-limit-simple";
  *               properties:
  *                 error:
  *                   type: string
- *                   description: Détails de l'erreur de validation
+ *       429:
+ *         description: Trop de requêtes (rate limiting par IP)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Trop de requêtes, réessayez dans quelques instants"
  *       500:
  *         description: Erreur lors de l'envoi de l'email
  *         content:

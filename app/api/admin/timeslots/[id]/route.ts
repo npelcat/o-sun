@@ -12,9 +12,127 @@ import { eq } from "drizzle-orm";
 import logger from "@/utils/logger";
 
 /**
- * GET /api/admin/timeslots/[id]
- * Récupère un créneau spécifique par son ID
+ * @swagger
+ * /api/admin/timeslots/{id}:
+ *   get:
+ *     summary: Récupère un créneau par ID
+ *     description: Retourne les détails d'un créneau spécifique. Requiert d'être connecté.
+ *     tags:
+ *       - Admin - Timeslots
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID unique du créneau
+ *     responses:
+ *       200:
+ *         description: Créneau trouvé
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 timeslot:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     startTime:
+ *                       type: string
+ *                       format: date-time
+ *                     endTime:
+ *                       type: string
+ *                       format: date-time
+ *                     isActive:
+ *                       type: boolean
+ *       401:
+ *         description: Non authentifié
+ *       404:
+ *         description: Créneau introuvable
+ *   put:
+ *     summary: Met à jour un créneau
+ *     description: Modifie les dates ou le statut actif d'un créneau. Tous les champs sont optionnels. Requiert d'être connecté.
+ *     tags:
+ *       - Admin - Timeslots
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID unique du créneau
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               startTime:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2026-02-15T10:00:00Z"
+ *               endTime:
+ *                 type: string
+ *                 format: date-time
+ *                 example: "2026-02-15T18:00:00Z"
+ *               isActive:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Créneau mis à jour avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Créneau mis à jour avec succès"
+ *                 timeslot:
+ *                   type: object
+ *       400:
+ *         description: Données invalides
+ *       401:
+ *         description: Non authentifié
+ *       404:
+ *         description: Créneau introuvable
+ *   delete:
+ *     summary: Supprime un créneau
+ *     description: |
+ *       Supprime définitivement un créneau.
+ *       ⚠️ La suppression échoue si une réservation est liée à ce créneau — supprimez d'abord la réservation.
+ *       Requiert d'être connecté.
+ *     tags:
+ *       - Admin - Timeslots
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID unique du créneau
+ *     responses:
+ *       200:
+ *         description: Créneau supprimé avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Créneau supprimé avec succès"
+ *       401:
+ *         description: Non authentifié
+ *       404:
+ *         description: Créneau introuvable
+ *       409:
+ *         description: Suppression impossible - une réservation est liée à ce créneau
  */
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -31,17 +149,6 @@ export async function GET(
   });
 }
 
-/**
- * PUT /api/admin/timeslots/[id]
- * Met à jour un créneau existant
- *
- * Body attendu (tous les champs sont optionnels) :
- * {
- *   "startTime": "2026-02-15T10:00:00Z",
- *   "endTime": "2026-02-15T18:00:00Z",
- *   "isActive": false
- * }
- */
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -73,13 +180,6 @@ export async function PUT(
   });
 }
 
-/**
- * DELETE /api/admin/timeslots/[id]
- * Supprime un créneau
- *
- * ⚠️ IMPORTANT : La suppression échoue si une réservation est liée au créneau
- * (protection contre la suppression accidentelle de créneaux réservés)
- */
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },

@@ -13,13 +13,12 @@ export async function GET() {
         },
       },
     });
-
     return NextResponse.json(spec);
   } catch (error) {
     console.error("Error generating swagger spec:", error);
     return NextResponse.json(
       { error: "Failed to generate API documentation" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

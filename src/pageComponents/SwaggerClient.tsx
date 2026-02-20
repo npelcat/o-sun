@@ -9,7 +9,7 @@ export default function SwaggerClient() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("/api/swagger") // URL relative, plus simple
+    fetch("/api/swagger")
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
