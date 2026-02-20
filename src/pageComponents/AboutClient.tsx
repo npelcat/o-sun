@@ -4,7 +4,7 @@ import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { TableOfContents } from "@/src/components/TableOfContents";
 import Image from "next/image";
-import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/strapi/helpers/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 interface AboutClientProps {

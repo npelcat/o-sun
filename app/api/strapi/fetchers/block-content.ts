@@ -4,11 +4,11 @@ import { StrapiBlockContent, StrapiPicture } from "../../types/strapi";
 import type { BlocksContent } from "@strapi/blocks-react-renderer";
 
 export const fetchBlockContentById = async (
-  id: string
+  id: string,
 ): Promise<StrapiBlockContent | null> => {
   try {
     const { data }: { data: StrapiBlockContent } = await fetchFromStrapi(
-      `/api/block-contents/${id}?populate=picture`
+      `/api/block-contents/${id}?populate=picture`,
     );
 
     return {
@@ -25,22 +25,14 @@ export const fetchBlockContentById = async (
 };
 
 export const fetchMultipleBlockContents = async (
-  slugs: string[]
+  slugs: string[],
 ): Promise<StrapiBlockContent[]> => {
   const query = slugs.map((slug) => `filters[slug][$in]=${slug}`).join("&");
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/block-contents?${query}&populate=*`
+    const data = await fetchFromStrapi(
+      `/api/block-contents?${query}&populate=*`,
     );
-
-    if (!response.ok) {
-      throw new Error(
-        "Erreur lors de la récupération des données depuis Strapi."
-      );
-    }
-
-    const data = await response.json();
 
     type BlockItem = {
       slug: string;
@@ -58,5 +50,35 @@ export const fetchMultipleBlockContents = async (
   } catch (error) {
     console.error("Erreur lors de la récupération des blocs", error);
     throw error;
+  }
+};
+
+export const fetchBlockContentBySlug = async (
+  slug: string,
+): Promise<StrapiBlockContent | null> => {
+  try {
+    const data = await fetchFromStrapi(
+      `/api/block-contents?filters[slug][$eq]=${slug}&populate=*`,
+    );
+
+    if (!data.data || data.data.length === 0) {
+      console.warn(`No block content found with slug: ${slug}`);
+      return null;
+    }
+
+    const block = data.data[0];
+    return {
+      documentId: block.documentId,
+      title: block.title,
+      picture: formatPicture(block.picture),
+      content: block.content,
+      slug: block.slug,
+    };
+  } catch (error) {
+    console.error(
+      `Erreur lors de la récupération du bloc slug: ${slug}`,
+      error,
+    );
+    return null;
   }
 };

@@ -4,11 +4,11 @@ import { fetchFromStrapi } from "./strapi";
 import { formatPicture } from "../helpers/formatPicture";
 
 export const fetchLinkComponentById = async (
-  id: string
+  id: string,
 ): Promise<StrapiLinkComponent | null> => {
   try {
     const { data }: { data: StrapiLinkComponent } = await fetchFromStrapi(
-      `/api/component-with-links/${id}?populate=picture`
+      `/api/component-with-links/${id}?populate=picture`,
     );
 
     return {
@@ -22,29 +22,21 @@ export const fetchLinkComponentById = async (
   } catch (error) {
     console.error(
       `Erreur lors de la récupération du composant ID: ${id}`,
-      error
+      error,
     );
     return null;
   }
 };
 
 export const fetchMultipleLinkComponents = async (
-  slugs: string[]
+  slugs: string[],
 ): Promise<StrapiLinkComponent[]> => {
   const query = slugs.map((slug) => `filters[slug][$in]=${slug}`).join("&");
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/component-with-links?${query}&populate=*`
+    const data = await fetchFromStrapi(
+      `/api/component-with-links?${query}&populate=*`,
     );
-
-    if (!response.ok) {
-      throw new Error(
-        "Erreur lors de la récupération des données depuis Strapi."
-      );
-    }
-
-    const data = await response.json();
 
     type LinkComponentItem = {
       title: string;

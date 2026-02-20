@@ -4,7 +4,7 @@ import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
 import { Button } from "@/src/components/Button";
 import { Accordion } from "@/src/components/Accordion";
 import { TableOfContents } from "@/src/components/TableOfContents";
-import BlockRendererClient from "@/app/api/utilsStrapi/BlockRendererClient";
+import BlockRendererClient from "@/app/api/strapi/helpers/BlockRendererClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 interface EnergyCareClientProps {
