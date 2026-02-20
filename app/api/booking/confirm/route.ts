@@ -70,6 +70,9 @@ import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
  *                   - type: object
  *                 description: Réponses au formulaire (JSON ou string)
  *                 nullable: true
+ *               turnstileToken:
+ *                 type: string
+ *                 description: Token de vérification Cloudflare Turnstile (généré par le widget anti-bot)
  *     responses:
  *       201:
  *         description: Réservation confirmée avec succès
@@ -136,6 +139,16 @@ import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
  *         description: Créneau déjà confirmé/annulé ou non verrouillé préalablement
  *       410:
  *         description: Temps de réservation expiré (> 15 minutes)
+ *       429:
+ *         description: Trop de requêtes (rate limiting par IP)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Trop de requêtes, réessayez dans quelques instants"
  */
 
 export async function POST(req: NextRequest) {

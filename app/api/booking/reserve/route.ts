@@ -44,8 +44,12 @@ import { getSlotById, reserveSlot } from "@/lib/timeslots";
  *                   example: "Créneau réservé provisoirement"
  *                 timeSlotId:
  *                   type: string
- *                   description: ID du créneau verrouillé
  *                   example: "550e8400-e29b-41d4-a716-446655440000"
+ *                 expiresAt:
+ *                   type: string
+ *                   format: date-time
+ *                   nullable: true
+ *                   description: Date d'expiration du verrou (15 min après le verrouillage)
  *       400:
  *         description: Données invalides (validation Zod échouée)
  *         content:

@@ -65,6 +65,16 @@ import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
  *                 error:
  *                   type: string
  *                   example: "Réservation non trouvée"
+ *       429:
+ *         description: Trop de requêtes (rate limiting par IP)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Trop de requêtes, réessayez dans quelques instants"
  *       500:
  *         description: Erreur lors de l'envoi des emails (API Resend)
  *         content:
