@@ -106,7 +106,7 @@ export default function EnergyCareClient({
             </div>
             <Button
               titleButton="Réserver un soin énergétique"
-              link="https://form.jotform.com/252464023594356"
+              link="/contact/booking"
               target="_blank"
               rel="noopener noreferrer"
             />
@@ -157,7 +157,7 @@ export default function EnergyCareClient({
       <div className="flex justify-center mt-16">
         <Button
           titleButton="Réserver un soin énergétique"
-          link="https://form.jotform.com/252464023594356"
+          link="/contact/booking"
           target="_blank"
           rel="noopener noreferrer"
         />
