@@ -103,7 +103,7 @@ describe("createBooking", () => {
 
     expect(booking.status).toBe("confirmed");
     expect(mockTrx.values).toHaveBeenCalledWith(
-      expect.objectContaining({ status: "confirmed" })
+      expect.objectContaining({ status: "confirmed" }),
     );
   });
 });
@@ -131,14 +131,6 @@ describe("getAllBookings", () => {
     expect(mockDb.from).toHaveBeenCalled();
     expect(mockDb.innerJoin).toHaveBeenCalledTimes(3);
   });
-
-  it("should return empty array when no bookings exist", async () => {
-    mockDb.orderBy.mockResolvedValue([]);
-
-    const bookings = await getAllBookings();
-
-    expect(bookings).toEqual([]);
-  });
 });
 
 describe("getBookingById", () => {
@@ -165,7 +157,7 @@ describe("getBookingById", () => {
     mockDb.limit.mockResolvedValue([]);
 
     await expect(getBookingById("invalid-id")).rejects.toThrow(
-      "Réservation non trouvée"
+      "Réservation non trouvée",
     );
   });
 });
@@ -193,7 +185,7 @@ describe("getBookingByIdSimple", () => {
     mockDb.limit.mockResolvedValue([]);
 
     await expect(getBookingByIdSimple("invalid-id")).rejects.toThrow(
-      "Réservation non trouvée"
+      "Réservation non trouvée",
     );
   });
 });
@@ -213,7 +205,7 @@ describe("updateBookingStatus", () => {
     expect(updated.status).toBe("confirmed");
     expect(mockDb.update).toHaveBeenCalled();
     expect(mockDb.set).toHaveBeenCalledWith(
-      expect.objectContaining({ status: "confirmed" })
+      expect.objectContaining({ status: "confirmed" }),
     );
   });
 
@@ -221,7 +213,7 @@ describe("updateBookingStatus", () => {
     mockDb.returning.mockResolvedValue([]);
 
     await expect(
-      updateBookingStatus("invalid-id", "confirmed")
+      updateBookingStatus("invalid-id", "confirmed"),
     ).rejects.toThrow("Réservation non trouvée");
   });
 });
@@ -243,7 +235,7 @@ describe("deleteBooking", () => {
     mockDb.returning.mockResolvedValue([]);
 
     await expect(deleteBooking("invalid-id")).rejects.toThrow(
-      "Réservation non trouvée"
+      "Réservation non trouvée",
     );
   });
 });

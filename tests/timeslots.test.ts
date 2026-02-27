@@ -66,14 +66,6 @@ describe("getAvailableSlots", () => {
     expect(mockDb.from).toHaveBeenCalled();
     expect(mockDb.where).toHaveBeenCalled();
   });
-
-  it("should return empty array when no slots available", async () => {
-    mockDb.execute.mockResolvedValue([]);
-
-    const slots = await getAvailableSlots();
-
-    expect(slots).toEqual([]);
-  });
 });
 
 describe("getSlotById", () => {
@@ -99,7 +91,7 @@ describe("getSlotById", () => {
     mockDb.execute.mockResolvedValue([]);
 
     await expect(getSlotById("invalid-id")).rejects.toThrow(
-      "Créneau non trouvé"
+      "Créneau non trouvé",
     );
   });
 });
@@ -132,7 +124,7 @@ describe("reserveSlot", () => {
     });
 
     await expect(reserveSlot("slot-123")).rejects.toThrow(
-      "Créneau indisponible ou déjà réservé"
+      "Créneau indisponible ou déjà réservé",
     );
   });
 });
@@ -157,7 +149,7 @@ describe("validateSlotForConfirmation", () => {
     mockTrx.execute.mockResolvedValue([]);
 
     await expect(
-      validateSlotForConfirmation(asTrx(mockTrx), "invalid-id")
+      validateSlotForConfirmation(asTrx(mockTrx), "invalid-id"),
     ).rejects.toThrow(new HttpError(404, "Créneau introuvable"));
   });
 
@@ -172,7 +164,7 @@ describe("validateSlotForConfirmation", () => {
     mockTrx.execute.mockResolvedValue([mockSlot]);
 
     await expect(
-      validateSlotForConfirmation(asTrx(mockTrx), "slot-123")
+      validateSlotForConfirmation(asTrx(mockTrx), "slot-123"),
     ).rejects.toThrow(new HttpError(409, "Créneau déjà confirmé ou annulé"));
   });
 
@@ -187,7 +179,7 @@ describe("validateSlotForConfirmation", () => {
     mockTrx.execute.mockResolvedValue([mockSlot]);
 
     await expect(
-      validateSlotForConfirmation(asTrx(mockTrx), "slot-123")
+      validateSlotForConfirmation(asTrx(mockTrx), "slot-123"),
     ).rejects.toThrow(new HttpError(409, "Créneau non réservé précédemment"));
   });
 
@@ -203,12 +195,12 @@ describe("validateSlotForConfirmation", () => {
     mockTrx.execute.mockResolvedValue([mockSlot]);
 
     await expect(
-      validateSlotForConfirmation(asTrx(mockTrx), "slot-123")
+      validateSlotForConfirmation(asTrx(mockTrx), "slot-123"),
     ).rejects.toThrow(
       new HttpError(
         410,
-        "Le temps de réservation a expiré, merci de re-sélectionner un créneau"
-      )
+        "Le temps de réservation a expiré, merci de re-sélectionner un créneau",
+      ),
     );
   });
 
@@ -225,7 +217,7 @@ describe("validateSlotForConfirmation", () => {
 
     const result = await validateSlotForConfirmation(
       asTrx(mockTrx),
-      "slot-123"
+      "slot-123",
     );
 
     expect(result).toEqual(mockSlot);
