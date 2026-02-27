@@ -1,4 +1,4 @@
-const POPULAR_DOMAINS = [
+export const POPULAR_DOMAINS = [
   "gmail.com",
   "gmail.fr",
   "yahoo.fr",
@@ -20,7 +20,7 @@ const POPULAR_DOMAINS = [
   "proton.me",
 ];
 
-const DISPOSABLE_DOMAINS = [
+export const DISPOSABLE_DOMAINS = [
   "guerrillamail.com",
   "10minutemail.com",
   "tempmail.com",

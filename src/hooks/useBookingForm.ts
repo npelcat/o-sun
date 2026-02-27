@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { ZodError } from "zod";
 import { confirmBookingSchema } from "@/lib/validation/booking";
+import { POPULAR_DOMAINS } from "@/lib/validation/email";
 
 interface UseBookingFormProps {
   timeSlotId: string | null;
@@ -47,7 +48,7 @@ export const useBookingForm = ({
     (
       e: React.ChangeEvent<
         HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-      >
+      >,
     ) => {
       const { name, value } = e.target;
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -60,7 +61,7 @@ export const useBookingForm = ({
         });
       }
     },
-    [fieldErrors]
+    [fieldErrors],
   );
 
   const handleBlur = useCallback((fieldName: string, value: string) => {
@@ -78,25 +79,8 @@ export const useBookingForm = ({
     // Email domain warning
     if (fieldName === "clientEmail" && value.trim()) {
       const domain = value.split("@")[1]?.toLowerCase();
-      const popularDomains = [
-        "gmail.com",
-        "gmail.fr",
-        "yahoo.fr",
-        "yahoo.com",
-        "hotmail.fr",
-        "hotmail.com",
-        "outlook.fr",
-        "outlook.com",
-        "orange.fr",
-        "free.fr",
-        "sfr.fr",
-        "laposte.net",
-        "icloud.com",
-        "live.fr",
-        "live.com",
-      ];
 
-      if (domain && !popularDomains.includes(domain)) {
+      if (domain && !POPULAR_DOMAINS.includes(domain)) {
         setEmailWarning(`⚠️ Vous avez saisi "${domain}". Est-ce correct ?`);
       } else {
         setEmailWarning(null);
@@ -191,7 +175,7 @@ export const useBookingForm = ({
             onError("Veuillez corriger les erreurs signalées");
           } else {
             throw new Error(
-              responseData.message || "Erreur lors de la réservation"
+              responseData.message || "Erreur lors de la réservation",
             );
           }
           return;
@@ -207,7 +191,7 @@ export const useBookingForm = ({
         });
 
         onSuccess(
-          "Demande de réservation finalisée ! Vous allez recevoir un email de confirmation."
+          "Demande de réservation finalisée ! Vous allez recevoir un email de confirmation.",
         );
 
         onClearTimer();
@@ -226,7 +210,7 @@ export const useBookingForm = ({
       onSuccess,
       onClearTimer,
       router,
-    ]
+    ],
   );
 
   return {
