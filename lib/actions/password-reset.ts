@@ -109,17 +109,17 @@ export async function resetPassword(token: string, newPassword: string) {
     // Hash le nouveau mot de passe
     const hashedPassword = await hashPassword(newPassword);
 
-    // Met à jour le mot de passe de l'admin
-    await db
-      .update(admins)
-      .set({ passwordHash: hashedPassword })
-      .where(eq(admins.email, resetToken.email));
-
-    // Marque le token comme utilisé
-    await db
-      .update(passwordResetTokens)
-      .set({ used: true })
-      .where(eq(passwordResetTokens.id, resetToken.id));
+    // Met à jour le mot de passe de l'admin et marque le token comme utilisé
+    await db.transaction(async (tx) => {
+      await tx
+        .update(admins)
+        .set({ passwordHash: hashedPassword })
+        .where(eq(admins.email, resetToken.email));
+      await tx
+        .update(passwordResetTokens)
+        .set({ used: true })
+        .where(eq(passwordResetTokens.id, resetToken.id));
+    });
 
     return { success: true, message: "Mot de passe réinitialisé avec succès" };
   } catch (error) {

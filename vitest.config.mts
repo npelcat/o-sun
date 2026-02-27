@@ -15,7 +15,7 @@ export default defineConfig({
       reporter: ["text", "html"],
       include: ["lib/**/*.ts"],
       exclude: [
-        "lib/auth/auth.ts", // configuration Next Auth, pas ta logique
+        "lib/auth/auth.ts", // configuration Next Auth
         "lib/email/send-email.ts", // simple wrapper fetch sans logique
         "lib/email/send-reset-email.ts", // wrapper Resend sans logique custom
         "lib/actions/password-reset.ts", // server action, nécessiterait des tests e2e

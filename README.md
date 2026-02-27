@@ -167,7 +167,6 @@ NEXT_PUBLIC_API_URL=http://localhost:1337
 DATABASE_URL=postgresql://user:password@host:5432/database
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
 # Email Service (Resend)
 RESEND_API_KEY=re_xxxxx
@@ -286,7 +285,7 @@ npm run test
 - **Admin authentication**: NextAuth.js with Google OAuth
 - **Data validation**: Zod (frontend + backend)
 - **Environment variables**: never exposed client-side (except `NEXT_PUBLIC_*`)
-- **Secure APIs**: session verification for `/api/admin/*` routes
+- **Secure APIs**: JWT session verification via NextAuth middleware for `/api/admin/*` routes
 
 ---
 
