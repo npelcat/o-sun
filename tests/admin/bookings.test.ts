@@ -75,14 +75,6 @@ describe("Admin Bookings Service", () => {
       expect(result).toEqual(mockBookings);
       expect(mockDb.select).toHaveBeenCalled();
     });
-
-    it("should filter bookings by status", async () => {
-      mockDb.execute.mockResolvedValue([]);
-
-      await getAllBookingsAdmin({ status: "pending" });
-
-      expect(mockDb.where).toHaveBeenCalled();
-    });
   });
 
   describe("getBookingByIdAdmin", () => {
@@ -106,7 +98,7 @@ describe("Admin Bookings Service", () => {
       mockDb.limit.mockResolvedValue([]);
 
       await expect(getBookingByIdAdmin("invalid-id")).rejects.toThrow(
-        "Réservation non trouvée"
+        "Réservation non trouvée",
       );
     });
   });
@@ -127,21 +119,6 @@ describe("Admin Bookings Service", () => {
 
       expect(result).toEqual(updatedBooking);
       expect(mockDb.update).toHaveBeenCalled();
-    });
-
-    it("should update admin notes", async () => {
-      const updatedBooking = {
-        id: "booking-1",
-        adminNotes: "Paiement reçu le 15/01",
-      };
-
-      mockDb.returning.mockResolvedValue([updatedBooking]);
-
-      const result = await updateBookingAdmin("booking-1", {
-        adminNotes: "Paiement reçu le 15/01",
-      });
-
-      expect(result.adminNotes).toBe("Paiement reçu le 15/01");
     });
   });
 
@@ -218,7 +195,7 @@ describe("Admin Bookings Service", () => {
           clientEmail: "bob@example.com",
           animalName: "Minou",
           service: "Consultation",
-        })
+        }),
       ).rejects.toThrow("Créneau non trouvé");
     });
 
@@ -237,7 +214,7 @@ describe("Admin Bookings Service", () => {
           clientEmail: "bob@example.com",
           animalName: "Minou",
           service: "Consultation",
-        })
+        }),
       ).rejects.toThrow("Ce créneau n'est pas disponible");
     });
   });

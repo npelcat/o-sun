@@ -11,7 +11,8 @@
     "drizzle:migrate": "drizzle-kit migrate",
     "test": "vitest",
     "admin:create": "tsx scripts/create-admin.ts",
-    "admin:update-password": "tsx scripts/update-admin-password.ts"
+    "admin:update-password": "tsx scripts/update-admin-password.ts",
+    "test:coverage": "vitest run --coverage"
   },
   "engines": {
     "node": ">=22.0.0"
