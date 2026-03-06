@@ -23,7 +23,7 @@ export function HomeQuoteBanner({
       {quoteBlock && (
         <div className="bg-dark-green/50 overflow-hidden">
           <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row md:items-center md:gap-8 lg:gap-12">
-            <div className="flex-1 text-xl leading-relaxed text-center md:text-left mb-6 md:mb-0">
+            <div className="flex-1 leading-relaxed text-center md:text-left mb-6 md:mb-0">
               <BlockRendererClient content={quoteBlock.content} />
             </div>
             {quoteBlock.picture && (
