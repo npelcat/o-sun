@@ -5,6 +5,7 @@ import { ServiceCard } from "@/src/components/ServiceCard";
 import { Accordion } from "@/src/components/Accordion";
 import { Button } from "@/src/components/Button";
 import { CardTitlePhoto } from "@/src/components/CardTitlePhoto";
+import { TableOfContents } from "@/src/components/TableOfContents";
 import BlockRendererClient from "@/app/api/strapi/helpers/BlockRendererClient";
 import {
   StrapiLinkComponent,
@@ -62,13 +63,36 @@ export default function BookingClient({
     };
   }, [serviceCards]);
 
-  // Map des icônes pour chaque service
   const serviceIcons: { [key: string]: string } = {
     "reservation-communication-animale": "💌",
     "reservation-soins-energetiques": "✨",
     "reservation-appel-decouverte": "📞",
     "reservation-urgence": "🚨",
   };
+
+  const mainAnchors = [
+    { id: "services", title: "Mes services" },
+    { id: "faq", title: "Informations pratiques" },
+  ];
+
+  const faqAnchors = [
+    accordionBlocks.fonctionnement.blockContent && {
+      id: "faq-fonctionnement",
+      title: accordionBlocks.fonctionnement.blockContent.title,
+    },
+    accordionBlocks.deroulement.blockContent && {
+      id: "faq-deroulement",
+      title: accordionBlocks.deroulement.blockContent.title,
+    },
+    accordionBlocks.casParticuliers.blockContent && {
+      id: "faq-cas-particuliers",
+      title: accordionBlocks.casParticuliers.blockContent.title,
+    },
+    accordionBlocks.paiement.blockContent && {
+      id: "faq-paiement",
+      title: accordionBlocks.paiement.blockContent.title,
+    },
+  ].filter(Boolean) as { id: string; title: string }[];
 
   return (
     <main className="min-h-screen">
@@ -78,15 +102,17 @@ export default function BookingClient({
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-subtitle font-bold text-dark-green mb-6">
             Réservez votre séance
           </h1>
-          <p className="text-lg md:text-xl text-black leading-relaxed max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-black leading-relaxed max-w-2xl mx-auto mb-8">
             Choisissez l&apos;accompagnement qui résonne avec vos besoins.
             Chaque rencontre est unique et respecte le rythme sacré du vivant.
           </p>
+          {/* Ancres niveau 1 */}
+          <TableOfContents items={mainAnchors} />
         </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-16 px-4">
+      <section id="services" className="pb-16 px-4 scroll-mt-24">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {serviceCards.map((service, index) => (
@@ -113,21 +139,29 @@ export default function BookingClient({
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-transparent via-green/30 to-transparent">
+      <section
+        id="faq"
+        className="py-20 px-4 bg-gradient-to-b from-transparent via-green/30 to-transparent scroll-mt-24"
+      >
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12 scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
+          <div className="text-center mb-8 scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
             <h2 className="text-3xl md:text-4xl font-subtitle font-bold text-dark-green mb-4">
               Informations pratiques
             </h2>
-            <p className="text-lg text-dark-green">
+            <p className="text-lg text-dark-green mb-6">
               Tout ce que vous devez savoir avant de réserver
             </p>
+            {/* Ancres niveau 2 — sous-sections FAQ */}
+            {faqAnchors.length > 0 && <TableOfContents items={faqAnchors} />}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Section Fonctionnement */}
             {accordionBlocks.fonctionnement.blockContent && (
-              <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
+              <div
+                id="faq-fonctionnement"
+                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-mt-24"
+              >
                 <CardTitlePhoto
                   title={accordionBlocks.fonctionnement.blockContent.title}
                   image={
@@ -154,7 +188,8 @@ export default function BookingClient({
             {/* Section Déroulement */}
             {accordionBlocks.deroulement.blockContent && (
               <div
-                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out"
+                id="faq-deroulement"
+                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-mt-24"
                 style={{ transitionDelay: "100ms" }}
               >
                 <CardTitlePhoto
@@ -180,7 +215,8 @@ export default function BookingClient({
             {/* Section Cas Particuliers */}
             {accordionBlocks.casParticuliers.blockContent && (
               <div
-                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out"
+                id="faq-cas-particuliers"
+                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-mt-24"
                 style={{ transitionDelay: "200ms" }}
               >
                 <CardTitlePhoto
@@ -209,7 +245,8 @@ export default function BookingClient({
             {/* Section Paiement */}
             {accordionBlocks.paiement.blockContent && (
               <div
-                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out"
+                id="faq-paiement"
+                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-mt-24"
                 style={{ transitionDelay: "300ms" }}
               >
                 <CardTitlePhoto
