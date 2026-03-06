@@ -10,9 +10,9 @@
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "test": "vitest",
-    "admin:create": "tsx scripts/create-admin.ts",
-    "admin:update-password": "tsx scripts/update-admin-password.ts",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "db:seed": "dotenv -e .env.local -- tsx src/db/seed/index.ts",
+    "db:seed:test": "dotenv -e .env.test -- tsx src/db/seed/index.ts"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -63,6 +63,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.3.0",
     "@tailwindcss/typography": "^0.5.19",
     "@types/luxon": "^3.7.1",
     "@types/node": "^20.17.31",
@@ -74,6 +75,7 @@
     "@vitest/ui": "^3.2.4",
     "autoprefixer": "^10.4.19",
     "daisyui": "^4.12.2",
+    "dotenv-cli": "^11.0.0",
     "drizzle-kit": "^0.31.6",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.3",
