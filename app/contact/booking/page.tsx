@@ -6,7 +6,7 @@ import BookingClient from "@/src/pageComponents/BookingClient";
 import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 export const metadata = pageMetadata.booking;
-export const revalidate = 3600;
+export const revalidate = 7200;
 
 export default async function BookingServer() {
   const blockIds = [

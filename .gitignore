@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -46,7 +44,7 @@ next-env.d.ts
 /logs
 /drizzle
 
-# Scripts sensibles
+# Scripts
 /scripts/create-admin*.ts
 /scripts/*-credentials.ts
 /scripts/temp-*.ts

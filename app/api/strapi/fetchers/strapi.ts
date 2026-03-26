@@ -4,12 +4,12 @@ export const fetchFromStrapi = async (endpoint: string) => {
 
   if (!baseUrl) {
     throw new Error(
-      "NEXT_PUBLIC_API_URL is not defined. Check your environment variables."
+      "NEXT_PUBLIC_API_URL is not defined. Check your environment variables.",
     );
   }
 
   const response = await fetch(fullUrl, {
-    next: { revalidate: 3600 },
+    next: { revalidate: 7200 },
   });
 
   if (!response.ok) {
