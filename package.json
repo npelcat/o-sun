@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev -p 4000",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx --report-unused-disable-directives",
     "drizzle:generate": "drizzle-kit generate",

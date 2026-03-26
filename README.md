@@ -289,6 +289,50 @@ npm run test
 
 ---
 
+## 🌿 Versioning Strategy
+
+This project follows the **GitHub Flow** branching strategy:
+
+- `main` — production branch, always stable and deployed
+- `feature/feature-name` — one branch per feature or fix, branched from `main`
+
+> Direct pushes to `main` are blocked by a branch protection rule.
+> Every change must go through a **Pull Request**, and the CI pipeline
+> (lint, build, tests) must pass before merging.
+
+---
+
+## ✍️ Commit Conventions
+
+Commits follow the **[Gitmoji](https://gitmoji.dev/)** convention.
+Each commit starts with an emoji that indicates the type of change at a glance,
+followed by a clear and explicit message.
+
+| Emoji | Code                 | Meaning                 |
+| ----- | -------------------- | ----------------------- |
+| ✨    | `:sparkles:`         | New feature             |
+| 🐛    | `:bug:`              | Bug fix                 |
+| ♻️    | `:recycle:`          | Refactoring             |
+| 🔒    | `:lock:`             | Security fix            |
+| 📝    | `:memo:`             | Documentation           |
+| 🚀    | `:rocket:`           | Deployment              |
+| 💄    | `:lipstick:`         | UI / styles             |
+| ✅    | `:white_check_mark:` | Tests                   |
+| 🗃️    | `:card_file_box:`    | Database                |
+| 🔧    | `:wrench:`           | Configuration           |
+| ⬆️    | `:arrow_up:`         | Upgrade dependencies    |
+| 🎨    | `:art:`              | Code structure / format |
+
+**Example:**
+
+```
+✨ Add booking form with Zod validation and email confirmation
+🐛 Fix time slot not releasing after 15min timeout
+📝 Update README with versioning and commit conventions
+```
+
+---
+
 ## 📫 Contributing
 
 Feedback, improvement suggestions, and contributions are welcome!  

@@ -6,18 +6,18 @@ interface ServiceSectionProps {
   onChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
   onBlur: (fieldName: string, value: string) => void;
   inputClass: (fieldName: string) => string;
 }
 
 const SERVICES = [
-  { value: "communication", label: "Communication animale" },
-  { value: "soin_animal", label: "Soin énergétique animal" },
-  { value: "soin_humain", label: "Soin énergétique humain" },
+  { value: "communication_animale", label: "Communication animale" },
+  { value: "soin_energetique_animal", label: "Soin énergétique animal" },
+  { value: "soin_energetique_humain", label: "Soin énergétique humain" },
   {
-    value: "communication_soin",
+    value: "communication_animale_et_soin_energetique",
     label: "Animal : Communication + Soin énergétique",
   },
 ] as const;
