@@ -17,6 +17,7 @@ vi.mock("@/utils/logger", () => ({
   default: {
     info: vi.fn(),
     error: vi.fn(),
+    warn: vi.fn(),
   },
 }));
 
@@ -35,7 +36,6 @@ import { getBookingById } from "@/lib/bookings";
 
 const mockGetBookingById = getBookingById as Mock;
 
-// Variables d'environnement
 vi.stubEnv("RESEND_API_KEY", "test-api-key");
 vi.stubEnv("RESEND_SENDER_EMAIL", "noreply@example.com");
 vi.stubEnv("MY_EMAIL", "oceane@example.com");
@@ -81,7 +81,7 @@ describe("POST /api/booking/confirm-email", () => {
 
     // Vérifier que getBookingById a été appelé
     expect(mockGetBookingById).toHaveBeenCalledWith(
-      "550e8400-e29b-41d4-a716-446655440000"
+      "550e8400-e29b-41d4-a716-446655440000",
     );
 
     // Vérifier que 2 emails ont été envoyés (client + admin)
@@ -94,10 +94,10 @@ describe("POST /api/booking/confirm-email", () => {
         from: "O'Sun ~ Voix Animale <noreply@example.com>",
         to: ["marie@example.com"],
         subject: expect.stringContaining(
-          "Confirmation de votre demande de réservation"
+          "Confirmation de votre demande de réservation",
         ),
         html: expect.stringContaining("Marie Dupont"),
-      })
+      }),
     );
 
     // Vérifier l'email admin
@@ -107,10 +107,10 @@ describe("POST /api/booking/confirm-email", () => {
         from: "O'Sun ~ Voix Animale <noreply@example.com>",
         to: ["oceane@example.com"],
         subject: expect.stringContaining(
-          "Nouvelle demande de réservation - Marie Dupont"
+          "Nouvelle demande de réservation - Marie Dupont",
         ),
         html: expect.stringContaining("marie@example.com"),
-      })
+      }),
     );
   });
 
@@ -165,7 +165,7 @@ describe("POST /api/booking/confirm-email", () => {
     expect(response.status).toBe(500);
     const body = await response.json();
     expect(body.error).toBe(
-      "Erreur lors de l'envoi de l'email de confirmation"
+      "Erreur lors de l'envoi de l'email de confirmation",
     );
 
     // L'email admin ne devrait pas être envoyé si l'email client échoue

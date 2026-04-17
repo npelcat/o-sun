@@ -184,15 +184,21 @@ export const useBookingForm = ({
         const bookingId = responseData.data?.booking?.id;
         if (!bookingId) throw new Error("ID de réservation non reçu");
 
-        await fetch("/api/booking/confirm-email", {
+        const emailResponse = await fetch("/api/booking/confirm-email", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ bookingId }),
         });
 
-        onSuccess(
-          "Demande de réservation finalisée ! Vous allez recevoir un email de confirmation.",
-        );
+        if (!emailResponse.ok) {
+          onSuccess(
+            "Demande de réservation finalisée ! L'email de confirmation n'a pas pu être envoyé, contactez-nous si besoin.",
+          );
+        } else {
+          onSuccess(
+            "Demande de réservation finalisée ! Vous allez recevoir un email de confirmation.",
+          );
+        }
 
         onClearTimer();
         setTimeout(() => router.push("/"), 2000);
