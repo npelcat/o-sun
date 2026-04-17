@@ -12,7 +12,8 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "db:seed": "dotenv -e .env.local -- tsx src/db/seed/index.ts",
-    "db:seed:test": "dotenv -e .env.test -- tsx src/db/seed/index.ts"
+    "db:seed:test": "dotenv -e .env.test -- tsx src/db/seed/index.ts",
+    "dev:test": "dotenv -e .env.test -- next dev -p 4000"
   },
   "engines": {
     "node": ">=22.0.0"
