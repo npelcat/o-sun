@@ -11,15 +11,15 @@ export const revalidate = 7200;
 export default async function BookingServer() {
   const blockIds = [
     "kyaki9vam2pzlo3jlnwfvzm5", // accordion-fonctionnement-reservations
+    "vya1r4eovb3a5b2mndcc98ie", // accordion-paiement
     "una3x7w09ezw8j8upm5hsbd0", // accordion-deroulement-seances
     "vx54wa6su7lgfinejsel8f0s", // accordion-cas-particuliers
-    "vya1r4eovb3a5b2mndcc98ie", // accordion-paiement
   ];
 
   const serviceSlugs = [
+    "reservation-appel-decouverte",
     "reservation-communication-animale",
     "reservation-soins-energetiques",
-    "reservation-appel-decouverte",
     "reservation-urgence",
   ];
 
@@ -27,6 +27,9 @@ export default async function BookingServer() {
     // Fonctionnement
     "reservation-fonctionnement-communication",
     "reservation-fonctionnement-energetique",
+    // Paiement
+    "reservation-confirmation",
+    "paiement-report",
     // Déroulement
     "seance-communication",
     "seance-energetique",
@@ -34,9 +37,6 @@ export default async function BookingServer() {
     "reservation-evenement-dates",
     "reservation-urgences",
     "reservation-choix",
-    // Paiement
-    "reservation-confirmation",
-    "paiement-report",
   ];
 
   const [blockContents, serviceCards, accordions] = await Promise.all([
@@ -62,6 +62,13 @@ export default async function BookingServer() {
         ].includes(a.slug || ""),
       ),
     },
+    paiement: {
+      blockContent:
+        validBlockContents.find((b) => b.slug === "accordion-paiement") || null,
+      accordions: accordions.filter((a) =>
+        ["reservation-confirmation", "paiement-report"].includes(a.slug || ""),
+      ),
+    },
     deroulement: {
       blockContent:
         validBlockContents.find(
@@ -82,13 +89,6 @@ export default async function BookingServer() {
           "reservation-urgences",
           "reservation-choix",
         ].includes(a.slug || ""),
-      ),
-    },
-    paiement: {
-      blockContent:
-        validBlockContents.find((b) => b.slug === "accordion-paiement") || null,
-      accordions: accordions.filter((a) =>
-        ["reservation-confirmation", "paiement-report"].includes(a.slug || ""),
       ),
     },
   };

@@ -15,14 +15,18 @@ const formatAccordion = (block: AccordionBlock): StrapiBlockContent => ({
 });
 
 export const fetchMultipleAccordions = async (
-  slugs: string[]
+  slugs: string[],
 ): Promise<StrapiBlockContent[]> => {
   const query = slugs.map((slug) => `filters[slug][$in]=${slug}`).join("&");
-
   try {
     const data = await fetchFromStrapi(`/api/accordions?${query}&populate=*`);
 
-    return data.data.map(formatAccordion);
+    const mapped = data.data.map(formatAccordion);
+
+    return mapped.sort(
+      (a: StrapiBlockContent, b: StrapiBlockContent) =>
+        slugs.indexOf(a.slug ?? "") - slugs.indexOf(b.slug ?? ""),
+    );
   } catch (error) {
     console.error("Erreur lors de la récupération des accordions", error);
     throw error;

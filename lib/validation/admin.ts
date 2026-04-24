@@ -87,7 +87,7 @@ export const updateBookingAdminSchema = z.object({
 
 /**
  * Schéma pour créer manuellement une réservation (admin)
- * Utile si ta cliente veut ajouter une réservation hors système
+ * Utile si ma cliente veut ajouter une réservation hors système
  */
 export const createBookingAdminSchema = z.object({
   timeSlotId: z.string().uuid("ID de créneau invalide"),
@@ -153,7 +153,7 @@ export const bookingFiltersSchema = z.object({
     .regex(/^\d{4}-\d{2}$/, "Format de mois invalide (YYYY-MM attendu)")
     .optional(),
   clientEmail: z.string().email().optional(),
-  period: z.enum(["upcoming", "past", "all"]).optional(), // ✅ NOUVEAU
+  period: z.enum(["upcoming", "past", "all"]).optional(),
 });
 
 /**

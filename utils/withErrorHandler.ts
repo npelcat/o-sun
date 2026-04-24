@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
+import logger from "./logger";
 
 export class HttpError extends Error {
   status: number;
@@ -24,23 +25,13 @@ function renderHtml500(): NextResponse {
   return new NextResponse(
     `<!DOCTYPE html>
      <html>
-       <head>
-         <title>Erreur 500</title>
-         <style>
-           body { font-family: sans-serif; text-align: center; padding: 50px; background: #f2f2f2; }
-           h1 { font-size: 48px; color: #d9534f; }
-           p { font-size: 18px; }
-         </style>
-       </head>
+       <head><title>Erreur 500</title></head>
        <body>
          <h1>Erreur interne du serveur</h1>
          <p>Une erreur est survenue. Merci de réessayer ultérieurement.</p>
        </body>
      </html>`,
-    {
-      status: 500,
-      headers: { "Content-Type": "text/html" },
-    },
+    { status: 500, headers: { "Content-Type": "text/html" } },
   );
 }
 
@@ -48,36 +39,54 @@ export async function withErrorHandler(
   req: NextRequest,
   handler: () => Promise<NextResponse>,
 ): Promise<NextResponse> {
+  const context = {
+    method: req.method,
+    path: req.nextUrl.pathname,
+    ip: req.headers.get("x-forwarded-for")?.split(",")[0] ?? "unknown",
+  };
+
   try {
     return await handler();
   } catch (error: unknown) {
-    console.error(error);
-
-    if (error instanceof AdminBusinessError) {
-      return NextResponse.json(
-        {
-          message: error.message, // Message détaillé pour l'admin
-        },
-        { status: error.status },
-      );
-    }
-
     if (error instanceof ZodError) {
+      logger.warn("Validation échouée", {
+        ...context,
+        errors: error.errors,
+      });
       return NextResponse.json(
-        {
-          error: "Données invalides",
-          details: error.errors,
-        },
+        { error: "Données invalides", details: error.errors },
         { status: 400 },
       );
     }
 
+    if (error instanceof AdminBusinessError) {
+      logger.warn("Erreur métier admin", {
+        ...context,
+        message: error.message,
+      });
+      return NextResponse.json(
+        { message: error.message },
+        { status: error.status },
+      );
+    }
+
     if (error instanceof HttpError) {
+      const level = error.status >= 500 ? "error" : "warn";
+      logger[level](`HttpError ${error.status}`, {
+        ...context,
+        message: error.message,
+      });
       return NextResponse.json(
         { error: error.message },
         { status: error.status },
       );
     }
+
+    logger.error("Erreur interne non gérée", {
+      ...context,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
 
     if (clientAcceptsHtml(req)) {
       return renderHtml500();
