@@ -32,12 +32,10 @@ export const fetchMultipleLinkComponents = async (
   slugs: string[],
 ): Promise<StrapiLinkComponent[]> => {
   const query = slugs.map((slug) => `filters[slug][$in]=${slug}`).join("&");
-
   try {
     const data = await fetchFromStrapi(
       `/api/component-with-links?${query}&populate=*`,
     );
-
     type LinkComponentItem = {
       title: string;
       link: string;
@@ -46,13 +44,18 @@ export const fetchMultipleLinkComponents = async (
       slug: string;
     };
 
-    return data.data.map((linkComponent: LinkComponentItem) => ({
+    const mapped = data.data.map((linkComponent: LinkComponentItem) => ({
       title: linkComponent.title,
       link: linkComponent.link,
       picture: formatPicture(linkComponent.picture),
       description: linkComponent.description ?? ([] as BlocksContent),
       slug: linkComponent.slug,
     }));
+
+    return mapped.sort(
+      (a: StrapiLinkComponent, b: StrapiLinkComponent) =>
+        slugs.indexOf(a.slug ?? "") - slugs.indexOf(b.slug ?? ""),
+    );
   } catch (error) {
     console.error("Erreur lors de la récupération des composants", error);
     throw error;

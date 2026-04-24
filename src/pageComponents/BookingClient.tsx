@@ -185,6 +185,33 @@ export default function BookingClient({
               </div>
             )}
 
+            {/* Section Paiement */}
+            {accordionBlocks.paiement.blockContent && (
+              <div
+                id="faq-paiement"
+                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-mt-24"
+                style={{ transitionDelay: "300ms" }}
+              >
+                <CardTitlePhoto
+                  title={accordionBlocks.paiement.blockContent.title}
+                  image={
+                    accordionBlocks.paiement.blockContent.picture?.url || ""
+                  }
+                  alt={
+                    accordionBlocks.paiement.blockContent.picture
+                      ?.alternativeText || ""
+                  }
+                />
+                <div className="mt-4">
+                  {accordionBlocks.paiement.accordions.map((accordion) => (
+                    <Accordion key={accordion.slug} title={accordion.title}>
+                      <BlockRendererClient content={accordion.content} />
+                    </Accordion>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Section Déroulement */}
             {accordionBlocks.deroulement.blockContent && (
               <div
@@ -238,33 +265,6 @@ export default function BookingClient({
                       </Accordion>
                     ),
                   )}
-                </div>
-              </div>
-            )}
-
-            {/* Section Paiement */}
-            {accordionBlocks.paiement.blockContent && (
-              <div
-                id="faq-paiement"
-                className="bg-white/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out scroll-mt-24"
-                style={{ transitionDelay: "300ms" }}
-              >
-                <CardTitlePhoto
-                  title={accordionBlocks.paiement.blockContent.title}
-                  image={
-                    accordionBlocks.paiement.blockContent.picture?.url || ""
-                  }
-                  alt={
-                    accordionBlocks.paiement.blockContent.picture
-                      ?.alternativeText || ""
-                  }
-                />
-                <div className="mt-4">
-                  {accordionBlocks.paiement.accordions.map((accordion) => (
-                    <Accordion key={accordion.slug} title={accordion.title}>
-                      <BlockRendererClient content={accordion.content} />
-                    </Accordion>
-                  ))}
                 </div>
               </div>
             )}
