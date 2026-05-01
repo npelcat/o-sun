@@ -83,7 +83,21 @@ const validPayload = {
   animalName: "Rex",
   animalType: "Chien",
   service: "Communication animale",
+
+  // Correction 1: preferredPronoun doit être un des enums attendus
+  preferredPronoun: "tutoiement",
+
+  // Correction 2: Ces deux-là DOIVENT être à true (z.literal(true))
+  monthlyPlanningAck: true,
+  cgvAccepted: true,
+
+  // socialMediaConsent est un boolean classique
+  socialMediaConsent: false,
+
+  // Correction 3: answers peut être un objet ou une string,
+  // mais attention à la cohérence avec ton schéma
   answers: { question1: "réponse1" },
+
   turnstileToken: "valid-token",
 };
 
