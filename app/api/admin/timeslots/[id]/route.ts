@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AdminBusinessError, withErrorHandler } from "@/utils/withErrorHandler";
+import { withErrorHandler } from "@/utils/withErrorHandler";
 import {
   getTimeslotById,
   updateTimeslot,
   deleteTimeslot,
+  checkNoLinkedBookings,
 } from "@/lib/admin/timeslots";
 import { updateTimeslotSchema } from "@/lib/validation/admin";
-import db from "@/src/db/index";
-import { bookings } from "@/src/db/schema";
-import { eq } from "drizzle-orm";
 import logger from "@/utils/logger";
 
 /**
@@ -186,33 +184,13 @@ export async function DELETE(
 ) {
   return withErrorHandler(req, async () => {
     const { id } = await params;
-
     logger.info(`DELETE /api/admin/timeslots/${id} - Tentative suppression`);
 
-    // Vérifier qu'aucune réservation n'est liée à ce créneau
-    const linkedBookings = await db
-      .select()
-      .from(bookings)
-      .where(eq(bookings.timeSlotId, id))
-      .limit(1);
-
-    if (linkedBookings.length > 0) {
-      logger.warn(
-        `DELETE /api/admin/timeslots/${id} - Suppression refusée : réservation liée`,
-        { bookingId: linkedBookings[0].id },
-      );
-
-      throw new AdminBusinessError(
-        "Impossible de supprimer ce créneau : une réservation y est liée. Veuillez d'abord supprimer la réservation.",
-      );
-    }
+    await checkNoLinkedBookings(id);
 
     await deleteTimeslot(id);
-
     logger.info(`DELETE /api/admin/timeslots/${id} - Créneau supprimé`);
 
-    return NextResponse.json({
-      message: "Créneau supprimé avec succès",
-    });
+    return NextResponse.json({ message: "Créneau supprimé avec succès" });
   });
 }

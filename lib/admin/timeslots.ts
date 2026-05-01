@@ -1,5 +1,5 @@
 import db from "@/src/db/index";
-import { timeSlots } from "@/src/db/schema";
+import { bookings, timeSlots } from "@/src/db/schema";
 import { AdminBusinessError } from "@/utils/withErrorHandler";
 import { eq, and, gte, lte, desc, gt, lt, not } from "drizzle-orm";
 import { DateTime } from "luxon";
@@ -201,12 +201,8 @@ export async function updateTimeslot(id: string, data: UpdateTimeslotData) {
 
 /**
  * Supprime un créneau
- * ATTENTION : Vérifier qu'aucune réservation n'est liée avant de supprimer
  */
 export async function deleteTimeslot(id: string) {
-  // Note : La vérification des réservations liées sera faite dans la route
-  // pour renvoyer une erreur plus explicite à l'utilisateur
-
   const [deleted] = await db
     .delete(timeSlots)
     .where(eq(timeSlots.id, id))
@@ -243,4 +239,22 @@ export async function countAvailableSlotsForMonth(month: string) {
     .execute();
 
   return slots.length;
+}
+
+/**
+ * Vérifie qu'aucune réservation n'est liée à ce créneau
+ * Lève une erreur métier si c'est le cas
+ */
+export async function checkNoLinkedBookings(timeslotId: string): Promise<void> {
+  const linkedBookings = await db
+    .select()
+    .from(bookings)
+    .where(eq(bookings.timeSlotId, timeslotId))
+    .limit(1);
+
+  if (linkedBookings.length > 0) {
+    throw new AdminBusinessError(
+      "Impossible de supprimer ce créneau : une réservation y est liée. Veuillez d'abord supprimer la réservation.",
+    );
+  }
 }

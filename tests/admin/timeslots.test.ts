@@ -6,6 +6,7 @@ import {
   updateTimeslot,
   deleteTimeslot,
   countAvailableSlotsForMonth,
+  checkNoLinkedBookings,
 } from "@/lib/admin/timeslots";
 
 vi.mock("@/src/db/index", () => {
@@ -226,5 +227,19 @@ describe("Admin Timeslots Service", () => {
 
       expect(result).toBe(0);
     });
+  });
+});
+
+describe("checkNoLinkedBookings", () => {
+  it("should not throw when no bookings are linked", async () => {
+    mockDb.limit.mockResolvedValue([]);
+    await expect(checkNoLinkedBookings("slot-1")).resolves.not.toThrow();
+  });
+
+  it("should throw AdminBusinessError when a booking is linked", async () => {
+    mockDb.limit.mockResolvedValue([{ id: "booking-1" }]);
+    await expect(checkNoLinkedBookings("slot-1")).rejects.toThrow(
+      "Impossible de supprimer ce créneau",
+    );
   });
 });

@@ -1,11 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
 import logger from "@/utils/logger";
 import z from "zod";
 import { withErrorHandler } from "@/utils/withErrorHandler";
 import { getBookingById } from "@/lib/bookings";
 import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
-import { buildConfirmationEmail } from "@/lib/email/confirmation-email";
+import { sendConfirmationEmail } from "@/lib/email/send-confirmation-email";
 
 /**
  * @swagger
@@ -113,35 +112,17 @@ export async function POST(request: NextRequest) {
     const { bookingId } = confirmEmailSchema.parse(body);
 
     const booking = await getBookingById(bookingId);
-    const { userSubject, userHtml, adminSubject, adminHtml } =
-      buildConfirmationEmail(booking);
+    const result = await sendConfirmationEmail(booking);
 
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
-    const { error: userError } = await resend.emails.send({
-      from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
-      to: [booking.clientEmail],
-      subject: userSubject,
-      html: userHtml,
-    });
-
-    if (userError) {
-      logger.error("Échec envoi email client", { userError, bookingId });
+    if (!result.success) {
+      logger.error("Échec envoi email confirmation", {
+        error: result.error,
+        bookingId,
+      });
       return NextResponse.json(
         { error: "Erreur lors de l'envoi de l'email de confirmation" },
         { status: 500 },
       );
-    }
-
-    const { error: adminError } = await resend.emails.send({
-      from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
-      to: [process.env.MY_EMAIL!],
-      subject: adminSubject,
-      html: adminHtml,
-    });
-
-    if (adminError) {
-      logger.warn("Échec envoi email admin", { adminError, bookingId });
     }
 
     logger.info("Emails envoyés avec succès", { bookingId });
