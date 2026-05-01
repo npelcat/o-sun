@@ -49,9 +49,19 @@ export const timeSlots = bookingSchema.table("time_slots", {
 export const formData = bookingSchema.table("form_data", {
   id: uuid("form_id").primaryKey().defaultRandom(),
   animalName: varchar("animal_name", { length: 255 }).notNull(),
-  animalType: varchar("animal_type", { length: 100 }),
+  animalType: varchar("animal_type", { length: 100 }).notNull(),
+  animalInfo: text("animal_info"),
+  householdInfo: text("household_info"),
   service: varchar("service", { length: 255 }).notNull(),
-  answers: text("answers"), // JSON stringifié si besoin
+
+  serviceSpecificAnswers: text("service_specific_answers"),
+  answers: text("answers"),
+
+  preferredPronoun: varchar("preferred_pronoun", { length: 20 }).notNull(),
+  socialMediaConsent: boolean("social_media_consent").notNull().default(false),
+  monthlyPlanningAck: boolean("monthly_planning_ack").notNull().default(false),
+  cgvAccepted: boolean("cgv_accepted").notNull().default(false),
+
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

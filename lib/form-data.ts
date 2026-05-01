@@ -3,19 +3,38 @@ import { formData } from "@/src/db/schema";
 
 export interface CreateFormData {
   animalName: string;
-  animalType?: string | null;
+  animalType: string;
   service: string;
   answers?: string | Record<string, unknown> | null;
+  animalInfo?: string | null;
+  householdInfo?: string | null;
+  serviceSpecificAnswers?: string | null;
+  preferredPronoun: string;
+  socialMediaConsent: boolean;
+  monthlyPlanningAck: boolean;
+  cgvAccepted: boolean;
 }
 
 export async function createFormData(trx: DbTransaction, data: CreateFormData) {
-  const { animalName, animalType, service, answers } = data;
+  const {
+    animalName,
+    animalType,
+    service,
+    answers,
+    animalInfo,
+    householdInfo,
+    serviceSpecificAnswers,
+    preferredPronoun,
+    socialMediaConsent,
+    monthlyPlanningAck,
+    cgvAccepted,
+  } = data;
 
   const [insertedForm] = await trx
     .insert(formData)
     .values({
       animalName,
-      animalType: animalType || null,
+      animalType,
       service,
       answers:
         typeof answers === "string"
@@ -23,6 +42,13 @@ export async function createFormData(trx: DbTransaction, data: CreateFormData) {
           : answers
             ? JSON.stringify(answers)
             : null,
+      animalInfo: animalInfo ?? null,
+      householdInfo: householdInfo ?? null,
+      serviceSpecificAnswers: serviceSpecificAnswers ?? null,
+      preferredPronoun,
+      socialMediaConsent,
+      monthlyPlanningAck,
+      cgvAccepted,
     })
     .returning();
 

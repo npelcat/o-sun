@@ -83,7 +83,14 @@ const validPayload = {
   animalName: "Rex",
   animalType: "Chien",
   service: "Communication animale",
+  preferredPronoun: "tutoiement",
+
+  monthlyPlanningAck: true,
+  cgvAccepted: true,
+  socialMediaConsent: false,
+
   answers: { question1: "réponse1" },
+
   turnstileToken: "valid-token",
 };
 

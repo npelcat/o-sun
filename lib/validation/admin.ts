@@ -100,24 +100,37 @@ export const createBookingAdminSchema = z.object({
     .email("Email invalide")
     .max(255, "L'email est trop long"),
   clientPhone: z.string().max(50, "Téléphone trop long").nullable().optional(),
+
   animalName: z
     .string()
     .min(1, "Le nom de l'animal est requis")
     .max(255, "Le nom est trop long"),
   animalType: z
     .string()
-    .max(100, "Le type d'animal est trop long")
-    .nullable()
-    .optional(),
+    .min(1, "Le type d'animal est requis")
+    .max(100, "Le type d'animal est trop long"),
+  animalInfo: z.string().nullable().optional(),
+  householdInfo: z.string().nullable().optional(),
   service: z
     .string()
     .min(1, "Le service est requis")
     .max(255, "Le service est trop long"),
+  serviceSpecificAnswers: z.string().nullable().optional(),
   answers: z
     .string()
     .max(5000, "Les réponses sont trop longues")
     .nullable()
     .optional(),
+
+  preferredPronoun: z
+    .string()
+    .min(1, "Le pronom est requis")
+    .max(20, "Le pronom est trop long"),
+
+  socialMediaConsent: z.boolean().default(false),
+  monthlyPlanningAck: z.boolean().default(false),
+  cgvAccepted: z.boolean().default(false),
+
   status: z
     .enum([
       BOOKING_STATUS.PENDING,
