@@ -1,3 +1,4 @@
+import { Resend } from "resend";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import { formatDate, formatTime } from "@/lib/date";
 
@@ -6,6 +7,34 @@ export interface ConfirmationEmailContent {
   userHtml: string;
   adminSubject: string;
   adminHtml: string;
+}
+
+export async function sendConfirmationEmail(
+  booking: BookingWithDetails,
+): Promise<{ success: boolean; error?: unknown }> {
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { userSubject, userHtml, adminSubject, adminHtml } =
+    buildConfirmationEmail(booking);
+
+  const { error: userError } = await resend.emails.send({
+    from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
+    to: [booking.clientEmail],
+    subject: userSubject,
+    html: userHtml,
+  });
+
+  if (userError) {
+    return { success: false, error: userError };
+  }
+
+  await resend.emails.send({
+    from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
+    to: [process.env.MY_EMAIL!],
+    subject: adminSubject,
+    html: adminHtml,
+  });
+
+  return { success: true };
 }
 
 export function buildConfirmationEmail(

@@ -232,7 +232,7 @@ export async function deleteBookingAdmin(bookingId: string) {
 
 /**
  * Crée manuellement une réservation (admin)
- * Utile si ta cliente veut ajouter une réservation externe au système
+ * Utile si ma cliente veut ajouter une réservation externe au système
  */
 export async function createBookingAdmin(data: CreateBookingAdminData) {
   return await db.transaction(async (trx) => {
