@@ -21,11 +21,16 @@ export interface CreateBookingAdminData {
   clientEmail: string;
   clientPhone?: string | null;
   animalName: string;
-  animalType?: string | null;
+  animalType: string;
   service: string;
   answers?: string | null;
   status?: BookingStatus;
   adminNotes?: string | null;
+  animalInfo?: string | null;
+  householdInfo?: string | null;
+  serviceSpecificAnswers?: string | null;
+  preferredPronoun?: string | null;
+  socialMediaConsent?: boolean;
 }
 
 export interface BookingFilters {
@@ -287,9 +292,16 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
       .insert(formData)
       .values({
         animalName: data.animalName,
-        animalType: data.animalType || null,
+        animalType: data.animalType,
         service: data.service,
-        answers: data.answers || null,
+        answers: data.answers ?? null,
+        animalInfo: data.animalInfo ?? null,
+        householdInfo: data.householdInfo ?? null,
+        serviceSpecificAnswers: data.serviceSpecificAnswers ?? null,
+        preferredPronoun: data.preferredPronoun ?? "non renseigné",
+        socialMediaConsent: data.socialMediaConsent ?? false,
+        monthlyPlanningAck: true,
+        cgvAccepted: true,
       })
       .returning();
 

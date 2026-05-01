@@ -111,7 +111,7 @@ npm run dev
 
 #### 5. Access the application
 
-Open your browser at: **http://localhost:3000**
+Open your browser at: **http://localhost:4000**
 
 ---
 
@@ -140,7 +140,7 @@ docker-compose up
 
 #### 4. Access the application
 
-The app will be available at: **http://localhost:3001**
+The app will be available at: **http://localhost:4001**
 
 #### 5. Stop the container
 
@@ -157,7 +157,7 @@ Create a `.env.local` file based on `.env.example`:
 ```env
 # Environment
 NODE_ENV=development  # development | production | test
-NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_URL=http://localhost:4000
 NEXTAUTH_SECRET=your-secret-here
 
 # Strapi CMS API
@@ -203,6 +203,24 @@ npm run drizzle:generate
 npm run drizzle:migrate
 ```
 
+#### Seed the database with test data
+
+> ⚠️ Only available in environments where `SEED_ALLOWED=true` is set.
+> Never enable this in production.
+
+```bash
+npm run db:seed        # Seeds the local database (.env.local)
+npm run db:seed:test   # Seeds the test database (.env.test)
+```
+
+The seed script populates the following tables with realistic fake data (via Faker.js):
+
+- 20 clients
+- 50 time slots
+- 30 form entries and their associated bookings
+
+The `admins` table is never touched by the seed.
+
 ---
 
 ## 🛠️ Available Scripts
@@ -214,6 +232,8 @@ npm run drizzle:migrate
 - `npm run lint` – Check code quality with ESLint
 - `npm run drizzle:generate` – Generate a Drizzle migration
 - `npm run drizzle:migrate` – Apply Drizzle migrations
+- `npm run db:seed` – Seed the local database with test data
+- `npm run db:seed:test` – Seed the test database with test data
 
 ---
 

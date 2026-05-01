@@ -173,7 +173,8 @@ describe("Admin Bookings Service", () => {
         clientName: "Bob",
         clientEmail: "bob@example.com",
         animalName: "Minou",
-        service: "Consultation",
+        animalType: "Chat",
+        service: "Communication animale - Clarté",
       });
 
       expect(result.booking.id).toBe("booking-1");
@@ -194,6 +195,7 @@ describe("Admin Bookings Service", () => {
           clientName: "Bob",
           clientEmail: "bob@example.com",
           animalName: "Minou",
+          animalType: "Chat",
           service: "Consultation",
         }),
       ).rejects.toThrow("Créneau non trouvé");
@@ -213,6 +215,7 @@ describe("Admin Bookings Service", () => {
           clientName: "Bob",
           clientEmail: "bob@example.com",
           animalName: "Minou",
+          animalType: "Chat",
           service: "Consultation",
         }),
       ).rejects.toThrow("Ce créneau n'est pas disponible");
