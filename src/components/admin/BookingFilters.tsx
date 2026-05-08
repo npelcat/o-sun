@@ -1,6 +1,6 @@
 "use client";
 
-import { BOOKING_STATUS, BookingStatusFilter } from "@/lib/constants";
+import { BOOKING_STATUS, BookingStatusFilter } from "@/lib/utils/constants";
 
 interface BookingFiltersProps {
   statusFilter: BookingStatusFilter;

@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { useToast } from "@/src/hooks/useToast";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import Loader from "@/src/components/Loader";
-import { getCurrentMonth } from "@/lib/date";
+import { getCurrentMonth } from "@/lib/utils/date";
 import BookingFilters from "./BookingFilters";
 import BookingsTable from "./BookingTable";
 import BookingDetailModal from "./BookingDetailModal";
@@ -12,7 +12,7 @@ import {
   BOOKING_PERIOD,
   BookingStatus,
   BookingStatusFilter,
-} from "@/lib/constants";
+} from "@/lib/utils/constants";
 
 export default function BookingsManagement() {
   const { error, success } = useToast();

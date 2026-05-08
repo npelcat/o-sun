@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/lib/metadata";
+import { pageMetadata } from "@/lib/utils/metadata";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
 import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";
 import EthicsClient from "@/src/pageComponents/EthicsClient";
@@ -21,7 +21,7 @@ export default async function EthicsServer() {
   ]);
 
   const validBlockContents = blockContents.filter(
-    (block): block is StrapiBlockContent => block !== null
+    (block): block is StrapiBlockContent => block !== null,
   );
   const validAccordions = accordions;
 

@@ -197,6 +197,13 @@ export async function POST(req: NextRequest) {
       animalName,
     });
 
+    if (!cgvAccepted) {
+      return NextResponse.json(
+        { message: "Les conditions générales de vente doivent être acceptées" },
+        { status: 400 },
+      );
+    }
+
     const turnstileCheck = await verifyTurnstileToken(turnstileToken);
 
     if (!turnstileCheck.success) {

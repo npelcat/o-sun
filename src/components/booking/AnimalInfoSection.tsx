@@ -6,7 +6,7 @@ interface AnimalInfoSectionProps {
   onChange: (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => void;
   onBlur: (fieldName: string, value: string) => void;
   inputClass: (fieldName: string) => string;
@@ -26,6 +26,7 @@ export const AnimalInfoSection: React.FC<AnimalInfoSectionProps> = ({
       </legend>
 
       <div className="space-y-4">
+        {/* Nom de l'animal */}
         <div>
           <label htmlFor="animalName" className="block mb-2 font-medium">
             Nom de l&apos;animal <span className="text-red-500">*</span>
@@ -47,10 +48,10 @@ export const AnimalInfoSection: React.FC<AnimalInfoSectionProps> = ({
           )}
         </div>
 
+        {/* Type d'animal — obligatoire */}
         <div>
           <label htmlFor="animalType" className="block mb-2 font-medium">
-            Type d&apos;animal{" "}
-            <span className="text-gray-500">(optionnel)</span>
+            Type d&apos;animal <span className="text-red-500">*</span>
           </label>
           <input
             id="animalType"
@@ -59,12 +60,61 @@ export const AnimalInfoSection: React.FC<AnimalInfoSectionProps> = ({
             value={formData.animalType}
             onChange={onChange}
             onBlur={(e) => onBlur("animalType", e.target.value)}
-            placeholder="Ex: Chien, Chat, Cheval..."
+            placeholder="Ex : Chien, Chat, Cheval..."
+            required
             className={inputClass("animalType")}
           />
           {fieldErrors.animalType && (
             <p className="text-red-500 text-sm mt-1">
               {fieldErrors.animalType}
+            </p>
+          )}
+        </div>
+
+        {/* Informations sur l'animal */}
+        <div>
+          <label htmlFor="animalInfo" className="block mb-2 font-medium">
+            Informations sur votre animal
+          </label>
+          <p className="text-sm text-gray-500 mb-2">
+            Âge, race, caractère, contexte de vie, éléments importants à
+            savoir...
+          </p>
+          <textarea
+            id="animalInfo"
+            name="animalInfo"
+            value={formData.animalInfo}
+            onChange={onChange}
+            rows={3}
+            className={inputClass("animalInfo")}
+          />
+          {fieldErrors.animalInfo && (
+            <p className="text-red-500 text-sm mt-1">
+              {fieldErrors.animalInfo}
+            </p>
+          )}
+        </div>
+
+        {/* Composition du foyer */}
+        <div>
+          <label htmlFor="householdInfo" className="block mb-2 font-medium">
+            Composition du foyer
+          </label>
+          <p className="text-sm text-gray-500 mb-2">
+            Autres animaux, personnes vivant avec l&apos;animal, environnement
+            général...
+          </p>
+          <textarea
+            id="householdInfo"
+            name="householdInfo"
+            value={formData.householdInfo}
+            onChange={onChange}
+            rows={3}
+            className={inputClass("householdInfo")}
+          />
+          {fieldErrors.householdInfo && (
+            <p className="text-red-500 text-sm mt-1">
+              {fieldErrors.householdInfo}
             </p>
           )}
         </div>

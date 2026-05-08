@@ -1,8 +1,8 @@
 "use client";
 
 import { BookingWithDetails } from "@/app/api/types/booking";
-import { BOOKING_STATUS, BookingStatus } from "@/lib/constants";
-import { formatDateTime } from "@/lib/date";
+import { BOOKING_STATUS, BookingStatus } from "@/lib/utils/constants";
+import { formatDateTime } from "@/lib/utils/date";
 
 interface BookingsTableProps {
   bookings: BookingWithDetails[];

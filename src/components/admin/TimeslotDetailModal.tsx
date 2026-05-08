@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { formatDateTime } from "@/lib/date";
+import { formatDateTime } from "@/lib/utils/date";
 import { Timeslot } from "./TimeslotsTable";
 import { useTimeslotForm } from "@/src/hooks/useTimeSlotForm";
 

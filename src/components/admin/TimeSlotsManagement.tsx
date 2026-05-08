@@ -7,8 +7,8 @@ import TimeslotsTable, { Timeslot } from "./TimeslotsTable";
 import CreateTimeslotModal from "./CreateTimeslotModal";
 import TimeslotDetailModal from "./TimeslotDetailModal";
 import TimeslotFilters from "./TimeSlotFilters";
-import { getCurrentMonth } from "@/lib/date";
-import { BOOKING_PERIOD } from "@/lib/constants";
+import { getCurrentMonth } from "@/lib/utils/date";
+import { BOOKING_PERIOD } from "@/lib/utils/constants";
 
 export default function TimeslotsManagement() {
   const { error, success } = useToast();

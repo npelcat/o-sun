@@ -11,7 +11,7 @@ import {
   BOOKING_PERIOD,
   BookingStatus,
   BookingStatusFilter,
-} from "@/lib/constants";
+} from "@/lib/utils/constants";
 
 export default function BookingsArchive() {
   const { error, success } = useToast();

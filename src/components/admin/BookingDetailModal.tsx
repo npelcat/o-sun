@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { BookingWithDetails } from "@/app/api/types/booking";
-import { formatDateTime, formatDateTimeRange } from "@/lib/date";
-import { BOOKING_STATUS, BookingStatus } from "@/lib/constants";
+import { formatDateTime, formatDateTimeRange } from "@/lib/utils/date";
+import { BOOKING_STATUS, BookingStatus } from "@/lib/utils/constants";
+import { safeJsonParse } from "@/lib/utils/json";
 
 interface BookingDetailModalProps {
   booking: BookingWithDetails;
@@ -112,6 +113,14 @@ export default function BookingDetailModal({
                 label="Téléphone"
                 value={booking.clientPhone || "Non renseigné"}
               />
+              <InfoRow
+                label="Préférence"
+                value={
+                  booking.preferredPronoun === "tutoiement"
+                    ? "Tutoiement"
+                    : "Vouvoiement"
+                }
+              />
             </div>
           </div>
 
@@ -126,15 +135,43 @@ export default function BookingDetailModal({
                 label="Type"
                 value={booking.animalType || "Non renseigné"}
               />
+              {booking.animalInfo && (
+                <InfoRow label="Infos animal" value={booking.animalInfo} />
+              )}
+              {booking.householdInfo && (
+                <InfoRow label="Infos foyer" value={booking.householdInfo} />
+              )}
               <InfoRow label="Service demandé" value={booking.service} />
             </div>
           </div>
 
           {/* Réponses formulaire */}
+          {booking.serviceSpecificAnswers && (
+            <div>
+              <h3 className="font-medium text-black mb-3 text-lg">
+                📋 Réponses spécifiques au service
+              </h3>
+              <div className="bg-beige p-4 rounded-lg space-y-2 text-sm">
+                {Object.entries(
+                  safeJsonParse<Record<string, string>>(
+                    booking.serviceSpecificAnswers,
+                    {},
+                  ),
+                ).map(([key, value]) => (
+                  <InfoRow
+                    key={key}
+                    label={key.replace(/_/g, " ")}
+                    value={value}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
           {booking.answers && (
             <div>
               <h3 className="font-medium text-black mb-3 text-lg">
-                📋 Réponses au formulaire
+                💬 Informations complémentaires
               </h3>
               <div className="bg-beige p-4 rounded-lg">
                 <p className="text-sm text-black whitespace-pre-wrap">
