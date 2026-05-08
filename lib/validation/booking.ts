@@ -38,7 +38,7 @@ export const confirmBookingSchema = z.object({
       {
         message:
           "Numéro de téléphone invalide (ex: 0601020304 ou +33601020304)",
-      }
+      },
     )
     .nullable()
     .optional()
@@ -50,20 +50,44 @@ export const confirmBookingSchema = z.object({
     .trim(),
   animalType: z
     .string()
+    .min(1, "Le type d'animal est requis")
     .max(100, "Le type d'animal est trop long (max 100 caractères)")
-    .trim()
-    .nullable()
-    .optional()
-    .or(z.literal("")),
+    .trim(),
+
   service: z
     .string()
     .min(1, "Le service est requis")
     .max(255, "Le service est trop long"),
+
+  animalInfo: z.string().trim().nullable().optional(),
+  householdInfo: z.string().trim().nullable().optional(),
+
+  serviceSpecificAnswers: z.string().nullable().optional(),
+
   answers: z
     .union([z.string(), z.record(z.unknown())])
     .nullable()
     .optional()
     .or(z.literal("")),
+
+  preferredPronoun: z.enum(["tutoiement", "vouvoiement"], {
+    errorMap: () => ({ message: "Veuillez choisir tutoiement ou vouvoiement" }),
+  }),
+
+  socialMediaConsent: z.boolean(),
+
+  monthlyPlanningAck: z.literal(true, {
+    errorMap: () => ({
+      message:
+        "Vous devez confirmer avoir pris connaissance du fonctionnement des réservations",
+    }),
+  }),
+  cgvAccepted: z.literal(true, {
+    errorMap: () => ({
+      message: "Vous devez accepter les conditions générales de vente",
+    }),
+  }),
+
   turnstileToken: z.string().min(1, "Token de sécurité requis"),
 });
 

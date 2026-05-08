@@ -181,6 +181,13 @@ export async function POST(req: NextRequest) {
       animalType,
       service,
       answers,
+      animalInfo,
+      householdInfo,
+      serviceSpecificAnswers,
+      preferredPronoun,
+      socialMediaConsent,
+      monthlyPlanningAck,
+      cgvAccepted,
       turnstileToken,
     } = validatedData;
 
@@ -244,6 +251,13 @@ export async function POST(req: NextRequest) {
         animalType,
         service,
         answers,
+        animalInfo,
+        householdInfo,
+        serviceSpecificAnswers,
+        preferredPronoun,
+        socialMediaConsent,
+        monthlyPlanningAck,
+        cgvAccepted,
       });
       logger.info("POST /booking/confirm - FormData créé", {
         formId: form.id,
