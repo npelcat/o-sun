@@ -4,9 +4,9 @@ import { useEffect, useState, useCallback } from "react";
 import { useToast } from "@/src/hooks/useToast";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import Loader from "@/src/components/Loader";
-import { formatDateTime } from "@/lib/date";
+import { formatDateTime } from "@/lib/utils/date";
 import { calculateBookingStats } from "@/lib/admin/stats";
-import { BOOKING_PERIOD } from "@/lib/constants";
+import { BOOKING_PERIOD } from "@/lib/utils/constants";
 
 interface DashboardStats {
   total: number;

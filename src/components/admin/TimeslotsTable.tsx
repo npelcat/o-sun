@@ -1,6 +1,6 @@
 "use client";
 
-import { formatDateTimeRange } from "@/lib/date";
+import { formatDateTimeRange } from "@/lib/utils/date";
 
 export interface Timeslot {
   id: string;

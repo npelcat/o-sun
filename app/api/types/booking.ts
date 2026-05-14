@@ -1,4 +1,4 @@
-import { BookingStatus } from "@/lib/constants";
+import { BookingStatus } from "@/lib/utils/constants";
 
 export interface BookingWithDetails {
   // Booking
@@ -24,4 +24,11 @@ export interface BookingWithDetails {
   service: string;
   answers: string | null;
   formCreatedAt: Date;
+
+  serviceSpecificAnswers: string | null;
+  animalInfo: string | null;
+  householdInfo: string | null;
+  preferredPronoun: string;
+  socialMediaConsent: boolean;
+  monthlyPlanningAck: boolean;
 }

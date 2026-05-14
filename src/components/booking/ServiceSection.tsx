@@ -1,4 +1,5 @@
 import { FormData } from "@/src/hooks/useBookingForm";
+import { SERVICES, ServiceSpecificFields } from "./ServiceSpecificFields";
 
 interface ServiceSectionProps {
   formData: FormData;
@@ -9,28 +10,27 @@ interface ServiceSectionProps {
     >,
   ) => void;
   onBlur: (fieldName: string, value: string) => void;
+  onServiceChange: (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => void;
+  onServiceSpecificChange: (fieldKey: string, value: string) => void;
   inputClass: (fieldName: string) => string;
 }
-
-const SERVICES = [
-  { value: "communication_animale", label: "Communication animale" },
-  { value: "soin_energetique_animal", label: "Soin énergétique animal" },
-  { value: "soin_energetique_humain", label: "Soin énergétique humain" },
-  {
-    value: "communication_animale_et_soin_energetique",
-    label: "Animal : Communication + Soin énergétique",
-  },
-] as const;
 
 export const ServiceSection: React.FC<ServiceSectionProps> = ({
   formData,
   fieldErrors,
   onChange,
   onBlur,
+  onServiceChange,
+  onServiceSpecificChange,
   inputClass,
 }) => {
   return (
     <>
+      {/* Sélection du service */}
       <fieldset className="border-t pt-6">
         <legend className="text-xl font-subtitle mb-4">Service souhaité</legend>
 
@@ -43,7 +43,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
             name="service"
             value={formData.service}
             onChange={(e) => {
-              onChange(e);
+              onServiceChange(e);
               onBlur("service", e.target.value);
             }}
             required
@@ -62,9 +62,25 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
         </div>
       </fieldset>
 
+      {/* Champs dynamiques selon le service choisi */}
+      {formData.service && (
+        <fieldset className="border-t pt-6">
+          <legend className="text-xl font-subtitle mb-4">
+            Informations sur votre demande
+          </legend>
+          <ServiceSpecificFields
+            formData={formData}
+            fieldErrors={fieldErrors}
+            onServiceSpecificChange={onServiceSpecificChange}
+            inputClass={inputClass}
+          />
+        </fieldset>
+      )}
+
+      {/* Champ libre */}
       <div className="border-t pt-6">
         <label htmlFor="answers" className="block mb-2 font-medium">
-          Informations supplémentaires{" "}
+          Informations complémentaires{" "}
           <span className="text-gray-500">(optionnel)</span>
         </label>
         <textarea
@@ -72,7 +88,7 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
           name="answers"
           value={formData.answers}
           onChange={onChange}
-          placeholder="Décrivez votre situation, vos questions..."
+          placeholder="Tout ce que vous souhaitez ajouter..."
           rows={4}
           className={inputClass("answers")}
         />

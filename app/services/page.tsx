@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/lib/metadata";
+import { pageMetadata } from "@/lib/utils/metadata";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
 import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";
 import AnimalCommunicationClient from "@/src/pageComponents/AnimalCommunicationClient";
@@ -26,7 +26,7 @@ export default async function AnimalCommunicationServer() {
   ]);
 
   const validBlockContents = blockContents.filter(
-    (block): block is StrapiBlockContent => block !== null
+    (block): block is StrapiBlockContent => block !== null,
   );
   const validAccordions = accordions;
 

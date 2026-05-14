@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { BOOKING_STATUS } from "../constants";
+import { BOOKING_STATUS } from "../utils/constants";
 
 // ============================================
 // SCHÉMAS POUR LES TIMESLOTS (CRÉNEAUX)

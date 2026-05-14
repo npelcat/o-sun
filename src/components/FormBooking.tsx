@@ -8,9 +8,11 @@ import { TimerDisplay } from "./booking/TimerDisplay";
 import { ClientInfoSection } from "./booking/ClientInfoSection";
 import { AnimalInfoSection } from "./booking/AnimalInfoSection";
 import { ServiceSection } from "./booking/ServiceSection";
+
 import { useToast } from "../hooks/useToast";
 import { useBookingTimer } from "../hooks/useBookingTimer";
 import { useBookingForm } from "../hooks/useBookingForm";
+import { ConsentSection } from "./booking/ContentSection";
 
 const FormBooking: React.FC = () => {
   const searchParams = useSearchParams();
@@ -22,7 +24,6 @@ const FormBooking: React.FC = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Hook pour la gestion du timer
   const { timeLeft, isTimeRunningOut, cancelBooking, clearTimer } =
     useBookingTimer({
       timeSlotId,
@@ -30,7 +31,6 @@ const FormBooking: React.FC = () => {
       onWarning: warning,
     });
 
-  // Hook pour la gestion du formulaire
   const {
     formData,
     fieldErrors,
@@ -39,6 +39,9 @@ const FormBooking: React.FC = () => {
     turnstileToken,
     setTurnstileToken,
     handleChange,
+    handleCheckboxChange,
+    handleServiceChange,
+    handleServiceSpecificChange,
     handleBlur,
     handleSubmit,
   } = useBookingForm({
@@ -48,7 +51,6 @@ const FormBooking: React.FC = () => {
     onClearTimer: clearTimer,
   });
 
-  // Fonction pour générer les classes des inputs
   const inputClass = (fieldName: string) =>
     `w-full p-2 border-2 rounded focus:ring-2 focus:outline-none transition-colors ${
       fieldErrors[fieldName]
@@ -96,7 +98,16 @@ const FormBooking: React.FC = () => {
             fieldErrors={fieldErrors}
             onChange={handleChange}
             onBlur={handleBlur}
+            onServiceChange={handleServiceChange}
+            onServiceSpecificChange={handleServiceSpecificChange}
             inputClass={inputClass}
+          />
+
+          <ConsentSection
+            formData={formData}
+            fieldErrors={fieldErrors}
+            onChange={handleChange}
+            onCheckboxChange={handleCheckboxChange}
           />
 
           <div className="border-t pt-6">
@@ -105,13 +116,11 @@ const FormBooking: React.FC = () => {
             </label>
             <Turnstile
               siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-              onSuccess={(token) => {
-                setTurnstileToken(token);
-              }}
+              onSuccess={(token) => setTurnstileToken(token)}
               onError={() => {
                 setTurnstileToken(null);
                 error(
-                  "Erreur de vérification de sécurité. Veuillez réessayer."
+                  "Erreur de vérification de sécurité. Veuillez réessayer.",
                 );
               }}
               onExpire={() => {
@@ -127,7 +136,9 @@ const FormBooking: React.FC = () => {
                 isSubmitting ? "Envoi en cours..." : "Valider la réservation"
               }
               type="submit"
-              disabled={isSubmitting || !turnstileToken}
+              disabled={
+                isSubmitting || !turnstileToken || !formData.cgvAccepted
+              }
               className="bg-dark-green p-3 rounded-lg bg-opacity-70 font-subtitle text-xl text-white transition duration-300 ease-in-out hover:bg-white hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
             />
 

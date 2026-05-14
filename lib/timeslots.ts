@@ -24,9 +24,9 @@ export async function getAvailableSlots() {
         eq(timeSlots.isActive, true),
         or(
           isNull(timeSlots.lockedAt),
-          lt(timeSlots.lockedAt, fifteenMinutesAgo)
-        )
-      )
+          lt(timeSlots.lockedAt, fifteenMinutesAgo),
+        ),
+      ),
     )
     .execute();
 
@@ -49,18 +49,6 @@ export async function releaseSlot(timeSlotId: string) {
     .execute();
 }
 
-export async function confirmSlot(timeSlotId: string) {
-  await db
-    .update(timeSlots)
-    .set({
-      isActive: false,
-      lockedAt: null,
-      updatedAt: new Date(),
-    })
-    .where(eq(timeSlots.id, timeSlotId))
-    .execute();
-}
-
 export async function reserveSlot(timeSlotId: string): Promise<void> {
   const FIFTEEN_MINUTES_AGO = new Date(Date.now() - 15 * 60 * 1000);
 
@@ -74,9 +62,9 @@ export async function reserveSlot(timeSlotId: string): Promise<void> {
           eq(timeSlots.isActive, true),
           or(
             isNull(timeSlots.lockedAt),
-            lt(timeSlots.lockedAt, FIFTEEN_MINUTES_AGO)
-          )
-        )
+            lt(timeSlots.lockedAt, FIFTEEN_MINUTES_AGO),
+          ),
+        ),
       )
       .limit(1)
       .for("update")
@@ -103,7 +91,7 @@ export async function reserveSlot(timeSlotId: string): Promise<void> {
  */
 export async function validateSlotForConfirmation(
   trx: DbTransaction,
-  timeSlotId: string
+  timeSlotId: string,
 ) {
   const rows = await trx
     .select()
@@ -136,7 +124,7 @@ export async function validateSlotForConfirmation(
   if (elapsed > 15 * 60 * 1000) {
     throw new HttpError(
       410,
-      "Le temps de réservation a expiré, merci de re-sélectionner un créneau"
+      "Le temps de réservation a expiré, merci de re-sélectionner un créneau",
     );
   }
 
@@ -145,7 +133,7 @@ export async function validateSlotForConfirmation(
 
 export async function confirmSlotPermanently(
   trx: DbTransaction,
-  timeSlotId: string
+  timeSlotId: string,
 ) {
   await trx
     .update(timeSlots)

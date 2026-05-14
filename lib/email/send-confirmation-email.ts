@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { BookingWithDetails } from "@/app/api/types/booking";
-import { formatDate, formatTime } from "@/lib/date";
+import { formatDate, formatTime } from "@/lib/utils/date";
+import { safeJsonParse } from "../utils/json";
 
 export interface ConfirmationEmailContent {
   userSubject: string;
@@ -43,32 +44,49 @@ export function buildConfirmationEmail(
   const {
     clientName,
     clientEmail,
+    clientPhone,
     startTime,
     animalName,
     animalType,
+    animalInfo,
+    householdInfo,
     service,
+    serviceSpecificAnswers,
     answers,
+    preferredPronoun,
   } = booking;
 
   const date = formatDate(startTime);
   const time = formatTime(startTime);
 
-  let formContent = `
-    <p><strong>Animal :</strong> ${animalName}${animalType ? ` (${animalType})` : ""}</p>
-    <p><strong>Service :</strong> ${service}</p>
-  `;
-
-  if (answers) {
+  let specificAnswersHtml = "";
+  if (serviceSpecificAnswers) {
     try {
-      const parsedAnswers =
-        typeof answers === "string" ? JSON.parse(answers) : answers;
-      formContent += `<p><strong>Informations supplémentaires :</strong></p>
-        <pre>${JSON.stringify(parsedAnswers, null, 2)}</pre>`;
+      const parsed = safeJsonParse<Record<string, string>>(
+        serviceSpecificAnswers,
+        {},
+      );
+      specificAnswersHtml = Object.entries(parsed)
+        .map(
+          ([key, value]) =>
+            `<p><strong>${key.replace(/_/g, " ")} :</strong> ${value}</p>`,
+        )
+        .join("");
     } catch {
-      formContent += `<p><strong>Informations supplémentaires :</strong> ${answers}</p>`;
+      specificAnswersHtml = `<p>${serviceSpecificAnswers}</p>`;
     }
   }
 
+  const formContent = `
+    <p><strong>Animal :</strong> ${animalName}${animalType ? ` (${animalType})` : ""}</p>
+    ${animalInfo ? `<p><strong>Infos animal :</strong> ${animalInfo}</p>` : ""}
+    ${householdInfo ? `<p><strong>Infos foyer :</strong> ${householdInfo}</p>` : ""}
+    <p><strong>Service :</strong> ${service}</p>
+    ${specificAnswersHtml}
+    ${answers ? `<p><strong>Informations complémentaires :</strong> ${answers}</p>` : ""}
+  `;
+
+  // Email client
   const userSubject = `Confirmation de votre demande de réservation - O'Sun ~ Voix Animale`;
   const userHtml = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -83,12 +101,11 @@ export function buildConfirmationEmail(
         Je vous répondrai très bientôt. Merci de votre confiance ! 🌿
       </p>
       <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
-      <p style="font-size: 12px; color: #666;">
-        O'Sun ~ Voix Animale<br>Communication animale
-      </p>
+      <p style="font-size: 12px; color: #666;">O'Sun ~ Voix Animale<br>Communication animale</p>
     </div>
   `;
 
+  // Email admin
   const adminSubject = `🔔 Nouvelle demande de réservation - ${clientName}`;
   const adminHtml = `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
@@ -96,6 +113,8 @@ export function buildConfirmationEmail(
       <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px; margin: 20px 0;">
         <p><strong>👤 Client :</strong> ${clientName}</p>
         <p><strong>📧 Email :</strong> <a href="mailto:${clientEmail}">${clientEmail}</a></p>
+        ${clientPhone ? `<p><strong>📞 Téléphone :</strong> ${clientPhone}</p>` : ""}
+        <p><strong>🗣️ Préférence :</strong> ${preferredPronoun}</p>
         <p><strong>📅 Date :</strong> ${date}</p>
         <p><strong>🕐 Heure :</strong> ${time}</p>
       </div>
@@ -103,9 +122,7 @@ export function buildConfirmationEmail(
         <h3 style="margin-top: 0; color: #DAA520;">Détails de la réservation :</h3>
         ${formContent}
       </div>
-      <p style="font-style: italic; color: #2d5016;">
-        Pense à confirmer cette réservation avec le client ! ✨
-      </p>
+      <p style="font-style: italic; color: #2d5016;">Pense à confirmer cette réservation avec le client ! ✨</p>
     </div>
   `;
 

@@ -4,7 +4,12 @@ import { eq, and, gte, lte, lt, desc } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import { DateTime } from "luxon";
 import { AdminBusinessError } from "@/utils/withErrorHandler";
-import { BOOKING_PERIOD, BookingPeriod, BookingStatus } from "../constants";
+import {
+  BOOKING_PERIOD,
+  BookingPeriod,
+  BookingStatus,
+} from "../utils/constants";
+import { bookingSelectFields } from "../../src/db/queries";
 
 // ============================================
 // TYPES
@@ -52,27 +57,7 @@ export async function getAllBookingsAdmin(
   filters?: BookingFilters,
 ): Promise<BookingWithDetails[]> {
   let query = db
-    .select({
-      id: bookings.id,
-      status: bookings.status,
-      createdAt: bookings.createdAt,
-      updatedAt: bookings.updatedAt,
-      adminNotes: bookings.adminNotes,
-      timeSlotId: timeSlots.id,
-      startTime: timeSlots.startTime,
-      endTime: timeSlots.endTime,
-      isTimeSlotActive: timeSlots.isActive,
-      clientId: clients.id,
-      clientName: clients.name,
-      clientEmail: clients.email,
-      clientPhone: clients.phone,
-      formId: formData.id,
-      animalName: formData.animalName,
-      animalType: formData.animalType,
-      service: formData.service,
-      answers: formData.answers,
-      formCreatedAt: formData.createdAt,
-    })
+    .select(bookingSelectFields)
     .from(bookings)
     .innerJoin(timeSlots, eq(bookings.timeSlotId, timeSlots.id))
     .innerJoin(clients, eq(bookings.clientId, clients.id))
@@ -127,27 +112,7 @@ export async function getBookingByIdAdmin(
   bookingId: string,
 ): Promise<BookingWithDetails> {
   const [booking] = await db
-    .select({
-      id: bookings.id,
-      status: bookings.status,
-      createdAt: bookings.createdAt,
-      updatedAt: bookings.updatedAt,
-      adminNotes: bookings.adminNotes,
-      timeSlotId: timeSlots.id,
-      startTime: timeSlots.startTime,
-      endTime: timeSlots.endTime,
-      isTimeSlotActive: timeSlots.isActive,
-      clientId: clients.id,
-      clientName: clients.name,
-      clientEmail: clients.email,
-      clientPhone: clients.phone,
-      formId: formData.id,
-      animalName: formData.animalName,
-      animalType: formData.animalType,
-      service: formData.service,
-      answers: formData.answers,
-      formCreatedAt: formData.createdAt,
-    })
+    .select(bookingSelectFields)
     .from(bookings)
     .innerJoin(timeSlots, eq(bookings.timeSlotId, timeSlots.id))
     .innerJoin(clients, eq(bookings.clientId, clients.id))
@@ -198,38 +163,31 @@ export async function updateBookingAdmin(
 
 /**
  * Supprime une réservation
- * Note : Cela ne supprime PAS le client ni le formData (conservation historique)
- * mais libère le créneau horaire
+ * → Supprime aussi le formData associé (cascade SQL)
+ * → Conserve le client (indépendant de ses réservations)
+ * → Libère le créneau horaire
  */
 export async function deleteBookingAdmin(bookingId: string) {
   return await db.transaction(async (trx) => {
-    // 1. Récupérer la réservation pour obtenir le timeSlotId
     const [booking] = await trx
       .select({ timeSlotId: bookings.timeSlotId })
       .from(bookings)
       .where(eq(bookings.id, bookingId))
       .limit(1);
 
-    if (!booking) {
-      throw new AdminBusinessError("Réservation non trouvée");
-    }
+    if (!booking) throw new AdminBusinessError("Réservation non trouvée");
 
-    // 2. Supprimer la réservation
+    // La cascade supprime automatiquement le formData lié
     const [deleted] = await trx
       .delete(bookings)
       .where(eq(bookings.id, bookingId))
       .returning();
 
-    // 3. Réactiver le créneau si nécessaire
+    // Le créneau doit être réactivé manuellement
     await trx
       .update(timeSlots)
-      .set({
-        isActive: true,
-        lockedAt: null,
-        updatedAt: new Date(),
-      })
-      .where(eq(timeSlots.id, booking.timeSlotId))
-      .execute();
+      .set({ isActive: true, lockedAt: null, updatedAt: new Date() })
+      .where(eq(timeSlots.id, booking.timeSlotId));
 
     return deleted;
   });

@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/lib/metadata";
+import { pageMetadata } from "@/lib/utils/metadata";
 import { fetchMultipleLinkComponents } from "@/app/api/strapi/fetchers/link-component";
 import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
 import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";

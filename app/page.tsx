@@ -1,4 +1,4 @@
-import { pageMetadata } from "@/lib/metadata";
+import { pageMetadata } from "@/lib/utils/metadata";
 import {
   fetchLinkComponentById,
   fetchMultipleLinkComponents,
