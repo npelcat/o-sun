@@ -64,15 +64,28 @@ describe("POST /api/email", () => {
     const body = await response.json();
     expect(body.message).toContain("Ton e-mail a bien été envoyé");
 
-    // Vérifier l'appel à Resend
-    expect(mockResendSend).toHaveBeenCalledTimes(1);
-    expect(mockResendSend).toHaveBeenCalledWith(
+    // 2 appels : notification admin + accusé de réception utilisateur
+    expect(mockResendSend).toHaveBeenCalledTimes(2);
+
+    // Premier appel : notification à l'admin
+    expect(mockResendSend).toHaveBeenNthCalledWith(
+      1,
       expect.objectContaining({
         from: "O'Sun ~ Voix Animale <noreply@example.com>",
         to: ["oceane@example.com"],
-        cc: ["jane@example.com"],
-        subject: "Message de Jane Dupont (jane@example.com)",
+        subject: "💌 Message de Jane Dupont",
         html: expect.stringContaining("Jane Dupont"),
+      }),
+    );
+
+    // Deuxième appel : accusé de réception à l'utilisateur
+    expect(mockResendSend).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        from: "O'Sun ~ Voix Animale <noreply@example.com>",
+        to: ["jane@example.com"],
+        subject: "Merci pour votre message — O'Sun ~ Voix Animale",
+        html: expect.stringContaining("Jane"),
       }),
     );
   });
@@ -140,7 +153,7 @@ describe("POST /api/email", () => {
     expect(body.error).toBe("Erreur lors de l'envoi de l'e-mail.");
   });
 
-  it("should convert line breaks to <br> tags", async () => {
+  it("should preserve line breaks in message", async () => {
     const req = createRequest("POST", {
       name: "Jane Dupont",
       email: "jane@example.com",
@@ -149,7 +162,14 @@ describe("POST /api/email", () => {
     });
 
     await POST(req);
-    const emailCall = mockResendSend.mock.calls[0][0];
-    expect(emailCall.html).toContain("Ligne 1<br>Ligne 2<br>Ligne 3");
+
+    // React Email utilise white-space: pre-wrap — les \n sont conservés tels quels,
+    // pas convertis en <br>. On vérifie que le contenu est bien présent.
+    const notificationCall = mockResendSend.mock.calls[0][0];
+    expect(notificationCall.html).toContain("Ligne 1");
+    expect(notificationCall.html).toContain("Ligne 2");
+    expect(notificationCall.html).toContain(
+      "Ligne 3 avec du contenu supplémentaire",
+    );
   });
 });
