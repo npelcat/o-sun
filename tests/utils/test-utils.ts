@@ -2,14 +2,13 @@ import { NextRequest } from "next/server";
 
 export function createRequest(
   method: "POST" | "GET" | "PUT" | "DELETE",
-  body?: unknown
+  body?: unknown,
+  path: string = "/api/booking/confirm",
 ) {
-  return new NextRequest("http://localhost/api/booking/confirm", {
+  return new NextRequest(`http://localhost${path}`, {
     method,
     body: body === undefined ? undefined : JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
   });
 }
 
@@ -76,7 +75,7 @@ export function createMockTransaction(): MockTransaction {
  * dans les appels aux fonctions de service.
  *
  * Utilise un cast via 'any' de manière contrôlée et documentée.
- * Ce cast est nécessaire car nos mocks ne peuvent pas implémenter
+ * Ce cast est nécessaire car les mocks ne peuvent pas implémenter
  * complètement l'interface complexe de Drizzle (qui contient des
  * dizaines de méthodes et propriétés internes non utilisées).
  *
@@ -96,7 +95,7 @@ export function asTrx(mockTrx: MockTransaction): any {
 
 /**
  * Vérifie qu'un mock a été appelé avec des valeurs partielles.
- * Utile pour les assertions où on ne veut vérifier que certains champs.
+ * Utile pour les assertions où je ne veux vérifier que certains champs.
  *
  * @example
  * ```typescript

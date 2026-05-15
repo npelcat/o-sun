@@ -20,8 +20,9 @@ export default defineConfig({
         "lib/email/send-reset-email.ts", // wrapper Resend sans logique custom
         "lib/actions/password-reset.ts", // server action, nécessiterait des tests e2e
         "lib/admin/stats.ts", // simple agrégation, pas de logique complexe
-        "lib/date.ts", // utilitaires de formatage Luxon
-        "lib/metadata.ts", // configuration SEO statique
+        "lib/utils/date.ts", // utilitaires de formatage Luxon
+        "lib/utils/metadata.ts", // configuration SEO statique
+        "lib/utils/json.ts", // utilitaire de formatage JSON
         "lib/validation/email.ts", // schémas de validation mockés
         "lib/validation/turnstile.ts", // schémas de validation mockés
         "lib/validation/admin.ts", // schémas de validation mockés
