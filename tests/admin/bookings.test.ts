@@ -75,6 +75,62 @@ describe("Admin Bookings Service", () => {
       expect(result).toEqual(mockBookings);
       expect(mockDb.select).toHaveBeenCalled();
     });
+
+    it("should filter bookings by status", async () => {
+      const mockBookings = [
+        { id: "booking-1", status: "confirmed", clientName: "Alice" },
+      ];
+      mockDb.execute.mockResolvedValue(mockBookings);
+
+      const result = await getAllBookingsAdmin({ status: "confirmed" });
+
+      expect(result).toEqual(mockBookings);
+      // Le filtre status doit avoir été appliqué via .where()
+      expect(mockDb.where).toHaveBeenCalled();
+    });
+
+    it("should filter bookings by period UPCOMING", async () => {
+      mockDb.execute.mockResolvedValue([]);
+
+      await getAllBookingsAdmin({ period: "upcoming" });
+
+      // Une condition gte(startTime, now) doit avoir été construite
+      expect(mockDb.where).toHaveBeenCalled();
+    });
+
+    it("should filter bookings by period PAST", async () => {
+      mockDb.execute.mockResolvedValue([]);
+
+      await getAllBookingsAdmin({ period: "past" });
+
+      expect(mockDb.where).toHaveBeenCalled();
+    });
+
+    it("should filter bookings by month", async () => {
+      mockDb.execute.mockResolvedValue([]);
+
+      await getAllBookingsAdmin({ month: "2026-02" });
+
+      expect(mockDb.where).toHaveBeenCalled();
+    });
+
+    it("should filter bookings by client email", async () => {
+      const mockBookings = [
+        {
+          id: "booking-1",
+          status: "pending",
+          clientEmail: "alice@example.com",
+        },
+      ];
+      mockDb.execute.mockResolvedValue(mockBookings);
+
+      const result = await getAllBookingsAdmin({
+        clientEmail: "alice@example.com",
+      });
+
+      expect(result).toEqual(mockBookings);
+      expect(mockDb.where).toHaveBeenCalled();
+    });
   });
 
   describe("getBookingByIdAdmin", () => {
@@ -119,6 +175,54 @@ describe("Admin Bookings Service", () => {
 
       expect(result).toEqual(updatedBooking);
       expect(mockDb.update).toHaveBeenCalled();
+    });
+
+    it("should update adminNotes only", async () => {
+      const updatedBooking = {
+        id: "booking-1",
+        status: "pending",
+        adminNotes: "Chat très craintif, prévoir séance calme",
+        updatedAt: new Date(),
+      };
+
+      mockDb.returning.mockResolvedValue([updatedBooking]);
+
+      const result = await updateBookingAdmin("booking-1", {
+        adminNotes: "Chat très craintif, prévoir séance calme",
+      });
+
+      expect(result.adminNotes).toBe(
+        "Chat très craintif, prévoir séance calme",
+      );
+      expect(mockDb.update).toHaveBeenCalled();
+    });
+
+    it("should update both status and adminNotes", async () => {
+      const updatedBooking = {
+        id: "booking-1",
+        status: "confirmed",
+        adminNotes: "Virement reçu",
+        updatedAt: new Date(),
+      };
+
+      mockDb.returning.mockResolvedValue([updatedBooking]);
+
+      const result = await updateBookingAdmin("booking-1", {
+        status: "confirmed",
+        adminNotes: "Virement reçu",
+      });
+
+      expect(result.status).toBe("confirmed");
+      expect(result.adminNotes).toBe("Virement reçu");
+    });
+
+    it("should throw error when booking to update is not found", async () => {
+      // returning() retourne un tableau vide → le [updated] est undefined
+      mockDb.returning.mockResolvedValue([]);
+
+      await expect(
+        updateBookingAdmin("invalid-id", { status: "confirmed" }),
+      ).rejects.toThrow("Réservation non trouvée");
     });
   });
 
@@ -219,6 +323,56 @@ describe("Admin Bookings Service", () => {
           service: "Consultation",
         }),
       ).rejects.toThrow("Ce créneau n'est pas disponible");
+    });
+
+    it("should update existing client and create booking", async () => {
+      const mockTrx = createMockTransaction();
+      // Ce test couvre la branche "client déjà en base" dans createBookingAdmin.
+      mockDb.transaction.mockImplementation(async (callback) => {
+        // 1. Vérifier le créneau → disponible
+        mockTrx.limit
+          .mockResolvedValueOnce([{ id: "slot-1", isActive: true }])
+          // 2. Chercher client existant → trouvé
+          .mockResolvedValueOnce([
+            {
+              id: "client-existant-42",
+              name: "Bob Ancien",
+              email: "bob@example.com",
+              phone: "0600000000",
+            },
+          ]);
+
+        // Pas de returning pour le client (update sans returning dans cette branche)
+        mockTrx.returning
+          // 3. Créer formulaire
+          .mockResolvedValueOnce([{ id: "form-1" }])
+          // 4. Créer réservation
+          .mockResolvedValueOnce([
+            {
+              id: "booking-1",
+              clientId: "client-existant-42",
+              formId: "form-1",
+            },
+          ]);
+
+        return callback(asTrx(mockTrx));
+      });
+
+      const result = await createBookingAdmin({
+        timeSlotId: "slot-1",
+        clientName: "Bob Nouveau Nom",
+        clientEmail: "bob@example.com",
+        animalName: "Minou",
+        animalType: "Chat",
+        service: "Communication animale - Clarté",
+      });
+
+      // L'ID du client existant doit être utilisé, pas un nouvel ID
+      expect(result.client.id).toBe("client-existant-42");
+      expect(result.booking.clientId).toBe("client-existant-42");
+
+      // update() doit avoir été appelé (mise à jour du client, pas insert)
+      expect(mockTrx.update).toHaveBeenCalled();
     });
   });
 });

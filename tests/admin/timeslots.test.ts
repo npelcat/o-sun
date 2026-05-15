@@ -58,6 +58,27 @@ describe("Admin Timeslots Service", () => {
       expect(result).toEqual(mockSlots);
       expect(mockDb.select).toHaveBeenCalled();
     });
+
+    it("should filter timeslots by startDate and endDate", async () => {
+      mockDb.execute.mockResolvedValue([]);
+
+      await getAllTimeslotsAdmin({
+        startDate: "2026-02-01T00:00:00Z",
+        endDate: "2026-02-28T23:59:59Z",
+      });
+
+      expect(mockDb.where).toHaveBeenCalled();
+    });
+
+    it("should filter timeslots by isActive", async () => {
+      const mockSlots = [{ id: "slot-1", isActive: true }];
+      mockDb.execute.mockResolvedValue(mockSlots);
+
+      const result = await getAllTimeslotsAdmin({ isActive: true });
+
+      expect(result).toEqual(mockSlots);
+      expect(mockDb.where).toHaveBeenCalled();
+    });
   });
 
   describe("getTimeslotById", () => {
@@ -183,6 +204,23 @@ describe("Admin Timeslots Service", () => {
       await expect(
         updateTimeslot("slot-1", { startTime: "2026-02-15T10:30:00Z" }),
       ).rejects.toThrow("Ces nouvelles dates chevauchent un créneau existant");
+    });
+
+    it("should throw error when updated slot is not found", async () => {
+      const existingSlot = {
+        id: "slot-1",
+        startTime: new Date("2026-02-15T10:00:00Z"),
+        endTime: new Date("2026-02-15T11:00:00Z"),
+        isActive: true,
+      };
+
+      mockDb.execute.mockResolvedValue([existingSlot]);
+      // returning() vide → [updated] est undefined → throw
+      mockDb.returning.mockResolvedValue([]);
+
+      await expect(
+        updateTimeslot("slot-1", { isActive: false }),
+      ).rejects.toThrow("Erreur lors de la mise à jour du créneau");
     });
   });
 
