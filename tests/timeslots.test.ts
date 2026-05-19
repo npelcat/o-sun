@@ -7,7 +7,7 @@ import {
   validateSlotForConfirmation,
 } from "@/lib/timeslots";
 import { HttpError } from "@/utils/withErrorHandler";
-import { createMockTransaction, asTrx } from "./utils/test-utils";
+import { createMockTransaction, asTrx, minutesAgo } from "./utils/test-utils";
 
 // Mock de la DB
 vi.mock("@/src/db/index", () => {
@@ -221,5 +221,38 @@ describe("validateSlotForConfirmation", () => {
     );
 
     expect(result).toEqual(mockSlot);
+  });
+
+  it("should return slot when lock is 14 minutes old", async () => {
+    const mockSlot = {
+      id: "slot-123",
+      isActive: true,
+      lockedAt: minutesAgo(14),
+    };
+    const mockTrx = createMockTransaction();
+    mockTrx.execute.mockResolvedValue([mockSlot]);
+    const result = await validateSlotForConfirmation(
+      asTrx(mockTrx),
+      "slot-123",
+    );
+    expect(result).toEqual(mockSlot);
+  });
+
+  it("should throw 410 when lock is 16 minutes old", async () => {
+    const mockSlot = {
+      id: "slot-123",
+      isActive: true,
+      lockedAt: minutesAgo(16),
+    };
+    const mockTrx = createMockTransaction();
+    mockTrx.execute.mockResolvedValue([mockSlot]);
+    await expect(
+      validateSlotForConfirmation(asTrx(mockTrx), "slot-123"),
+    ).rejects.toThrow(
+      new HttpError(
+        410,
+        "Le temps de réservation a expiré, merci de re-sélectionner un créneau",
+      ),
+    );
   });
 });
