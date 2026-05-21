@@ -1,39 +1,52 @@
 import { pageMetadata } from "@/lib/utils/metadata";
-import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
+import { fetchMultipleBlockContents } from "@/app/api/strapi/fetchers/block-content";
 import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";
+import { fetchMultiplePricingCards } from "@/app/api/strapi/fetchers/pricing-card";
 import AnimalCommunicationClient from "@/src/pageComponents/AnimalCommunicationClient";
-import { StrapiBlockContent } from "../api/types/strapi";
 
 export const metadata = pageMetadata.animalCommunication;
 export const revalidate = 7200;
 
 export default async function AnimalCommunicationServer() {
-  const blockIds = [
-    "gq45qnh9mzp7frix51cm1iad", // com-animale-qu-est-ce-que-c-est
-    "rbmsw4youqj5y8dis9eaordk", // com-animale-a-quoi-ca-sert
-    "pa21ykdbfd3gxjdtz2ehphx1", // com-animale-a-quoi-ressemble-une-seance
-    "n418rbmlpib4cb94h0kqv00j", // com-animale-infos-pratiques
+  const pricingCardSlugs = [
+    "com-animale-formule-clarte",
+    "com-animale-formule-equilibre",
+    "com-animale-formule-harmonie",
+    "com-animale-formule-reconnexion",
+  ];
+
+  const infoBlockSlugs = [
+    "com-animale-situations",
+    "com-animale-qu-est-ce-que-c-est",
+    "com-animale-les-bienfaits",
   ];
 
   const accordionSlugs = [
     "com-animale-limites",
-    "com-animale-type-de-seance-et-tarifs",
+    "com-animale-en-pratique-modalites",
   ];
 
-  const [blockContents, accordions] = await Promise.all([
-    Promise.all(blockIds.map((id) => fetchBlockContentById(id))),
+  const [pricingCards, blockContents, accordions] = await Promise.all([
+    fetchMultiplePricingCards(pricingCardSlugs),
+    fetchMultipleBlockContents(infoBlockSlugs),
     fetchMultipleAccordions(accordionSlugs),
   ]);
 
-  const validBlockContents = blockContents.filter(
-    (block): block is StrapiBlockContent => block !== null,
+  const useCasesBlock =
+    blockContents.find((b) => b.slug === "com-animale-situations") ?? null;
+
+  const infoBlocks = blockContents.filter((b) =>
+    ["com-animale-qu-est-ce-que-c-est", "com-animale-les-bienfaits"].includes(
+      b.slug ?? "",
+    ),
   );
-  const validAccordions = accordions;
 
   return (
     <AnimalCommunicationClient
-      blockContents={validBlockContents}
-      accordions={validAccordions}
+      pricingCards={pricingCards}
+      useCasesBlock={useCasesBlock}
+      infoBlocks={infoBlocks}
+      accordions={accordions}
     />
   );
 }

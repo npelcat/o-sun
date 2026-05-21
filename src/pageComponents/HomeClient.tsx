@@ -129,7 +129,7 @@ export default function HomeClient({
             <Button
               titleButton={testimonialComponent.title}
               link={testimonialComponent.link}
-              className="py-4 px-8 md:py-6 md:px-10 bg-opacity-70 hover:bg-opacity-100 text-2xl md:text-3xl z-10 transition-all duration-300 shadow-xl"
+              className="py-4 px-8 md:py-6 md:px-10 bg-opacity-80 text-white hover:bg-opacity-100 text-2xl md:text-3xl z-10 transition-all duration-300 shadow-xl"
             />
           </div>
         </section>
