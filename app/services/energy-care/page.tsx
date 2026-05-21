@@ -1,18 +1,23 @@
 import { pageMetadata } from "@/lib/utils/metadata";
-import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
+import { fetchMultipleBlockContents } from "@/app/api/strapi/fetchers/block-content";
 import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";
+import { fetchMultiplePricingCards } from "@/app/api/strapi/fetchers/pricing-card";
 import EnergyCareClient from "@/src/pageComponents/EnergyCareClient";
-import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 export const metadata = pageMetadata.energyCare;
 export const revalidate = 7200;
 
 export default async function EnergyCareServer() {
-  const blockIds = [
-    "etf6ka1c7dqjxms8h2httkls",
-    "krjgfou8hwz6gr9673mgs56i",
-    "h5gdzy76slippixboqv6t540",
-    "bulx7c6i548oqn4t2ervuu04",
+  const pricingCardSlugs = [
+    "soins-energetiques-formule-animal",
+    "soins-energetiques-formule-humain",
+    "soins-energetiques-formule-duo",
+  ];
+
+  const infoBlockSlugs = [
+    "soins-energetiques-situations", // use-case block
+    "soins-energetiques-qu-est-ce-que-c-est",
+    "quels-sont-les-effets-d-une-seance-energetique",
   ];
 
   const accordionSlugs = [
@@ -21,20 +26,29 @@ export default async function EnergyCareServer() {
     "soins-energetiques-type-de-seance-et-tarifs",
   ];
 
-  const [blockContents, accordions] = await Promise.all([
-    Promise.all(blockIds.map((id) => fetchBlockContentById(id))),
+  const [pricingCards, blockContents, accordions] = await Promise.all([
+    fetchMultiplePricingCards(pricingCardSlugs),
+    fetchMultipleBlockContents(infoBlockSlugs),
     fetchMultipleAccordions(accordionSlugs),
   ]);
 
-  const validBlockContents = blockContents.filter(
-    (block): block is StrapiBlockContent => block !== null,
+  const useCasesBlock =
+    blockContents.find((b) => b.slug === "soins-energetiques-situations") ??
+    null;
+
+  const infoBlocks = blockContents.filter((b) =>
+    [
+      "soins-energetiques-qu-est-ce-que-c-est",
+      "quels-sont-les-effets-d-une-seance-energetique",
+    ].includes(b.slug ?? ""),
   );
-  const validAccordions = accordions;
 
   return (
     <EnergyCareClient
-      blockContents={validBlockContents}
-      accordions={validAccordions}
+      pricingCards={pricingCards}
+      useCasesBlock={useCasesBlock}
+      infoBlocks={infoBlocks}
+      accordions={accordions}
     />
   );
 }

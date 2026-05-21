@@ -1,17 +1,22 @@
 import { pageMetadata } from "@/lib/utils/metadata";
-import { fetchBlockContentById } from "@/app/api/strapi/fetchers/block-content";
+import { fetchMultipleBlockContents } from "@/app/api/strapi/fetchers/block-content";
 import { fetchMultipleAccordions } from "@/app/api/strapi/fetchers/accordion";
+import { fetchMultiplePricingCards } from "@/app/api/strapi/fetchers/pricing-card";
 import GuardiansClient from "@/src/pageComponents/GuardiansClient";
-import { StrapiBlockContent } from "@/app/api/types/strapi";
 
 export const metadata = pageMetadata.guardians;
 export const revalidate = 7200;
 
 export default async function GuardiansServer() {
-  const blockIds = [
-    "e6kkmhe424iko1zevz8wo51z", // gardiens-quels-sont-ils
-    "g5lgt0mnb1dxj57jt74pg1fd", // gardiens-a-quoi-ca-sert
-    "kc8jct496l1snx0r4vttadjn", // gardiens-infos-pratiques
+  const pricingCardSlugs: string[] = [
+    // "gardiens-formule-soin",
+    // "gardiens-formule-accompagnement",
+  ];
+
+  const infoBlockSlugs = [
+    "gardiens-situations", // use-case block
+    "gardiens-quels-sont-ils", // existing
+    "gardiens-a-quoi-ca-sert", // existing
   ];
 
   const accordionSlugs = [
@@ -20,20 +25,29 @@ export default async function GuardiansServer() {
     "gardiens-type-de-seance-et-tarifs",
   ];
 
-  const [blockContents, accordions] = await Promise.all([
-    Promise.all(blockIds.map((id) => fetchBlockContentById(id))),
+  const [pricingCards, blockContents, accordions] = await Promise.all([
+    pricingCardSlugs.length > 0
+      ? fetchMultiplePricingCards(pricingCardSlugs)
+      : Promise.resolve([]),
+    fetchMultipleBlockContents(infoBlockSlugs),
     fetchMultipleAccordions(accordionSlugs),
   ]);
 
-  const validBlockContents = blockContents.filter(
-    (block): block is StrapiBlockContent => block !== null,
+  const useCasesBlock =
+    blockContents.find((b) => b.slug === "gardiens-situations") ?? null;
+
+  const infoBlocks = blockContents.filter((b) =>
+    ["gardiens-quels-sont-ils", "gardiens-a-quoi-ca-sert"].includes(
+      b.slug ?? "",
+    ),
   );
-  const validAccordions = accordions;
 
   return (
     <GuardiansClient
-      blockContents={validBlockContents}
-      accordions={validAccordions}
+      pricingCards={pricingCards}
+      useCasesBlock={useCasesBlock}
+      infoBlocks={infoBlocks}
+      accordions={accordions}
     />
   );
 }
