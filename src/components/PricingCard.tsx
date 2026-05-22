@@ -14,7 +14,7 @@ interface PricingCardProps {
   link: string;
   titleButton?: string;
   highlight?: boolean;
-  picture?: { url: string; alternativeText?: string } | null;
+  picture?: { url: string; alternativeText?: string | null | undefined } | null;
 }
 
 export function PricingCard({
@@ -66,7 +66,7 @@ export function PricingCard({
 
       {/* Image */}
       {picture?.url && (
-        <div className="relative w-full h-44 shrink-0 overflow-hidden">
+        <div className="relative w-full rounded-2xl h-44 shrink-0 overflow-hidden">
           <Image
             src={picture.url}
             alt={picture.alternativeText || title}
