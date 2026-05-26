@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Turnstile } from "@marsidev/react-turnstile";
 import { contactSchema, ContactFormData } from "@/lib/validation/contact";
-import { sendEmail } from "@/lib/email/send-email";
 
 export default function ContactClient() {
   const {
@@ -20,11 +19,13 @@ export default function ContactClient() {
   const [confirmationMessage, setConfirmationMessage] = useState<string | null>(
     null,
   );
+  const [isError, setIsError] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (data: ContactFormData) => {
     if (!turnstileToken) {
+      setIsError(true);
       setConfirmationMessage("Veuillez compléter la vérification de sécurité.");
       return;
     }
@@ -32,21 +33,27 @@ export default function ContactClient() {
     setIsSubmitting(true);
 
     try {
-      const result = await sendEmail(data);
+      const response = await fetch("/api/email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-      if (result.message) {
-        setConfirmationMessage(result.message);
-        reset();
-        setTurnstileToken(null);
-      } else {
-        setConfirmationMessage(
-          "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer.",
-        );
+      const result = await response.json();
+
+      if (!response.ok) {
+        setIsError(true);
+        setConfirmationMessage(result.error ?? "Erreur lors de l'envoi.");
+        return;
       }
+
+      setIsError(false);
+      setConfirmationMessage(result.message);
+      reset();
+      setTurnstileToken(null);
     } catch {
-      setConfirmationMessage(
-        "Erreur lors de l'envoi de l'e-mail. Veuillez réessayer.",
-      );
+      setIsError(true);
+      setConfirmationMessage("Erreur réseau. Veuillez réessayer.");
     } finally {
       setIsSubmitting(false);
     }
@@ -114,6 +121,7 @@ export default function ContactClient() {
             onError={() => {
               setTurnstileToken(null);
               setValue("turnstileToken", "");
+              setIsError(true);
               setConfirmationMessage(
                 "Erreur de vérification de sécurité. Veuillez réessayer.",
               );
@@ -121,6 +129,7 @@ export default function ContactClient() {
             onExpire={() => {
               setTurnstileToken(null);
               setValue("turnstileToken", "");
+              setIsError(true);
               setConfirmationMessage(
                 "La vérification a expiré. Veuillez revalider.",
               );
@@ -144,9 +153,7 @@ export default function ContactClient() {
         {confirmationMessage && (
           <p
             className={`mt-10 p-2 rounded-lg text-center w-full ${
-              confirmationMessage.includes("Erreur")
-                ? "bg-red-100 text-red-700"
-                : "bg-green bg-opacity-20"
+              isError ? "bg-red-100 text-red-700" : "bg-green bg-opacity-20"
             }`}
           >
             {confirmationMessage}

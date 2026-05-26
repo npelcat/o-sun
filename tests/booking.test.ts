@@ -5,7 +5,6 @@ import {
   getBookingById,
   getBookingByIdSimple,
   updateBookingStatus,
-  deleteBooking,
 } from "@/lib/bookings";
 import { createMockTransaction, asTrx } from "./utils/test-utils";
 
@@ -215,27 +214,5 @@ describe("updateBookingStatus", () => {
     await expect(
       updateBookingStatus("invalid-id", "confirmed"),
     ).rejects.toThrow("Réservation non trouvée");
-  });
-});
-
-describe("deleteBooking", () => {
-  it("should delete booking and return deleted record", async () => {
-    const mockDeleted = { id: "booking-123" };
-
-    mockDb.returning.mockResolvedValue([mockDeleted]);
-
-    const deleted = await deleteBooking("booking-123");
-
-    expect(deleted).toEqual(mockDeleted);
-    expect(mockDb.delete).toHaveBeenCalled();
-    expect(mockDb.where).toHaveBeenCalled();
-  });
-
-  it("should throw error when booking not found", async () => {
-    mockDb.returning.mockResolvedValue([]);
-
-    await expect(deleteBooking("invalid-id")).rejects.toThrow(
-      "Réservation non trouvée",
-    );
   });
 });

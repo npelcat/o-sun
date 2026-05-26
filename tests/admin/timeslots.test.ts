@@ -220,7 +220,7 @@ describe("Admin Timeslots Service", () => {
 
       await expect(
         updateTimeslot("slot-1", { isActive: false }),
-      ).rejects.toThrow("Erreur lors de la mise à jour du créneau");
+      ).rejects.toThrow("Créneau non trouvé");
     });
   });
 

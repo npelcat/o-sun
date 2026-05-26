@@ -3,7 +3,7 @@ import { bookings, clients, timeSlots, formData } from "@/src/db/schema";
 import { eq, and, gte, lte, lt, desc } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import { DateTime } from "luxon";
-import { AdminBusinessError } from "@/utils/withErrorHandler";
+import { AdminBusinessError, HttpError } from "@/utils/withErrorHandler";
 import {
   BOOKING_PERIOD,
   BookingPeriod,
@@ -121,7 +121,7 @@ export async function getBookingByIdAdmin(
     .limit(1);
 
   if (!booking) {
-    throw new AdminBusinessError("Réservation non trouvée");
+    throw new HttpError(404, "Réservation non trouvée");
   }
 
   return booking as BookingWithDetails;
@@ -155,7 +155,7 @@ export async function updateBookingAdmin(
     .returning();
 
   if (!updated) {
-    throw new AdminBusinessError("Réservation non trouvée");
+    throw new HttpError(404, "Réservation non trouvée");
   }
 
   return updated;
@@ -175,7 +175,7 @@ export async function deleteBookingAdmin(bookingId: string) {
       .where(eq(bookings.id, bookingId))
       .limit(1);
 
-    if (!booking) throw new AdminBusinessError("Réservation non trouvée");
+    if (!booking) throw new HttpError(404, "Réservation non trouvée");
 
     // La cascade supprime automatiquement le formData lié
     const [deleted] = await trx
@@ -207,7 +207,7 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
       .limit(1);
 
     if (!slot) {
-      throw new AdminBusinessError("Créneau non trouvé");
+      throw new HttpError(404, "Créneau non trouvé");
     }
 
     if (!slot.isActive) {

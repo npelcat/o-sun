@@ -79,6 +79,6 @@ export async function POST(req: NextRequest) {
       timeSlotId,
     });
 
-    return NextResponse.json({ message: "Créneau libéré avec succès" });
+    return new NextResponse(null, { status: 204 });
   });
 }

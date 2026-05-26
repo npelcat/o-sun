@@ -75,7 +75,7 @@ describe("POST /api/booking/confirm-email", () => {
 
     const response = await POST(req);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(202);
     const body = await response.json();
     expect(body.message).toBe("Emails de confirmation envoyés avec succès");
 
@@ -187,7 +187,7 @@ describe("POST /api/booking/confirm-email", () => {
     const response = await POST(req);
 
     // La requête devrait quand même réussir
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(202);
     expect(mockResendSend).toHaveBeenCalledTimes(2);
   });
 
@@ -203,7 +203,7 @@ describe("POST /api/booking/confirm-email", () => {
 
     const response = await POST(req);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(202);
     // Vérifier que l'email ne contient pas "(Chien)"
     const firstEmailCall = mockResendSend.mock.calls[0][0];
     expect(firstEmailCall.html).not.toContain("(Chien)");
@@ -221,7 +221,7 @@ describe("POST /api/booking/confirm-email", () => {
 
     const response = await POST(req);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(202);
     // L'email ne devrait pas contenir la section "Informations supplémentaires"
     const firstEmailCall = mockResendSend.mock.calls[0][0];
     expect(firstEmailCall.html).not.toContain("Informations supplémentaires");
@@ -239,7 +239,7 @@ describe("POST /api/booking/confirm-email", () => {
 
     const response = await POST(req);
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(202);
     const firstEmailCall = mockResendSend.mock.calls[0][0];
     expect(firstEmailCall.html).toContain("Notes en texte libre");
   });
