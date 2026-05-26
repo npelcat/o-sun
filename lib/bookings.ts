@@ -3,6 +3,7 @@ import { eq, desc } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import db, { DbTransaction } from "@/src/db/index";
 import { bookingSelectFields } from "../src/db/queries";
+import { HttpError } from "@/utils/withErrorHandler";
 
 export interface CreateBookingData {
   timeSlotId: string;
@@ -54,9 +55,7 @@ export async function getBookingById(
     .where(eq(bookings.id, bookingId))
     .limit(1);
 
-  if (!booking) {
-    throw new Error("Réservation non trouvée");
-  }
+  if (!booking) throw new HttpError(404, "Réservation non trouvée");
 
   return booking;
 }
@@ -68,9 +67,7 @@ export async function getBookingByIdSimple(bookingId: string) {
     .where(eq(bookings.id, bookingId))
     .limit(1);
 
-  if (!booking) {
-    throw new Error("Réservation non trouvée");
-  }
+  if (!booking) throw new HttpError(404, "Réservation non trouvée");
 
   return booking;
 }
@@ -85,22 +82,7 @@ export async function updateBookingStatus(
     .where(eq(bookings.id, bookingId))
     .returning();
 
-  if (!updated) {
-    throw new Error("Réservation non trouvée");
-  }
+  if (!updated) throw new HttpError(404, "Réservation non trouvée");
 
   return updated;
-}
-
-export async function deleteBooking(bookingId: string) {
-  const [deleted] = await db
-    .delete(bookings)
-    .where(eq(bookings.id, bookingId))
-    .returning();
-
-  if (!deleted) {
-    throw new Error("Réservation non trouvée");
-  }
-
-  return deleted;
 }

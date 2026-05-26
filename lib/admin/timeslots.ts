@@ -1,6 +1,6 @@
 import db from "@/src/db/index";
 import { bookings, timeSlots } from "@/src/db/schema";
-import { AdminBusinessError } from "@/utils/withErrorHandler";
+import { AdminBusinessError, HttpError } from "@/utils/withErrorHandler";
 import { eq, and, gte, lte, desc, gt, lt, not } from "drizzle-orm";
 import { DateTime } from "luxon";
 
@@ -84,7 +84,7 @@ export async function getTimeslotById(id: string) {
     .execute();
 
   if (!slot) {
-    throw new AdminBusinessError("Créneau non trouvé");
+    throw new HttpError(404, "Créneau non trouvé");
   }
 
   return slot;
@@ -193,7 +193,7 @@ export async function updateTimeslot(id: string, data: UpdateTimeslotData) {
     .returning();
 
   if (!updated) {
-    throw new AdminBusinessError("Erreur lors de la mise à jour du créneau");
+    throw new HttpError(404, "Créneau non trouvé");
   }
 
   return updated;
@@ -209,7 +209,7 @@ export async function deleteTimeslot(id: string) {
     .returning();
 
   if (!deleted) {
-    throw new AdminBusinessError("Créneau non trouvé");
+    throw new HttpError(404, "Créneau non trouvé");
   }
 
   return deleted;

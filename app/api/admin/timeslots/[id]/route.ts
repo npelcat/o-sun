@@ -191,6 +191,6 @@ export async function DELETE(
     await deleteTimeslot(id);
     logger.info(`DELETE /api/admin/timeslots/${id} - Créneau supprimé`);
 
-    return NextResponse.json({ message: "Créneau supprimé avec succès" });
+    return new NextResponse(null, { status: 204 });
   });
 }

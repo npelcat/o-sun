@@ -126,8 +126,9 @@ export async function POST(request: NextRequest) {
     }
 
     logger.info("Emails envoyés avec succès", { bookingId });
-    return NextResponse.json({
-      message: "Emails de confirmation envoyés avec succès",
-    });
+    return NextResponse.json(
+      { message: "Emails de confirmation envoyés avec succès" },
+      { status: 202 },
+    );
   });
 }

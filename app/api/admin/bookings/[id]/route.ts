@@ -195,8 +195,6 @@ export async function DELETE(
       `DELETE /api/admin/bookings/${id} - Réservation supprimée et créneau libéré`,
     );
 
-    return NextResponse.json({
-      message: "Réservation supprimée avec succès",
-    });
+    return new NextResponse(null, { status: 204 });
   });
 }

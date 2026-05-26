@@ -4,6 +4,7 @@ import { verifyTurnstileToken } from "@/lib/validation/turnstile";
 import { contactSchema } from "@/lib/validation/contact";
 import { contactRateLimiter } from "@/lib/security/rate-limit-simple";
 import { sendContactEmail } from "@/lib/email/send-contact-email";
+import { withErrorHandler } from "@/utils/withErrorHandler";
 
 /**
  * @swagger
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  try {
+  return withErrorHandler(request, async () => {
     const data = await request.json();
     const { name, email, message, turnstileToken } = contactSchema.parse(data);
     logger.info("POST /email - Data validated", { name, email });
@@ -111,10 +112,10 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-    logger.info("POST /email - Turnstile validated ✅");
+
+    logger.info("POST /email - Turnstile validated");
 
     const result = await sendContactEmail({ name, email, message });
-
     if (!result.success) {
       logger.error("POST /email - Resend API error", { error: result.error });
       return NextResponse.json(
@@ -126,13 +127,7 @@ export async function POST(request: NextRequest) {
     logger.info("POST /email - Email sent successfully");
     return NextResponse.json({
       message:
-        "Ton e-mail a bien été envoyé, je te répondrai dans les plus brefs délais. En attendant, n'hésite pas à me suivre sur Instagram @o.sun.voixanimale (lien en bas de page) pour rester au courant de mes actualités.",
+        "Votre e-mail a bien été envoyé. ✨ Merci pour votre message, je vous répondrai rapidement. À très bientôt, @o.sun.voixanimale ☀️",
     });
-  } catch (error) {
-    logger.error("POST /email - Error", { error });
-    if (error instanceof Error && "issues" in error) {
-      return NextResponse.json({ error: error.message }, { status: 400 });
-    }
-    return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
-  }
+  });
 }

@@ -9,7 +9,7 @@ export async function getSlotById(id: string) {
     .from(timeSlots)
     .where(eq(timeSlots.id, id))
     .execute();
-  if (!slot) throw new Error("Créneau non trouvé");
+  if (!slot) throw new HttpError(404, "Créneau non trouvé");
   return slot;
 }
 
@@ -71,7 +71,7 @@ export async function reserveSlot(timeSlotId: string): Promise<void> {
       .execute();
 
     if (!slot) {
-      throw new Error("Créneau indisponible ou déjà réservé");
+      throw new HttpError(409, "Créneau indisponible ou déjà réservé");
     }
 
     await trx

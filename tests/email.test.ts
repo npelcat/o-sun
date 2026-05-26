@@ -62,7 +62,7 @@ describe("POST /api/email", () => {
     const response = await POST(req);
     expect(response.status).toBe(200);
     const body = await response.json();
-    expect(body.message).toContain("Ton e-mail a bien été envoyé");
+    expect(body.message).toContain("Votre e-mail a bien été envoyé");
 
     // 2 appels : notification admin + accusé de réception utilisateur
     expect(mockResendSend).toHaveBeenCalledTimes(2);
