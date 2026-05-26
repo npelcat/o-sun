@@ -320,6 +320,41 @@ This project follows the **GitHub Flow** branching strategy:
 > Every change must go through a **Pull Request**, and the CI pipeline
 > (lint, build, tests) must pass before merging.
 
+## 🏷️ Releases and Versioning
+
+This project follows **SemVer** (Semantic Versioning): `vMAJOR.MINOR.PATCH`
+
+| Type of change  | Example  |
+| --------------- | -------- |
+| Bug fix         | `v1.0.1` |
+| New feature     | `v1.1.0` |
+| Breaking change | `v2.0.0` |
+
+### Creating a new release
+
+From `main`, after a merge:
+
+```bash
+git tag -a v1.x.x -m "Short description of the version"
+git push origin v1.x.x
+```
+
+Then on GitHub: **Releases → Draft a new release → select the tag → Publish**.
+
+### Application rollback
+
+If something goes wrong in production:
+
+1. Go to **Vercel → Deployments**
+2. Identify the last stable deployment
+3. Click **"Redeploy"** to reactivate it
+
+> ⚠️ Vercel rollback covers the application code only.
+> If a database migration has already been applied,
+> it is not automatically reversed. Migrations should therefore
+> be designed to be non-destructive (adding columns
+> rather than deleting them).
+
 ---
 
 ## ✍️ Commit Conventions
