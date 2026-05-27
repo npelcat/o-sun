@@ -1,0 +1,22 @@
+name: Suppression automatique des données RGPD
+
+# Déclenchement : le 1er de chaque mois à 2h du matin (UTC)
+on:
+  schedule:
+    - cron: "0 2 1 * *"
+  # Permet aussi de déclencher manuellement depuis l'interface GitHub
+  # pour tester sans attendre le prochain mois
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Appel de la route de nettoyage
+        run: |
+          curl --fail \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.APP_URL }}/api/cron/cleanup"
+
+# Le fail sur le curl fait échouer le job GitHub Actions si la route retourne une erreur HTTP
+# ce qui permettra de recevoir une notification par email en cas de problème
