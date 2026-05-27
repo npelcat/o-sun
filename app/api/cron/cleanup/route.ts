@@ -20,9 +20,21 @@ export async function GET(request: Request) {
   // Vérification du token secret pour s'assurer que la requête
   // vient bien de GitHub Actions et pas d'un visiteur quelconque.
   const authHeader = request.headers.get("authorization");
+  console.log("[CRON] Header reçu:", authHeader ? "présent" : "absent");
+  console.log(
+    "[CRON] CRON_SECRET défini:",
+    process.env.CRON_SECRET ? "oui" : "non",
+  );
+  console.log("[CRON] Longueur header:", authHeader?.length);
+  console.log(
+    "[CRON] Longueur secret attendu:",
+    `Bearer ${process.env.CRON_SECRET}`.length,
+  );
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
+  console.log("[CRON] Auth header reçu:", authHeader);
+  console.log("[CRON] Secret attendu:", `Bearer ${process.env.CRON_SECRET}`);
 
   // Calcul de la date limite : aujourd'hui moins 2 ans
   const twoYearsAgo = new Date();
