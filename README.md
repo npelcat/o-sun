@@ -249,6 +249,7 @@ The site is deployed on **Vercel**:
 - **Database**: Supabase (PostgreSQL)
 - **CMS**: Strapi hosted on Koyeb
 - **Emails**: Resend
+- **Automated cleanup**: GitHub Actions (monthly RGPD data deletion)
 
 ---
 
@@ -306,6 +307,36 @@ npm run test
 - **Data validation**: Zod (frontend + backend)
 - **Environment variables**: never exposed client-side (except `NEXT_PUBLIC_*`)
 - **Secure APIs**: JWT session verification via NextAuth middleware for `/api/admin/*` routes
+
+---
+
+## 🗑️ Automated Data Deletion (RGPD)
+
+A monthly CRON job automatically deletes client data inactive for more than 2 years,
+in compliance with the site's privacy policy.
+
+### How it works
+
+- **Scheduler**: GitHub Actions (runs on the 1st of each month at 2am UTC)
+- **Route**: `GET /api/cron/cleanup`
+- **Authentication**: Bearer token (`CRON_SECRET`)
+- **Database connection**: dedicated role with full rights (`CRON_DATABASE_URL`)
+
+Deleting a client automatically removes associated bookings and form data
+via cascades defined in the schema.
+
+### Manual trigger
+
+From GitHub → Actions → "Suppression automatique des données RGPD" → Run workflow.
+Expected response: `{"success":true,"deletedCount":0}` (0 is normal if no data is old enough).
+
+### Required environment variables
+
+| Variable            | Where                   |
+| ------------------- | ----------------------- |
+| `CRON_SECRET`       | Vercel + GitHub Secrets |
+| `CRON_DATABASE_URL` | Vercel only             |
+| `APP_URL`           | GitHub Secrets only     |
 
 ---
 
