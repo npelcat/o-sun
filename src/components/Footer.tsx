@@ -58,13 +58,21 @@ export const Footer: React.FC = () => {
           >
             Mentions légales
           </Link>
-          -
+          ·
           <Link
             href="/cgv"
             className="p-1 ml-2 font-semibold text-sm hover:bg-green rounded-lg transition duration-300 ease-in-out"
             aria-label="Conditions générales de vente"
           >
             CGV
+          </Link>
+          ·
+          <Link
+            href="/privacy-policy"
+            className="p-1 ml-2 font-semibold text-sm hover:bg-green rounded-lg transition duration-300 ease-in-out"
+            aria-label="Politique de confidentialité"
+          >
+            Politique de confidentialité
           </Link>
           <p className="text-xs pt-3">© 2024 par O&apos;Sun - Voix Animale</p>
         </div>

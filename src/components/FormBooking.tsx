@@ -12,7 +12,7 @@ import { ServiceSection } from "./booking/ServiceSection";
 import { useToast } from "../hooks/useToast";
 import { useBookingTimer } from "../hooks/useBookingTimer";
 import { useBookingForm } from "../hooks/useBookingForm";
-import { ConsentSection } from "./booking/ContentSection";
+import { ConsentSection } from "./booking/ConsentSection";
 
 const FormBooking: React.FC = () => {
   const searchParams = useSearchParams();
@@ -109,6 +109,32 @@ const FormBooking: React.FC = () => {
             onChange={handleChange}
             onCheckboxChange={handleCheckboxChange}
           />
+
+          <div className="border-t pt-6 text-sm text-gray-500 leading-relaxed">
+            <p>
+              Les données collectées via ce formulaire (nom, prénom, email,
+              téléphone, informations sur votre animal) sont utilisées
+              exclusivement par O&apos;Sun – Voix Animale pour traiter votre
+              demande de réservation. Elles sont conservées pendant 2 ans puis
+              supprimées automatiquement. Conformément au RGPD, vous disposez
+              d&apos;un droit d&apos;accès, de rectification, d&apos;effacement
+              et d&apos;opposition en écrivant à{" "}
+              <a
+                href="mailto:o.sun.voixanimale@gmail.com"
+                className="underline hover:text-gray-700"
+              >
+                o.sun.voixanimale@gmail.com
+              </a>
+              . Pour en savoir plus :{" "}
+              <a
+                href="/politique-de-confidentialite"
+                className="underline hover:text-gray-700"
+              >
+                politique de confidentialité
+              </a>
+              .
+            </p>
+          </div>
 
           <div className="border-t pt-6">
             <label className="block mb-2 font-medium">

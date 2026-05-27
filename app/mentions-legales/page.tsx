@@ -82,6 +82,26 @@ export default function MentionsLegalesPage() {
                   </a>
                 </p>
               </div>
+              <div>
+                <p className="font-semibold">
+                  Hébergement de la base de données
+                </p>
+                <p>Supabase Inc.</p>
+                <p>970 Toa Payoh North, #07-04, Singapore 318992</p>
+                <p>
+                  Région d&apos;hébergement des données : Europe (Frankfurt)
+                </p>
+                <p>
+                  <a
+                    href="https://www.koyeb.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    https://supabase.com
+                  </a>
+                </p>
+              </div>
             </div>
           </section>
 
@@ -93,6 +113,18 @@ export default function MentionsLegalesPage() {
               Textes et photographies : <strong>Océane Romaska</strong>. Toute
               reproduction, diffusion ou réutilisation est interdite sans
               autorisation écrite.
+            </p>
+          </section>
+
+          <section className="bg-green p-6 rounded-lg">
+            <h2 className="text-xl font-bold font-subtitle mb-4 text-center">
+              Développement
+            </h2>
+            <p className="text-gray-700 leading-relaxed text-center">
+              Ce site a été développé par <strong>Nadege Pelcat</strong>,
+              développeuse web indépendante, agissant en qualité de
+              sous-traitante au sens de l&apos;article 28 du RGPD. Contact :
+              pelcat.nd@gmail.com
             </p>
           </section>
 
@@ -133,21 +165,90 @@ export default function MentionsLegalesPage() {
             <h2 className="text-xl font-bold font-subtitle mb-4 text-center">
               Données personnelles
             </h2>
-            <p className="text-gray-700 leading-relaxed">
-              Les données collectées via ce site sont utilisées uniquement dans
-              le cadre des prestations proposées. Pour plus de détails, veuillez
-              consulter l&apos;article 17 des Conditions Générales de Vente
-              relatif aux données personnelles. Conformément au RGPD, vous
-              disposez d&apos;un droit d&apos;accès, de rectification, de
-              suppression et d&apos;opposition en écrivant à :{" "}
-              <a
-                href="mailto:o.sun.voixanimale@gmail.com"
-                className="text-blue-600 hover:underline"
-              >
-                o.sun.voixanimale@gmail.com
-              </a>
-              .
-            </p>
+            <div className="space-y-4 text-gray-700 leading-relaxed text-sm">
+              <p>
+                Les données collectées via ce site (nom, prénom, adresse email,
+                numéro de téléphone, informations relatives aux animaux de
+                compagnie) sont traitées par O&apos;Sun – Voix Animale en sa
+                qualité de responsable du traitement, sur la base légale de
+                l&apos;exécution de mesures précontractuelles (article 6.1.b du
+                RGPD).
+              </p>
+              <p>
+                Ces données sont hébergées sur Supabase (Frankfurt, Allemagne)
+                et transitent via Resend (États-Unis) pour l&apos;envoi des
+                notifications par email. Ces transferts sont encadrés par des
+                accords de traitement des données (DPA) conformes au RGPD.
+              </p>
+              <p>
+                Les données sont conservées pendant une durée maximale de 2 ans
+                à compter du dernier contact, puis supprimées automatiquement.
+              </p>
+              <div>
+                <p className="font-semibold mb-2">
+                  Conformément au RGPD, vous disposez des droits suivants :
+                </p>
+                <ul className="space-y-1 ml-4">
+                  <li className="flex items-start space-x-2">
+                    <span className="text-green-600 font-bold mt-0.5">•</span>
+                    <p>
+                      <strong>Droit d&apos;accès</strong> : obtenir une copie de
+                      vos données
+                    </p>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-green-600 font-bold mt-0.5">•</span>
+                    <p>
+                      <strong>Droit de rectification</strong> : corriger des
+                      données inexactes
+                    </p>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-green-600 font-bold mt-0.5">•</span>
+                    <p>
+                      <strong>Droit à l&apos;effacement</strong> : demander la
+                      suppression de vos données
+                    </p>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-green-600 font-bold mt-0.5">•</span>
+                    <p>
+                      <strong>Droit d&apos;opposition</strong> : vous opposer au
+                      traitement
+                    </p>
+                  </li>
+                  <li className="flex items-start space-x-2">
+                    <span className="text-green-600 font-bold mt-0.5">•</span>
+                    <p>
+                      <strong>Droit à la portabilité</strong> : recevoir vos
+                      données dans un format lisible
+                    </p>
+                  </li>
+                </ul>
+              </div>
+              <p>
+                Pour exercer ces droits, contactez :{" "}
+                <a
+                  href="mailto:o.sun.voixanimale@gmail.com"
+                  className="text-blue-600 hover:underline"
+                >
+                  o.sun.voixanimale@gmail.com
+                </a>
+                . Délai de réponse : 1 mois maximum.
+              </p>
+              <p>
+                Pour toute réclamation, vous pouvez également contacter la CNIL
+                :{" "}
+                <a
+                  href="https://www.cnil.fr"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  www.cnil.fr
+                </a>
+              </p>
+            </div>
           </section>
 
           <section className="bg-white p-6 rounded-lg shadow-sm">
