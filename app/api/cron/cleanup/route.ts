@@ -1,4 +1,5 @@
-import db from "@/src/db";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { clients } from "@/src/db/schema";
 import { lt } from "drizzle-orm";
 import { NextResponse } from "next/server";
@@ -8,6 +9,12 @@ import { NextResponse } from "next/server";
 // depuis plus de 2 ans, conformément à la politique de confidentialité.
 // La suppression des clients entraîne automatiquement la suppression
 // de leurs réservations et formulaires associés (cascade définie dans le schéma).
+
+// Ici une connexion dédiée avec le rôle postgres (droits complets),
+// distincte de la connexion applicative booking_app qui est volontairement
+// restreinte pour la sécurité du front.
+const cronClient = postgres(process.env.CRON_DATABASE_URL!, { prepare: false });
+const cronDb = drizzle(cronClient);
 
 export async function GET(request: Request) {
   // Vérification du token secret pour s'assurer que la requête
@@ -26,12 +33,12 @@ export async function GET(request: Request) {
     // est antérieur à la date limite calculée ci-dessus.
     // Les réservations et formulaires associés sont supprimés
     // automatiquement grâce aux cascades définies dans le schéma.
-    const deleted = await db
+    const deleted = await cronDb
       .delete(clients)
       .where(lt(clients.updatedAt, twoYearsAgo))
       .returning({ id: clients.id });
 
-    // Je retourne le nombre de clients supprimés pour pouvoir
+    // On retourne le nombre de clients supprimés pour pouvoir
     // vérifier dans les logs GitHub Actions que tout s'est bien passé.
     return NextResponse.json({
       success: true,
