@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Appel de la route de nettoyage
         run: |
-          curl --fail \
+          curl --fail -L \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             "${{ secrets.APP_URL }}/api/cron/cleanup"
 
