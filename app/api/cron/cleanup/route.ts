@@ -20,16 +20,6 @@ export async function GET(request: Request) {
   // Vérification du token secret pour s'assurer que la requête
   // vient bien de GitHub Actions et pas d'un visiteur quelconque.
   const authHeader = request.headers.get("authorization");
-  console.log("[CRON] Header reçu:", authHeader ? "présent" : "absent");
-  console.log(
-    "[CRON] CRON_SECRET défini:",
-    process.env.CRON_SECRET ? "oui" : "non",
-  );
-  console.log("[CRON] Longueur header:", authHeader?.length);
-  console.log(
-    "[CRON] Longueur secret attendu:",
-    `Bearer ${process.env.CRON_SECRET}`.length,
-  );
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -50,7 +40,7 @@ export async function GET(request: Request) {
       .where(lt(clients.updatedAt, twoYearsAgo))
       .returning({ id: clients.id });
 
-    // On retourne le nombre de clients supprimés pour pouvoir
+    // Retourne le nombre de clients supprimés pour pouvoir
     // vérifier dans les logs GitHub Actions que tout s'est bien passé.
     return NextResponse.json({
       success: true,
