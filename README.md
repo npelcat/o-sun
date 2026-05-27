@@ -175,6 +175,11 @@ RESEND_SENDER_EMAIL=sender@domain.com
 # Google OAuth Authentication
 GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-secret
+
+# CRON JOB (user data deleted after two years.)
+CRON_SECRET=
+CRON_DATABASE_URL=
+
 ```
 
 ---
