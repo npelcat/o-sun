@@ -5,3 +5,19 @@ updates:
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 5
+
+    groups:
+      # Groupe 1 : Les mises à jour mineures et patchs
+      safe-updates:
+        patterns:
+          - "*" # Applique à toutes les dépendances
+        update-types:
+          - "minor"
+          - "patch"
+
+      # Groupe 2 : Les mises à jour risquées (majeures)
+      breaking-updates:
+        patterns:
+          - "*"
+        update-types:
+          - "major"
