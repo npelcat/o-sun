@@ -9,6 +9,7 @@ interface FeatureCardInterface {
   alt: string;
   link: string;
   titleButton: string;
+  ariaLabel?: string;
 }
 
 export const FeatureCard: React.FC<FeatureCardInterface> = ({
@@ -18,14 +19,12 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
   alt,
   link,
   titleButton,
+  ariaLabel,
 }) => {
   return (
     <section className="bg-beige rounded-lg overflow-hidden h-full flex flex-col">
       <div className="relative h-56">
-        <h3
-          className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-75 text-dark-green text-2xl font-subtitle p-2 text-center"
-          aria-level={3}
-        >
+        <h3 className="absolute bottom-0 left-0 right-0 bg-white bg-opacity-75 text-dark-green text-2xl font-subtitle p-2 text-center">
           {title}
         </h3>
 
@@ -43,11 +42,7 @@ export const FeatureCard: React.FC<FeatureCardInterface> = ({
       </div>
 
       <div className="flex space-x-4 pb-5 justify-center">
-        <Button
-          titleButton={titleButton}
-          link={link}
-          aria-label={titleButton}
-        />
+        <Button titleButton={titleButton} link={link} ariaLabel={ariaLabel} />
       </div>
     </section>
   );

@@ -35,12 +35,12 @@ export default function TestimonialsClient({
                   image={picture?.url || ""}
                   alt={picture?.alternativeText || ""}
                 />
-                <p className="pt-8 text-justify">
+                <div className="pt-8 text-justify">
                   <BlockRendererClient content={item.content} />
-                </p>
+                </div>
                 <br />
                 <h3 className="font-bold">{item.author}</h3>
-                <p className="italic">
+                <p className="italic" suppressHydrationWarning>
                   {new Date(item.createdat).toLocaleDateString("fr-FR")}
                 </p>
               </div>
