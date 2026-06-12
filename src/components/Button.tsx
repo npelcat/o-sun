@@ -3,6 +3,7 @@ import clsx from "clsx";
 
 interface ButtonInterface {
   titleButton: string;
+  ariaLabel?: string;
   link?: string;
   target?: string;
   rel?: string;
@@ -14,6 +15,7 @@ interface ButtonInterface {
 
 export const Button: React.FC<ButtonInterface> = ({
   titleButton,
+  ariaLabel,
   link,
   target,
   rel,
@@ -27,12 +29,18 @@ export const Button: React.FC<ButtonInterface> = ({
     "text-center transition duration-300 ease-in-out",
     "hover:bg-green hover:text-black border-2 border-transparent",
     "focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2",
-    className
+    className,
   );
 
   if (link) {
     return (
-      <Link href={link} target={target} rel={rel} className={baseClasses}>
+      <Link
+        href={link}
+        aria-label={ariaLabel}
+        target={target}
+        rel={rel}
+        className={baseClasses}
+      >
         {titleButton}
       </Link>
     );
@@ -41,6 +49,7 @@ export const Button: React.FC<ButtonInterface> = ({
   return (
     <button
       type={type}
+      aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
       className={baseClasses}

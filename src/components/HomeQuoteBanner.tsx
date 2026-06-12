@@ -57,9 +57,9 @@ export function HomeQuoteBanner({
 
               {/* Contenu */}
               <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl lg:text-3xl font-subtitle font-bold text-black mb-3">
+                <h2 className="text-xl lg:text-2xl font-subtitle font-bold text-black mb-3">
                   Suivez mon parcours de communicante animale
-                </h3>
+                </h2>
                 <p className="text-black/70 mb-6">
                   Découvrez les coulisses, mes réflexions et mes actualités :
                   nouveaux services, événements et moments forts partagés avec

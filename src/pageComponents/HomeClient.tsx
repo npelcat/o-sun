@@ -108,6 +108,7 @@ export default function HomeClient({
                   alt={component.picture?.alternativeText || ""}
                   link={component.link}
                   titleButton="En savoir plus"
+                  ariaLabel={`En savoir plus sur ${component.title}`}
                 />
               </div>
             ))}
