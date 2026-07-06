@@ -52,7 +52,7 @@ export default function GuardiansClient({
   ].filter(Boolean) as { id: string; title: string }[];
 
   return (
-    <div className="text-center pt-16 space-y-12">
+    <main className="text-center pt-16 space-y-12">
       <h2 className="text-3xl pt-16 pb-5 px-4 font-subtitle font-bold">
         Services aux gardiens
       </h2>
@@ -138,6 +138,6 @@ export default function GuardiansClient({
           rel="noopener noreferrer"
         />
       </div>
-    </div>
+    </main>
   );
 }

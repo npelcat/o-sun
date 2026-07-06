@@ -60,7 +60,7 @@ export default function ContactClient() {
   };
 
   return (
-    <div className="flex justify-center w-full">
+    <main className="flex justify-center w-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full md:w-4/5 lg:w-3/5"
@@ -160,6 +160,6 @@ export default function ContactClient() {
           </p>
         )}
       </form>
-    </div>
+    </main>
   );
 }

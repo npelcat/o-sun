@@ -276,9 +276,9 @@ export default function BookingClient({
       <section className="py-16 px-4">
         <div className="max-w-2xl mx-auto text-center scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
           <div className="bg-beige/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg">
-            <h3 className="text-2xl md:text-3xl font-subtitle font-bold text-dark-green mb-4">
+            <h2 className="text-2xl md:text-3xl font-subtitle font-bold text-dark-green mb-4">
               Une question ?
-            </h3>
+            </h2>
             <p className="text-black mb-6">
               N&apos;hésitez pas à me contacter pour toute demande
               d&apos;information
