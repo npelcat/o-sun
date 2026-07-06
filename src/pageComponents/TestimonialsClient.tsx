@@ -13,7 +13,7 @@ export default function TestimonialsClient({
   testimonials,
 }: TestimonialsClientProps) {
   return (
-    <div className="py-16 space-y-12">
+    <main className="py-16 space-y-12">
       <h2 className="text-3xl pt-16 pb-5 px-4 text-center font-subtitle font-bold">
         Témoignages
       </h2>
@@ -63,6 +63,6 @@ export default function TestimonialsClient({
           rel="noopener noreferrer"
         />
       </div>
-    </div>
+    </main>
   );
 }

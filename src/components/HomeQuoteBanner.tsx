@@ -42,7 +42,7 @@ export function HomeQuoteBanner({
 
       {/* Card Instagram avec les couleurs du thème */}
       <div className="max-w-4xl mx-auto px-4 -mt-4">
-        <div className="bg-white/90 backdrop-blur-sm border-2 border-beige rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+        <div className="bg-white backdrop-blur-sm border-2 border-beige rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
           <div className="p-8 lg:p-10">
             <div className="flex flex-col md:flex-row items-center gap-8">
               {/* Icône Instagram + info */}
@@ -60,12 +60,12 @@ export function HomeQuoteBanner({
                 <h2 className="text-xl lg:text-2xl font-subtitle font-bold text-black mb-3">
                   Suivez mon parcours de communicante animale
                 </h2>
-                <p className="text-black/70 mb-6">
+                <p className="text-black mb-6">
                   Découvrez les coulisses, mes réflexions et mes actualités :
                   nouveaux services, événements et moments forts partagés avec
                   vos animaux.
                 </p>
-                <div className="flex items-center justify-center md:justify-start gap-6 text-sm text-black/60 mb-6">
+                <div className="flex items-center justify-center md:justify-start gap-6 text-sm text-black mb-6">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-dark-green" />
                     <span>Conseils & partages</span>

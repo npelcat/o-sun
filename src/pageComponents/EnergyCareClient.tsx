@@ -60,7 +60,7 @@ export default function EnergyCareClient({
   ].filter(Boolean) as { id: string; title: string }[];
 
   return (
-    <div className="text-center py-16 space-y-12">
+    <main className="text-center py-16 space-y-12">
       <h2 className="text-3xl pt-16 pb-5 font-subtitle font-bold">
         Les soins énergétiques
       </h2>
@@ -162,6 +162,6 @@ export default function EnergyCareClient({
           rel="noopener noreferrer"
         />
       </div>
-    </div>
+    </main>
   );
 }

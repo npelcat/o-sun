@@ -39,7 +39,7 @@ export default function EthicsClient({
   ].filter(Boolean) as { id: string; title: string }[];
 
   return (
-    <div className="pt-16 space-y-12">
+    <main className="pt-16 space-y-12">
       <h2 className="text-center text-3xl font-subtitle font-bold px-4">
         Mon éthique
       </h2>
@@ -92,6 +92,6 @@ export default function EthicsClient({
       <div className="flex justify-center pb-12">
         <Button titleButton="Me contacter" link="/contact" />
       </div>
-    </div>
+    </main>
   );
 }

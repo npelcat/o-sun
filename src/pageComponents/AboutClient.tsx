@@ -42,7 +42,7 @@ export default function AboutClient({
   ].filter(Boolean) as { id: string; title: string }[];
 
   return (
-    <div className="pt-16 space-y-12 text-center">
+    <main className="pt-16 space-y-12 text-center">
       <h2 className="text-3xl font-bold font-subtitle px-4 pt-16 pb-5">
         Qui suis-je ?
       </h2>
@@ -106,6 +106,6 @@ export default function AboutClient({
       <div className="flex justify-center mt-16">
         <Button titleButton="Réserver un service" link="/contact/booking" />
       </div>
-    </div>
+    </main>
   );
 }
