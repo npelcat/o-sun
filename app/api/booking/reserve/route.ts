@@ -3,6 +3,7 @@ import { withErrorHandler } from "@/utils/withErrorHandler";
 import logger from "@/utils/logger";
 import { reserveSlotSchema } from "@/lib/validation/booking";
 import { getSlotById, reserveSlot } from "@/lib/timeslots";
+import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
 
 /**
  * @swagger
@@ -81,9 +82,23 @@ import { getSlotById, reserveSlot } from "@/lib/timeslots";
  *                   type: string
  *                   example: "Erreur interne"
  */
-
 export async function POST(request: NextRequest) {
   return withErrorHandler(request, async () => {
+    const ip =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
+
+    const isAllowed = apiRateLimiter.check(ip);
+
+    if (!isAllowed) {
+      logger.warn(`Rate limit dépassé pour IP: ${ip} sur /api/booking/reserve`);
+      return NextResponse.json(
+        { message: "Trop de requêtes, réessayez dans quelques instants" },
+        { status: 429 },
+      );
+    }
+
     const body = await request.json();
     const { timeSlotId } = reserveSlotSchema.parse(body);
     logger.info("POST /booking/reserve - Réservation provisoire demandée", {
