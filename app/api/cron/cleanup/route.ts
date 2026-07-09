@@ -23,8 +23,6 @@ export async function GET(request: Request) {
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  console.log("[CRON] Auth header reçu:", authHeader);
-  console.log("[CRON] Secret attendu:", `Bearer ${process.env.CRON_SECRET}`);
 
   // Calcul de la date limite : aujourd'hui moins 2 ans
   const twoYearsAgo = new Date();

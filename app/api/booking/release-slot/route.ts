@@ -3,6 +3,7 @@ import logger from "@/utils/logger";
 import { releaseSlotSchema } from "@/lib/validation/booking";
 import { releaseSlot } from "@/lib/timeslots";
 import { withErrorHandler } from "@/utils/withErrorHandler";
+import { apiRateLimiter } from "@/lib/security/rate-limit-simple";
 
 /**
  * @swagger
@@ -65,6 +66,23 @@ import { withErrorHandler } from "@/utils/withErrorHandler";
 
 export async function POST(req: NextRequest) {
   return withErrorHandler(req, async () => {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0] ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+
+    const isAllowed = apiRateLimiter.check(ip);
+
+    if (!isAllowed) {
+      logger.warn(
+        `Rate limit dépassé pour IP: ${ip} sur /api/booking/release-slot`,
+      );
+      return NextResponse.json(
+        { message: "Trop de requêtes, réessayez dans quelques instants" },
+        { status: 429 },
+      );
+    }
+
     const body = await req.json();
 
     const { timeSlotId } = releaseSlotSchema.parse(body);

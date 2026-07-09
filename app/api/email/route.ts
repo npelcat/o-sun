@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
   return withErrorHandler(request, async () => {
     const data = await request.json();
     const { name, email, message, turnstileToken } = contactSchema.parse(data);
-    logger.info("POST /email - Data validated", { name, email });
+    logger.info("POST /email - Data validated");
 
     const turnstileCheck = await verifyTurnstileToken(turnstileToken);
     if (!turnstileCheck.success) {

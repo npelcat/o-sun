@@ -236,7 +236,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    logger.info("POST /booking/confirm - Email validé", { clientEmail });
+    logger.info("POST /booking/confirm - Email validé");
 
     const result = await db.transaction(async (trx) => {
       await validateSlotForConfirmation(trx, timeSlotId);

@@ -47,6 +47,17 @@ export async function requestPasswordReset(email: string) {
       return { success: true, message };
     }
 
+    // Invalide tous les tokens non utilisés de cet email avant d'en créer un nouveau
+    await db
+      .update(passwordResetTokens)
+      .set({ used: true })
+      .where(
+        and(
+          eq(passwordResetTokens.email, normalizedEmail),
+          eq(passwordResetTokens.used, false),
+        ),
+      );
+
     // Génère le token
     const token = generateResetToken();
     const expiresAt = getTokenExpiration(30); // 30 minutes
