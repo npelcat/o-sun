@@ -6,6 +6,7 @@ import {
   createTimeslotSchema,
 } from "@/lib/validation/admin";
 import logger from "@/utils/logger";
+import { withAdminAuth } from "@/lib/auth/with-admin-auth";
 
 /**
  * @swagger
@@ -120,7 +121,7 @@ import logger from "@/utils/logger";
  *         description: Non authentifié
  */
 
-export async function GET(req: NextRequest) {
+async function getTimeslots(req: NextRequest) {
   return withErrorHandler(req, async () => {
     logger.info("GET /api/admin/timeslots - Récupération créneaux admin");
 
@@ -147,7 +148,9 @@ export async function GET(req: NextRequest) {
   });
 }
 
-export async function POST(req: NextRequest) {
+export const GET = withAdminAuth(getTimeslots);
+
+async function createTimeslot_(req: NextRequest) {
   return withErrorHandler(req, async () => {
     logger.info("POST /api/admin/timeslots - Création d'un créneau");
 
@@ -173,3 +176,5 @@ export async function POST(req: NextRequest) {
     );
   });
 }
+
+export const POST = withAdminAuth(createTimeslot_);

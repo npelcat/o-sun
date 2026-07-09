@@ -193,7 +193,6 @@ export async function POST(req: NextRequest) {
 
     logger.info("POST /booking/confirm - Tentative de confirmation", {
       timeSlotId,
-      clientEmail,
       animalName,
     });
 
@@ -220,7 +219,7 @@ export async function POST(req: NextRequest) {
 
     if (!emailValidation.isValid) {
       logger.warn("POST /booking/confirm - Email invalide", {
-        email: clientEmail,
+        domain: clientEmail.split("@")[1],
         reason: emailValidation.message,
       });
 
@@ -232,7 +231,7 @@ export async function POST(req: NextRequest) {
 
     if (emailValidation.message) {
       logger.info("POST /booking/confirm - Email accepté avec avertissement", {
-        email: clientEmail,
+        domain: clientEmail.split("@")[1],
         warning: emailValidation.message,
       });
     }
