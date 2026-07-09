@@ -11,6 +11,7 @@ jobs:
     env:
       NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       SKIP_DB: "1"
     steps:
       - name: Checkout code
@@ -29,6 +30,7 @@ jobs:
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
           SKIP_DB: "1"
         run: npm run build
 
