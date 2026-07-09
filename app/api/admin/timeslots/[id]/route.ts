@@ -8,6 +8,7 @@ import {
 } from "@/lib/admin/timeslots";
 import { updateTimeslotSchema } from "@/lib/validation/admin";
 import logger from "@/utils/logger";
+import { withAdminAuth } from "@/lib/auth/with-admin-auth";
 
 /**
  * @swagger
@@ -131,7 +132,7 @@ import logger from "@/utils/logger";
  *         description: Suppression impossible - une réservation est liée à ce créneau
  */
 
-export async function GET(
+async function getTimeslotByIdRoute(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -147,7 +148,9 @@ export async function GET(
   });
 }
 
-export async function PUT(
+export const GET = withAdminAuth(getTimeslotByIdRoute);
+
+async function putTimeslot(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -178,7 +181,9 @@ export async function PUT(
   });
 }
 
-export async function DELETE(
+export const PUT = withAdminAuth(putTimeslot);
+
+export async function deleteTimeslot_(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -194,3 +199,5 @@ export async function DELETE(
     return new NextResponse(null, { status: 204 });
   });
 }
+
+export const DELETE = withAdminAuth(deleteTimeslot_);

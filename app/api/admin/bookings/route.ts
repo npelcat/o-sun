@@ -6,6 +6,7 @@ import {
   createBookingAdminSchema,
 } from "@/lib/validation/admin";
 import logger from "@/utils/logger";
+import { withAdminAuth } from "@/lib/auth/with-admin-auth";
 
 /**
  * @swagger
@@ -116,7 +117,7 @@ import logger from "@/utils/logger";
  *         description: Non authentifié
  */
 
-export async function GET(req: NextRequest) {
+async function getBookings(req: NextRequest) {
   return withErrorHandler(req, async () => {
     logger.info(
       "GET /api/admin/bookings - Récupération des réservations admin",
@@ -138,14 +139,19 @@ export async function GET(req: NextRequest) {
 
     logger.info(
       `GET /api/admin/bookings - ${bookings.length} réservations récupérées`,
-      { filters: validatedFilters },
+      {
+        hasEmailFilter: !!validatedFilters.clientEmail,
+        month: validatedFilters.month,
+      },
     );
 
     return NextResponse.json({ bookings });
   });
 }
 
-export async function POST(req: NextRequest) {
+export const GET = withAdminAuth(getBookings);
+
+async function createBookingRoute(req: NextRequest) {
   return withErrorHandler(req, async () => {
     logger.info(
       "POST /api/admin/bookings - Création manuelle d'une réservation",
@@ -169,3 +175,5 @@ export async function POST(req: NextRequest) {
     );
   });
 }
+
+export const POST = withAdminAuth(createBookingRoute);

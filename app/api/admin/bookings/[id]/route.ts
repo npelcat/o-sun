@@ -7,6 +7,7 @@ import {
 } from "@/lib/admin/bookings";
 import { updateBookingAdminSchema } from "@/lib/validation/admin";
 import logger from "@/utils/logger";
+import { withAdminAuth } from "@/lib/auth/with-admin-auth";
 
 /**
  * @swagger
@@ -126,7 +127,7 @@ import logger from "@/utils/logger";
  *         description: Réservation introuvable
  */
 
-export async function GET(
+async function getBookingByIdRoute(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -144,7 +145,9 @@ export async function GET(
   });
 }
 
-export async function PUT(
+export const GET = withAdminAuth(getBookingByIdRoute);
+
+async function putBooking(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -180,7 +183,9 @@ export async function PUT(
   });
 }
 
-export async function DELETE(
+export const PUT = withAdminAuth(putBooking);
+
+async function deleteBookingRoute(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
@@ -198,3 +203,5 @@ export async function DELETE(
     return new NextResponse(null, { status: 204 });
   });
 }
+
+export const DELETE = withAdminAuth(deleteBookingRoute);
