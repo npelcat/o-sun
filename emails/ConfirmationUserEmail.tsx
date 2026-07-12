@@ -99,6 +99,23 @@ export function ConfirmationUserEmail({
       <Text
         style={{
           color: "#6D7764",
+          fontSize: "12px",
+          lineHeight: "1.6",
+          margin: "16px 0 0 0",
+        }}
+      >
+        Pour rappel, vous disposez d&apos;un délai de rétractation de 7 jours
+        après votre réservation. Passé ce délai, une indemnité de 20% pourra
+        être retenue en cas d&apos;annulation — voir les{" "}
+        <a href="https://osun-voixanimale.com/cgv" style={{ color: "#6D7764" }}>
+          CGV
+        </a>
+        .
+      </Text>
+
+      <Text
+        style={{
+          color: "#6D7764",
           fontSize: "14px",
           fontStyle: "italic",
           lineHeight: "1.7",
