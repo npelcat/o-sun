@@ -127,7 +127,7 @@ const FormBooking: React.FC = () => {
               </a>
               . Pour en savoir plus :{" "}
               <a
-                href="/politique-de-confidentialite"
+                href="/privacy-policy"
                 className="underline hover:text-gray-700"
               >
                 politique de confidentialité
