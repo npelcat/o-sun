@@ -25,10 +25,17 @@ export const Button: React.FC<ButtonInterface> = ({
   disabled = false,
 }) => {
   const baseClasses = clsx(
-    "text-xl font-subtitle text-white bg-dark-green rounded-full p-4 max-w-xs",
-    "text-center transition duration-300 ease-in-out",
-    "hover:bg-green hover:text-black border-2 border-transparent",
+    "inline-flex items-center justify-center text-center",
+    "w-full sm:w-auto px-6 py-4 rounded-full",
+    "text-xl font-subtitle",
+    "whitespace-normal break-words",
+    "bg-dark-green",
+    "border-2 border-transparent",
+    "transition duration-300 ease-in-out",
+    "hover:bg-green hover:text-black",
     "focus:outline-none focus:ring-2 focus:ring-dark-green focus:ring-offset-2",
+    "disabled:opacity-50 disabled:cursor-not-allowed",
+    !className.includes("text-") && "text-white",
     className,
   );
 
