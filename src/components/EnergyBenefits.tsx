@@ -11,7 +11,7 @@ export function EnergyBenefits() {
   return (
     <section className="py-16 px-4">
       <div className="max-w-2xl mx-auto text-center">
-        <p className="text-black/70 leading-relaxed mb-10">
+        <p className="text-black leading-relaxed mb-10">
           Le rôle du soin énergétique est d&apos;aider à ré-harmoniser le flux
           d&apos;énergie, à libérer ce qui est resté « coincé », et de ramener
           plus de fluidité, d&apos;harmonie et d&apos;apaisement.
@@ -25,7 +25,7 @@ export function EnergyBenefits() {
           {benefits.map((benefit) => (
             <li
               key={benefit}
-              className="flex items-start gap-2 text-black/80 bg-beige/50 rounded-xl px-4 py-3"
+              className="flex items-start gap-2 text-black bg-beige rounded-xl px-4 py-3"
             >
               <span className="text-dark-green">⋆</span>
               <span>{benefit}</span>

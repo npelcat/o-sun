@@ -18,8 +18,8 @@ export default function TestimonialsClient({
         Témoignages
       </h2>
 
-      <div className="flex justify-center bg-beige">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-20 py-8 w-full md:w-4/5 px-4">
+      <div className="flex justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-12 gap-y-20 w-full md:w-4/5">
           {testimonials.map((item) => {
             const picture = item.picture
               ? {
@@ -29,7 +29,10 @@ export default function TestimonialsClient({
               : undefined;
 
             return (
-              <div key={item.slug}>
+              <div
+                key={item.slug}
+                className="bg-beige p-8 rounded-xl flex flex-col"
+              >
                 <CardTitlePhoto
                   title={item.title}
                   image={picture?.url || ""}

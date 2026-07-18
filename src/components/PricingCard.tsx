@@ -36,7 +36,7 @@ export function PricingCard({
         ${
           highlight
             ? "bg-green text-black ring-2 ring-green"
-            : "bg-white/70 backdrop-blur-sm text-black"
+            : "bg-white backdrop-blur-sm text-black"
         }
       `}
     >
@@ -58,7 +58,7 @@ export function PricingCard({
         <h3 className={`text-xl font-subtitle font-bold mb-1 text-dark-green`}>
           {title}
         </h3>
-        {subtitle && <p className={"text-sm text-dark-green/70"}>{subtitle}</p>}
+        {subtitle && <p className={"text-sm text-dark-green"}>{subtitle}</p>}
         <p className={`mt-3 text-3xl font-bold font-subtitle text-dark-green`}>
           {price}
         </p>
@@ -94,7 +94,7 @@ export function PricingCard({
           link={link}
           className={
             highlight
-              ? "hover:bg-white/90 w-full justify-center"
+              ? "hover:bg-white w-full justify-center"
               : "w-full justify-center"
           }
         />

@@ -24,13 +24,13 @@ export function TableOfContents({ items }: TableOfContentsProps) {
           <button
             key={item.id}
             onClick={() => scrollToSection(item.id)}
-            className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-beige border border-brown/20 hover:border-brown rounded-full transition-all duration-300 hover:shadow-md hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-beige border border-beige hover:border-brown rounded-full transition-all duration-300 shadow-md hover:-translate-y-0.5"
           >
-            <span className="text-sm font-medium text-darkGray group-hover:text-brown transition-colors">
+            <span className="text-sm font-medium text-dark group-hover:text-dark transition-colors">
               {item.title}
             </span>
             <svg
-              className="w-4 h-4 text-brown/60 group-hover:text-brown group-hover:translate-x-0.5 transition-all"
+              className="w-4 h-4 text-dark group-hover:text-dark group-hover:translate-x-0.5 transition-all"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

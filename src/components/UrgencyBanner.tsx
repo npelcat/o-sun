@@ -22,14 +22,14 @@ export function UrgencyBanner({
   followUpLinkLabel = "En savoir plus",
 }: UrgencyBannerProps) {
   return (
-    <div className="rounded-2xl border border-dark-green/20 bg-beige/60 backdrop-blur-sm p-6 space-y-4">
+    <div className="rounded-2xl border border-green bg-beige backdrop-blur-sm p-6 space-y-4">
       {/* Urgency block */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="flex-1">
           <p className="text-sm font-semibold text-dark-green mb-1">
             ⚡ Besoin urgent ?
           </p>
-          <p className="text-sm text-black/80">{urgencyText}</p>
+          <p className="text-sm text-black">{urgencyText}</p>
         </div>
         <Button
           titleButton={urgencyLinkLabel}
@@ -40,7 +40,7 @@ export function UrgencyBanner({
 
       {/* Conditions */}
       {conditions && conditions.length > 0 && (
-        <ul className="text-xs text-black/60 space-y-1 pl-1 border-l-2 border-dark-green/15">
+        <ul className="text-xs text-black/70 space-y-1 pl-1 border-l-2 border-dark-green/15">
           {conditions.map((condition, index) => (
             <li key={index} className="pl-3">
               {condition}
@@ -51,7 +51,7 @@ export function UrgencyBanner({
 
       {followUpText && followUpLink && (
         <div className="pt-3 border-t border-dark-green/10">
-          <p className="text-xs text-black/60 leading-relaxed">
+          <p className="text-xs text-black/70 leading-relaxed">
             {followUpText}{" "}
             <a
               href={followUpLink}

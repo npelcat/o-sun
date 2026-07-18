@@ -51,11 +51,8 @@ export default function AboutClient({
       <TableOfContents items={tocItems} />
 
       {oceaneContent && (
-        <section
-          id="oceane"
-          className="flex justify-center bg-beige scroll-mt-24"
-        >
-          <div className="w-full md:w-3/5 py-8 px-4 space-y-8 text-justify">
+        <section id="oceane" className="flex justify-center scroll-mt-24">
+          <div className="w-full md:w-3/5 p-4 text-justify rounded-lg bg-beige">
             <CardTitlePhoto
               title={oceaneContent.title}
               image={oceaneContent.picture?.url || ""}
@@ -84,9 +81,9 @@ export default function AboutClient({
       {diplomesEtFormations && (
         <section
           id="diplomes-formations"
-          className="flex justify-center bg-green scroll-mt-24"
+          className="flex justify-center scroll-mt-24"
         >
-          <div className="w-full md:w-3/5 py-8 px-4 space-y-8 text-justify">
+          <div className="w-full md:w-3/5 p-4 text-justify rounded-lg bg-green">
             <CardTitlePhoto
               title={diplomesEtFormations.title}
               image={diplomesEtFormations.picture?.url || ""}

@@ -40,12 +40,12 @@ export function OfferGuide() {
           {offers.map((offer) => (
             <div
               key={offer.label}
-              className="bg-beige/50 rounded-xl p-5 border border-dark-green/10"
+              className="bg-beige rounded-xl p-5 border border-green"
             >
               <p className="text-sm font-semibold text-dark-green mb-1 tracking-wide">
                 {offer.label}
               </p>
-              <p className="text-sm text-black/70 leading-relaxed">
+              <p className="text-sm text-black leading-relaxed">
                 {offer.description}
               </p>
             </div>
