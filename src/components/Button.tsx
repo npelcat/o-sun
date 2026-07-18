@@ -26,7 +26,7 @@ export const Button: React.FC<ButtonInterface> = ({
 }) => {
   const baseClasses = clsx(
     "inline-flex items-center justify-center text-center",
-    "w-full sm:w-auto px-6 py-4 rounded-full",
+    "shadow-md sm:w-auto px-6 py-4 rounded-full",
     "text-xl font-subtitle",
     "whitespace-normal break-words",
     "bg-dark-green",

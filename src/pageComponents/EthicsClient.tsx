@@ -47,8 +47,8 @@ export default function EthicsClient({
       {/* Table des matières */}
       {tocItems.length > 0 && <TableOfContents items={tocItems} />}
 
-      <div className="flex justify-center bg-beige">
-        <div className="w-full md:w-3/5 py-8 px-4">
+      <div className="flex justify-center">
+        <div className="w-full md:w-3/5 p-4 text-justify rounded-lg bg-beige">
           {wayOfWorking && (
             <section id="facon-de-travailler" className="scroll-mt-24">
               <CardTitlePhoto
@@ -56,9 +56,9 @@ export default function EthicsClient({
                 image={wayOfWorking.picture?.url || ""}
                 alt={wayOfWorking.picture?.alternativeText || ""}
               />
-              <div className="pt-8 text-justify">
+              <div className="pt-4 text-justify">
                 <BlockRendererClient content={wayOfWorking.content} />
-                <div className="flex justify-center py-8">
+                <div className="flex justify-center pt-8">
                   <Image
                     className="w-1/2 md:w-1/6 object-cover"
                     loading="lazy"
@@ -74,7 +74,7 @@ export default function EthicsClient({
           )}
           <div
             id="details-pratique"
-            className="bg-green rounded-lg my-8 p-4 scroll-mt-24"
+            className="bg-green rounded-lg mt-8 p-4 scroll-mt-24"
           >
             <h3 className="text-center font-bold bg-white bg-opacity-50 rounded-lg p-2">
               Les détails de ma pratique pour chaque discipline :

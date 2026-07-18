@@ -68,7 +68,7 @@ export const Footer: React.FC = () => {
             Politique de confidentialité
           </Link>
           <p className="text-xs pt-3 text-white">
-            © 2024 par O&apos;Sun - Voix Animale
+            © 2026 par O&apos;Sun - Voix Animale
           </p>
         </div>
       </div>
