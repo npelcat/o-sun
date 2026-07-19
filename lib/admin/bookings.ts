@@ -1,6 +1,6 @@
 import db from "@/src/db/index";
 import { bookings, clients, timeSlots, formData } from "@/src/db/schema";
-import { eq, and, gte, lte, lt, desc } from "drizzle-orm";
+import { eq, and, gte, lte, lt, desc, ilike } from "drizzle-orm";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import { DateTime } from "luxon";
 import { AdminBusinessError, HttpError } from "@/utils/withErrorHandler";
@@ -93,7 +93,7 @@ export async function getAllBookingsAdmin(
 
   // Filtre par email client
   if (filters?.clientEmail) {
-    conditions.push(eq(clients.email, filters.clientEmail.toLowerCase()));
+    conditions.push(ilike(clients.email, `%${filters.clientEmail}%`));
   }
 
   if (conditions.length > 0) {
