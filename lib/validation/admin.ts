@@ -165,7 +165,11 @@ export const bookingFiltersSchema = z.object({
     .string()
     .regex(/^\d{4}-\d{2}$/, "Format de mois invalide (YYYY-MM attendu)")
     .optional(),
-  clientEmail: z.string().email().optional(),
+  clientEmail: z
+    .string()
+    .min(2, "Recherche trop courte")
+    .max(255, "Recherche trop longue")
+    .optional(),
   period: z.enum(["upcoming", "past", "all"]).optional(),
 });
 
