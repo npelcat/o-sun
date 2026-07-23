@@ -2,11 +2,12 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { getTokenExpiration } from "@/lib/auth/tokens";
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import { getAdminUser } from "@/lib/admin";
+import { withAdminAuth } from "@/lib/auth/with-admin-auth";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 // ============================================================
-// Mock de next-auth uniquement pour getAdminUser.
-// hashPassword, verifyPassword et getTokenExpiration
-// n'ont aucune dépendance externe à mocker.
+// Mock de next-auth pour getAdminUser.
 // ============================================================
 vi.mock("@/lib/auth/auth", () => ({
   auth: vi.fn(),
@@ -20,13 +21,6 @@ beforeEach(() => {
   vi.clearAllMocks();
 });
 
-// ============================================================
-// getTokenExpiration
-// On teste cette fonction car elle contient une vraie logique
-// de calcul (Date.now() + minutes * 60 * 1000).
-// generateResetToken n'est pas testé car c'est un simple
-// appel à crypto.randomBytes sans transformation.
-// ============================================================
 describe("getTokenExpiration", () => {
   it("should return a date 30 minutes in the future by default", () => {
     const before = Date.now();
@@ -47,13 +41,6 @@ describe("getTokenExpiration", () => {
   });
 });
 
-// ============================================================
-// hashPassword / verifyPassword
-// On teste ces fonctions car elles encapsulent une logique
-// de sécurité custom (paramètres Argon2id OWASP).
-// Ce sont des tests unitaires "vrais" : argon2 n'est pas
-// mocké, on vérifie que le hash produit est bien vérifiable.
-// ============================================================
 describe("password", () => {
   it("should hash a password and verify it correctly", async () => {
     const hash = await hashPassword("monMotDePasse123");
@@ -76,13 +63,6 @@ describe("password", () => {
   });
 });
 
-// ============================================================
-// getAdminUser
-// On teste uniquement la logique custom autour de la session :
-// - retourner null si pas de session
-// - construire et retourner l'objet admin avec role: "admin"
-// La logique interne de next-auth (JWT, callbacks) n'est pas testée.
-// ============================================================
 describe("getAdminUser", () => {
   it("should return null when there is no session", async () => {
     mockAuth.mockResolvedValue(null);
@@ -110,5 +90,32 @@ describe("getAdminUser", () => {
       email: "oceane@example.com",
       role: "admin",
     });
+  });
+});
+
+describe("withAdminAuth", () => {
+  const fakeRequest = {} as NextRequest;
+
+  it("should return 401 when there is no session", async () => {
+    mockAuth.mockResolvedValue(null);
+    const handler = vi.fn();
+
+    const response = await withAdminAuth(handler)(fakeRequest);
+
+    expect(response.status).toBe(401);
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it("should delegate to the handler when a valid session exists", async () => {
+    mockAuth.mockResolvedValue({
+      user: { id: "admin-123", name: "Océane" },
+      expires: "2099-01-01",
+    });
+    const handler = vi.fn().mockResolvedValue(NextResponse.json({ ok: true }));
+
+    const response = await withAdminAuth(handler)(fakeRequest);
+
+    expect(handler).toHaveBeenCalledWith(fakeRequest);
+    expect(response.status).toBe(200);
   });
 });
