@@ -25,5 +25,11 @@ export default defineConfig([
     },
   },
   // Override default ignores from eslint-config-next
-  globalIgnores([".next/**", "out/**", "build/**", "next-env.d.ts"]),
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "next-env.d.ts",
+    "coverage/**",
+  ]),
 ]);

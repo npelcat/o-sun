@@ -1,6 +1,5 @@
-// lib/email/sendConfirmationEmail.ts
 import { Resend } from "resend";
-import { render } from "@react-email/render";
+import { render } from "react-email";
 import { BookingWithDetails } from "@/app/api/types/booking";
 import { formatDate, formatTime } from "@/lib/utils/date";
 import { safeJsonParse } from "@/lib/utils/json";

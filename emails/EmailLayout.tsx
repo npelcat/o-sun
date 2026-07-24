@@ -1,4 +1,4 @@
-import { Html, Body, Container, Hr, Text, Head } from "@react-email/components";
+import { Html, Body, Container, Hr, Text, Head } from "react-email";
 
 interface EmailLayoutProps {
   children: React.ReactNode;

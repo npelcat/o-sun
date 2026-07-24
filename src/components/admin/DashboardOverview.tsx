@@ -65,6 +65,7 @@ export default function DashboardOverview() {
   }, [error]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- faux positif connu (eslint-plugin-react-hooks@7.1.1, cf. github.com/facebook/react/issues/34743) : setIsLoading(false) s'exécute après l'await, dans le finally
     fetchDashboardData();
   }, [fetchDashboardData]);
 

@@ -1,4 +1,4 @@
-import { Heading, Text, Section } from "@react-email/components";
+import { Heading, Text, Section } from "react-email";
 import { EmailLayout } from "./EmailLayout";
 
 interface ConfirmationUserEmailProps {
