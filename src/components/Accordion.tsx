@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, FC, ReactNode } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface AccordionProps {
   title: string;
@@ -34,10 +33,11 @@ export const Accordion: FC<AccordionProps> = ({ title, children, button }) => {
           onKeyDown={handleKeyDown}
           role="button"
         >
-          <FontAwesomeIcon
-            icon={isOpen ? faChevronUp : faChevronDown}
-            className="mr-2 md:text-2xl p-2"
-          />
+          {isOpen ? (
+            <ChevronUp className="mr-2 w-12 h-12 p-2" />
+          ) : (
+            <ChevronDown className="mr-2 w-12 h-12 p-2" />
+          )}
           {title}
         </button>
       </h3>

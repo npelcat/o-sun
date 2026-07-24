@@ -57,6 +57,7 @@ const NewBooking: React.FC = () => {
   }, [error]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- faux positif connu (eslint-plugin-react-hooks@7.1.1, cf. github.com/facebook/react/issues/34743) : setIsLoading(false) s'exécute après l'await, dans le finally
     fetchSlots();
   }, [fetchSlots]);
 
@@ -114,7 +115,7 @@ const NewBooking: React.FC = () => {
         const fullLabel = `${dateStr} ${slot.label}`;
 
         router.push(
-          `/contact/newbooking?timeSlotId=${slot.id}&label=${encodeURIComponent(fullLabel)}&expiresAt=${expiresAt}`
+          `/contact/newbooking?timeSlotId=${slot.id}&label=${encodeURIComponent(fullLabel)}&expiresAt=${expiresAt}`,
         );
       }
     } catch (err: unknown) {
