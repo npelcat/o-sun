@@ -55,11 +55,13 @@ export default function ServicePageClient({
   }, [pricingCards, useCasesBlock, infoBlocks]);
 
   const gridCols =
-    pricingCards.length === 4
-      ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4"
-      : pricingCards.length === 3
-        ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-        : "grid-cols-1 sm:grid-cols-2";
+    pricingCards.length === 1
+      ? "grid-cols-1 max-w-xl mx-auto"
+      : pricingCards.length === 4
+        ? "grid-cols-1 sm:grid-cols-2 xl:grid-cols-4"
+        : pricingCards.length === 3
+          ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+          : "grid-cols-1 sm:grid-cols-2";
 
   const infoGridCols =
     infoBlocks.length >= 3

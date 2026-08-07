@@ -24,6 +24,7 @@ export const SERVICES = [
   { value: "Soin énergétique animal", label: "Soin énergétique animal" },
   { value: "Soin énergétique humain", label: "Soin énergétique humain" },
   { value: "Soin énergétique DUO", label: "Soin énergétique DUO" },
+  { value: "Kinésiologie animale", label: "Kinésiologie animale" },
   { value: "Urgence - formule Clarté", label: "Urgence - formule Clarté" },
   { value: "Urgence - formule Harmonie", label: "Urgence - formule Harmonie" },
   { value: "Urgence - Pack Traversée", label: "Urgence - Pack Traversée" },
@@ -35,6 +36,8 @@ const isCommunicationAnimale = (service: string) =>
 
 const isSoinEnergetique = (service: string) =>
   service.startsWith("Soin énergétique");
+
+const isKinesiologie = (service: string) => service.startsWith("Kinésiologie");
 
 const isUrgence = (service: string) => service.startsWith("Urgence");
 
@@ -204,6 +207,61 @@ export const ServiceSpecificFields: React.FC<ServiceSpecificFieldsProps> = ({
             />
           </div>
         )}
+      </div>
+    );
+  }
+
+  // ── Kinésiologie animale ─────────────────────────────────────────────────
+  if (isKinesiologie(service)) {
+    return (
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="kine_contexte" className="block mb-2 font-medium">
+            Contexte ou événement déclencheur{" "}
+          </label>
+          <p className="text-sm text-gray-500 mb-2">
+            Accident, changement récent, stress...
+          </p>
+          <textarea
+            id="kine_contexte"
+            value={serviceSpecificAnswers["kine_contexte"] ?? ""}
+            onChange={(e) =>
+              onServiceSpecificChange("kine_contexte", e.target.value)
+            }
+            rows={4}
+            className={inputClass("kine_contexte")}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="kine_symptomes" className="block mb-2 font-medium">
+            Comportements et symptômes observés{" "}
+          </label>
+          <textarea
+            id="kine_symptomes"
+            value={serviceSpecificAnswers["kine_symptomes"] ?? ""}
+            onChange={(e) =>
+              onServiceSpecificChange("kine_symptomes", e.target.value)
+            }
+            rows={4}
+            className={inputClass("kine_symptomes")}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="kine_objectif" className="block mb-2 font-medium">
+            Objectif et attentes pour la séance{" "}
+          </label>
+          <textarea
+            id="kine_objectif"
+            value={serviceSpecificAnswers["kine_objectif"] ?? ""}
+            onChange={(e) =>
+              onServiceSpecificChange("kine_objectif", e.target.value)
+            }
+            rows={4}
+            className={inputClass("kine_objectif")}
+          />
+        </div>
       </div>
     );
   }
