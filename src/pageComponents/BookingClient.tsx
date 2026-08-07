@@ -66,6 +66,7 @@ export default function BookingClient({
   const serviceIcons: { [key: string]: string } = {
     "reservation-communication-animale": "💌",
     "reservation-soins-energetiques": "✨",
+    "kinesiologie-reservation": "🪶",
     "reservation-appel-decouverte": "📞",
     "reservation-urgence": "🚨",
   };
@@ -114,7 +115,7 @@ export default function BookingClient({
       {/* Services Grid */}
       <section id="services" className="pb-16 px-4 scroll-mt-24">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-8">
             {serviceCards.map((service, index) => (
               <div
                 key={service.slug}

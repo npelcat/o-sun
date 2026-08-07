@@ -21,18 +21,21 @@ export default async function BookingServer() {
     "reservation-communication-animale",
     "reservation-soins-energetiques",
     "reservation-urgence",
+    "kinesiologie-reservation",
   ];
 
   const accordionSlugs = [
     // Fonctionnement
     "reservation-fonctionnement-communication",
     "reservation-fonctionnement-energetique",
+    "reservation-fonctionnement-kinesiologie",
     // Paiement
     "reservation-confirmation",
     "paiement-report",
     // Déroulement
     "seance-communication",
     "seance-energetique",
+    "seance-kinesiologie",
     // Cas particuliers
     "reservation-evenement-dates",
     "reservation-urgences",
@@ -59,6 +62,7 @@ export default async function BookingServer() {
         [
           "reservation-fonctionnement-communication",
           "reservation-fonctionnement-energetique",
+          "reservation-fonctionnement-kinesiologie",
         ].includes(a.slug || ""),
       ),
     },
@@ -75,7 +79,11 @@ export default async function BookingServer() {
           (b) => b.slug === "accordion-deroulement-seances",
         ) || null,
       accordions: accordions.filter((a) =>
-        ["seance-communication", "seance-energetique"].includes(a.slug || ""),
+        [
+          "seance-communication",
+          "seance-energetique",
+          "seance-kinesiologie",
+        ].includes(a.slug || ""),
       ),
     },
     casParticuliers: {
