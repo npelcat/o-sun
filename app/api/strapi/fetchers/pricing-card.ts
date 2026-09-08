@@ -50,7 +50,7 @@ export const fetchMultiplePricingCards = async (
     const mapped: StrapiPricingCard[] = data.data.map(formatPricingCard);
     return mapped.sort((a, b) => slugs.indexOf(a.slug) - slugs.indexOf(b.slug));
   } catch (error) {
-    console.error("Erreur lors de la recuperation des pricing cards", error);
+    console.error("Failed to fetch pricing cards", error);
     throw error;
   }
 };
@@ -68,10 +68,7 @@ export const fetchPricingCardBySlug = async (
     }
     return formatPricingCard(data.data[0]);
   } catch (error) {
-    console.error(
-      `Erreur lors de la recuperation de la pricing card slug: ${slug}`,
-      error,
-    );
+    console.error(`Failed to fetch pricing card with slug: ${slug}`, error);
     return null;
   }
 };

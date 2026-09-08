@@ -3,7 +3,7 @@ import db from "../index";
 import { bookings, clients, formData, timeSlots } from "../schema";
 
 if (!process.env.SEED_ALLOWED) {
-  console.error("⛔ Le seed est interdit dans cet environnement !");
+  console.error("⛔ Seeding is not allowed in this environment!");
   process.exit(1);
 }
 
@@ -70,7 +70,7 @@ function generateServiceAnswers(service: string): string {
 }
 
 async function cleanTables() {
-  console.log("🧹 Nettoyage des tables...");
+  console.log("🧹 Cleaning tables...");
   await db.delete(bookings);
   await db.delete(formData);
   await db.delete(timeSlots);
@@ -84,7 +84,7 @@ async function seedClients(count = 20) {
     phone: faker.phone.number({ style: "international" }),
   }));
   const inserted = await db.insert(clients).values(data).returning();
-  console.log(`✅ ${inserted.length} clients insérés.`);
+  console.log(`✅ ${inserted.length} clients inserted.`);
   return inserted;
 }
 
@@ -102,7 +102,7 @@ async function seedTimeSlots(count = 50) {
     };
   });
   const inserted = await db.insert(timeSlots).values(data).returning();
-  console.log(`✅ ${inserted.length} créneaux insérés.`);
+  console.log(`✅ ${inserted.length} time slots inserted.`);
   return inserted;
 }
 
@@ -155,20 +155,20 @@ async function seedFormDataAndBookings(
       }),
     });
   }
-  console.log(`✅ ${count} formulaires et réservations insérés.`);
+  console.log(`✅ ${count} form entries and bookings inserted.`);
 }
 
 async function main() {
-  console.log("🌱 Seed démarré");
+  console.log("🌱 Seed started");
   await cleanTables();
   const insertedClients = await seedClients(20);
   const insertedSlots = await seedTimeSlots(50);
   await seedFormDataAndBookings(insertedClients, insertedSlots, 30);
-  console.log("🎉 Seed terminé !");
+  console.log("🎉 Seed complete!");
   process.exit(0);
 }
 
 main().catch((err) => {
-  console.error("❌ Erreur seed :", err);
+  console.error("❌ Seed failed:", err);
   process.exit(1);
 });

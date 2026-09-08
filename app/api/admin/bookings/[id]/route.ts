@@ -133,13 +133,11 @@ async function getBookingByIdRoute(
 ) {
   return withErrorHandler(req, async () => {
     const { id } = await params;
-    logger.info(
-      `GET /api/admin/bookings/${id} - Récupération réservation admin`,
-    );
+    logger.info(`GET /api/admin/bookings/${id} - Fetching admin booking`);
 
     const booking = await getBookingByIdAdmin(id);
 
-    logger.info(`GET /api/admin/bookings/${id} - Réservation trouvée`);
+    logger.info(`GET /api/admin/bookings/${id} - Booking found`);
 
     return NextResponse.json({ booking });
   });
@@ -155,21 +153,20 @@ async function putBooking(
     const { id } = await params;
     const body = await req.json();
 
-    logger.info(`PUT /api/admin/bookings/${id} - Mise à jour réservation`, {
+    logger.info(`PUT /api/admin/bookings/${id} - Updating booking`, {
       updates: body,
     });
 
-    // Valider les données avec Zod
     const validatedData = updateBookingAdminSchema.parse(body);
 
-    // Mettre à jour
     await updateBookingAdmin(id, validatedData);
 
-    // Re-fetch le booking complet avec toutes les jointures
+    // Re-fetch the full booking with all its joins, since updateBookingAdmin
+    // only returns the raw bookings row
     const updatedBooking = await getBookingByIdAdmin(id);
 
     logger.info(
-      `PUT /api/admin/bookings/${id} - Réservation mise à jour avec succès`,
+      `PUT /api/admin/bookings/${id} - Booking updated successfully`,
       {
         status: updatedBooking.status,
         hasNotes: !!updatedBooking.adminNotes,
@@ -178,7 +175,7 @@ async function putBooking(
 
     return NextResponse.json({
       message: "Réservation mise à jour avec succès",
-      booking: updatedBooking, // Retourne le booking complet
+      booking: updatedBooking,
     });
   });
 }
@@ -192,12 +189,12 @@ async function deleteBookingRoute(
   return withErrorHandler(req, async () => {
     const { id } = await params;
 
-    logger.info(`DELETE /api/admin/bookings/${id} - Suppression réservation`);
+    logger.info(`DELETE /api/admin/bookings/${id} - Deleting booking`);
 
     await deleteBookingAdmin(id);
 
     logger.info(
-      `DELETE /api/admin/bookings/${id} - Réservation supprimée et créneau libéré`,
+      `DELETE /api/admin/bookings/${id} - Booking deleted and slot released`,
     );
 
     return new NextResponse(null, { status: 204 });

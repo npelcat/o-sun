@@ -1,8 +1,8 @@
 import { LRUCache } from "lru-cache";
 
 type RateLimitOptions = {
-  interval: number; // Durée de la fenêtre en ms
-  uniqueTokenPerInterval: number; // Nombre max d'IPs différentes trackées
+  interval: number; // window duration in ms
+  uniqueTokenPerInterval: number; // max number of distinct IPs tracked
 };
 
 export class RateLimiter {
@@ -21,24 +21,22 @@ export class RateLimiter {
   }
 
   /**
-   * Vérifie si l'identifiant peut faire une requête
-   * @param identifier - IP ou email à vérifier
-   * @returns true si autorisé, false si rate limité
+   * Checks whether the identifier is allowed to make a request
+   * @param identifier - IP or email to check
+   * @returns true if allowed, false if rate limited
    */
   check(identifier: string): boolean {
     const now = Date.now();
     const tokenCount = this.tokenCache.get(identifier) || [];
 
-    // Filtre les timestamps expirés
     const validTokens = tokenCount.filter(
       (timestamp) => now - timestamp < this.interval,
     );
 
     if (validTokens.length >= this.limit) {
-      return false; // Rate limité
+      return false;
     }
 
-    // Ajoute le nouveau timestamp
     validTokens.push(now);
     this.tokenCache.set(identifier, validTokens);
 
@@ -46,41 +44,41 @@ export class RateLimiter {
   }
 
   /**
-   * Remet à zéro le compteur pour un identifiant
+   * Resets the counter for an identifier
    */
   reset(identifier: string): void {
     this.tokenCache.delete(identifier);
   }
 }
 
-// ⚙️ Configuration des rate limiters
+// Rate limiters configuration
 
 /**
- * Login : 5 tentatives par IP en 15 minutes
+ * Login: 5 attempts per IP in 15 minutes
  */
 export const loginRateLimiter = new RateLimiter(5, {
   interval: 15 * 60 * 1000, // 15 minutes
-  uniqueTokenPerInterval: 500, // Track max 500 IPs différentes
+  uniqueTokenPerInterval: 500,
 });
 
 /**
- * Reset password : 3 tentatives par email en 1 heure
+ * Password reset: 3 attempts per email in 1 hour
  */
 export const resetPasswordRateLimiter = new RateLimiter(3, {
-  interval: 60 * 60 * 1000, // 1 heure
+  interval: 60 * 60 * 1000, // 1 hour
   uniqueTokenPerInterval: 200,
 });
 
 /**
- * API publiques : 10 requêtes en 10 secondes
+ * Public API: 10 requests per 10 seconds
  */
 export const apiRateLimiter = new RateLimiter(10, {
-  interval: 10 * 1000, // 10 secondes
+  interval: 10 * 1000, // 10 seconds
   uniqueTokenPerInterval: 1000,
 });
 
 /**
- * Formulaire de contact : 5 messages en 10 minutes
+ * Contact form: 5 messages per 10 minutes
  */
 export const contactRateLimiter = new RateLimiter(5, {
   interval: 10 * 60 * 1000, // 10 minutes

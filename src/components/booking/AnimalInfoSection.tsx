@@ -26,7 +26,6 @@ export const AnimalInfoSection: React.FC<AnimalInfoSectionProps> = ({
       </legend>
 
       <div className="space-y-4">
-        {/* Nom de l'animal */}
         <div>
           <label htmlFor="animalName" className="block mb-2 font-medium">
             Nom de l&apos;animal <span className="text-red-500">*</span>
@@ -48,7 +47,6 @@ export const AnimalInfoSection: React.FC<AnimalInfoSectionProps> = ({
           )}
         </div>
 
-        {/* Type d'animal — obligatoire */}
         <div>
           <label htmlFor="animalType" className="block mb-2 font-medium">
             Type d&apos;animal <span className="text-red-500">*</span>
@@ -71,7 +69,6 @@ export const AnimalInfoSection: React.FC<AnimalInfoSectionProps> = ({
           )}
         </div>
 
-        {/* Informations sur l'animal */}
         <div>
           <label htmlFor="animalInfo" className="block mb-2 font-medium">
             Informations sur votre animal
@@ -95,7 +92,6 @@ export const AnimalInfoSection: React.FC<AnimalInfoSectionProps> = ({
           )}
         </div>
 
-        {/* Composition du foyer */}
         <div>
           <label htmlFor="householdInfo" className="block mb-2 font-medium">
             Composition du foyer

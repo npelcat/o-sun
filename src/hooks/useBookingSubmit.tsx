@@ -39,7 +39,6 @@ export const useBookingSubmit = ({
         return;
       }
 
-      // Sérialisation des réponses spécifiques en JSON string pour l'API
       const serviceSpecificAnswersJson =
         Object.keys(formData.serviceSpecificAnswers).length > 0
           ? JSON.stringify(formData.serviceSpecificAnswers)
@@ -64,7 +63,7 @@ export const useBookingSubmit = ({
         turnstileToken,
       };
 
-      // Validation Zod côté client avant envoi
+      // Client-side Zod check, ahead of the API's own validation
       try {
         confirmBookingSchema.parse(data);
       } catch (err) {

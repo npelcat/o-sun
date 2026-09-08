@@ -53,7 +53,6 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      {/* Sticky navbar */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
@@ -79,7 +78,6 @@ export const Header: React.FC = () => {
             />
           </Link>
 
-          {/* Desktop navbar - dropdown on hover */}
           <div className="hidden lg:flex items-center gap-1">
             {Object.entries(navigationSections).map(([key, section]) => (
               <div key={key} className="relative group">
@@ -108,7 +106,6 @@ export const Header: React.FC = () => {
             ))}
           </div>
 
-          {/* Hamburger menu mobile */}
           <button
             className="lg:hidden p-2 rounded-lg transition-colors active:bg-beige"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -134,7 +131,6 @@ export const Header: React.FC = () => {
           </button>
         </div>
 
-        {/* Mobile menu with accordions */}
         <div
           className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
             isMenuOpen ? "max-h-screen" : "max-h-0"

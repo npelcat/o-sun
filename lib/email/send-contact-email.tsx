@@ -15,7 +15,7 @@ export async function sendContactEmail(
   const { name, email, message } = data;
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  // Render des deux templates en parallèle
+  // Render both templates in parallel
   const [notificationHtml, acknowledgmentHtml] = await Promise.all([
     render(
       <ContactNotificationEmail name={name} email={email} message={message} />,
@@ -23,7 +23,7 @@ export async function sendContactEmail(
     render(<ContactAcknowledgmentEmail name={name} message={message} />),
   ]);
 
-  // Notification à l'admin
+  // Notification to the admin
   const { error: notifError } = await resend.emails.send({
     from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
     to: [process.env.MY_EMAIL!],
@@ -33,7 +33,7 @@ export async function sendContactEmail(
 
   if (notifError) return { success: false, error: notifError };
 
-  // Accusé de réception à l'utilisateur
+  // Acknowledgment to the user
   const { error: ackError } = await resend.emails.send({
     from: `O'Sun ~ Voix Animale <${process.env.RESEND_SENDER_EMAIL}>`,
     to: [email],

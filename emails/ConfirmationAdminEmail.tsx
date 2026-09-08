@@ -50,7 +50,6 @@ export function ConfirmationAdminEmail({
         Nouvelle réservation reçue 📅
       </Heading>
 
-      {/* Bloc client */}
       <Section
         style={{
           backgroundColor: "#D6E1DB",
@@ -82,7 +81,6 @@ export function ConfirmationAdminEmail({
         <InfoLine label="Date" value={`${date} à ${time}`} />
       </Section>
 
-      {/* Bloc réservation */}
       <Section
         style={{
           backgroundColor: "#e1d8d6",

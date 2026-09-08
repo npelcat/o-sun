@@ -102,7 +102,6 @@ export default function BookingsTable({
   );
 }
 
-// Select pour changer le statut rapidement
 function StatusSelect({
   currentStatus,
   onChange,

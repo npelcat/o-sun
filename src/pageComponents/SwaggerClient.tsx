@@ -30,7 +30,7 @@ export default function SwaggerClient() {
   if (loading) {
     return (
       <div className="p-8 text-center">
-        <p>Chargement de la documentation API...</p>
+        <p>Loading API documentation...</p>
       </div>
     );
   }
@@ -38,12 +38,12 @@ export default function SwaggerClient() {
   if (error) {
     return (
       <div className="p-8 text-center text-red-600">
-        <p>Erreur lors du chargement: {error}</p>
+        <p>Failed to load: {error}</p>
         <button
           onClick={() => window.location.reload()}
           className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
         >
-          Réessayer
+          Retry
         </button>
       </div>
     );
@@ -52,7 +52,7 @@ export default function SwaggerClient() {
   if (!spec) {
     return (
       <div className="p-8 text-center">
-        <p>Aucune documentation disponible</p>
+        <p>No documentation available</p>
       </div>
     );
   }

@@ -6,15 +6,15 @@ import { DateTime } from "luxon";
 // ============================================
 
 /**
- * Convertit une string ou Date en objet Date
- * Utile pour parser les réponses JSON de l'API
+ * Converts a string or Date into a Date object
+ * Useful for parsing JSON responses from the API
  */
 export function parseDate(date: Date | string): Date {
   return typeof date === "string" ? new Date(date) : date;
 }
 
 // ============================================
-// FORMATAGE
+// FORMATTING
 // ============================================
 
 export function formatDate(date: Date | string): string {
@@ -27,7 +27,7 @@ export function formatDate(date: Date | string): string {
 export function formatTime(date: Date | string): string {
   const dateObj = parseDate(date);
   return DateTime.fromJSDate(dateObj, { zone: "Europe/Paris" }).toLocaleString(
-    DateTime.TIME_SIMPLE
+    DateTime.TIME_SIMPLE,
   );
 }
 
@@ -48,13 +48,13 @@ export function formatDateOnly(date: Date | string): string {
 export function formatTimeOnly(date: Date | string): string {
   const dateObj = parseDate(date);
   return DateTime.fromJSDate(dateObj, { zone: "Europe/Paris" }).toFormat(
-    "HH'h'mm"
+    "HH'h'mm",
   );
 }
 
 export function formatDateTimeRange(
   start: Date | string,
-  end: Date | string
+  end: Date | string,
 ): string {
   const startDT = DateTime.fromJSDate(parseDate(start), {
     zone: "Europe/Paris",

@@ -16,10 +16,6 @@ interface DashboardStats {
   canceled: number;
 }
 
-/**
- * Vue d'ensemble du dashboard avec statistiques
- * Affiche : Total général, Total à venir, + stats par statut (sur réservations à venir)
- */
 export default function DashboardOverview() {
   const { error } = useToast();
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -31,7 +27,6 @@ export default function DashboardOverview() {
   const fetchDashboardData = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Récupérer TOUTES les réservations (pour le total)
       const allResponse = await fetch(
         `/api/admin/bookings?period=${BOOKING_PERIOD.ALL}`,
       );
@@ -39,7 +34,6 @@ export default function DashboardOverview() {
       const allData = await allResponse.json();
       const allBookings = allData.bookings;
 
-      // Récupérer les réservations À VENIR (pour les stats détaillées)
       const upcomingResponse = await fetch(
         `/api/admin/bookings?period=${BOOKING_PERIOD.UPCOMING}`,
       );
@@ -47,7 +41,6 @@ export default function DashboardOverview() {
       const upcomingData = await upcomingResponse.json();
       const upcomingBookings = upcomingData.bookings;
 
-      // Calculer les stats
       const upcomingStats = calculateBookingStats(upcomingBookings);
       const statsData: DashboardStats = {
         total: allBookings.length,
@@ -79,7 +72,6 @@ export default function DashboardOverview() {
         Tableau de bord
       </h1>
 
-      {/* Statistiques - 5 cases */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
         <StatCard
           label="Total (toutes)"
@@ -113,7 +105,6 @@ export default function DashboardOverview() {
         />
       </div>
 
-      {/* Dernières réservations à venir */}
       <div className="bg-white border border-beige rounded-lg p-6">
         <h2 className="font-subtitle text-xl mb-4">Prochaines réservations</h2>
         {recentBookings.length === 0 ? (
@@ -143,7 +134,6 @@ export default function DashboardOverview() {
   );
 }
 
-// Composant pour les cartes de stats
 function StatCard({
   label,
   value,
@@ -163,7 +153,6 @@ function StatCard({
   );
 }
 
-// Badge de statut
 function StatusBadge({ status }: { status: string }) {
   const styles = {
     pending: "bg-yellow-100 text-yellow-800",

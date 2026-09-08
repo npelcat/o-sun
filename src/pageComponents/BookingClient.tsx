@@ -107,7 +107,7 @@ export default function BookingClient({
             Choisissez l&apos;accompagnement qui résonne avec vos besoins.
             Chaque rencontre est unique et respecte le rythme sacré du vivant.
           </p>
-          {/* Ancres niveau 1 */}
+          {/* Anchor level 1 */}
           <TableOfContents items={mainAnchors} />
         </div>
       </section>
@@ -152,12 +152,11 @@ export default function BookingClient({
             <p className="text-lg text-dark-green mb-6">
               Tout ce que vous devez savoir avant de réserver
             </p>
-            {/* Ancres niveau 2 — sous-sections FAQ */}
+            {/* Anchor level 2 */}
             {faqAnchors.length > 0 && <TableOfContents items={faqAnchors} />}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Section Fonctionnement */}
             {accordionBlocks.fonctionnement.blockContent && (
               <div
                 id="faq-fonctionnement"
@@ -186,7 +185,6 @@ export default function BookingClient({
               </div>
             )}
 
-            {/* Section Paiement */}
             {accordionBlocks.paiement.blockContent && (
               <div
                 id="faq-paiement"
@@ -213,7 +211,6 @@ export default function BookingClient({
               </div>
             )}
 
-            {/* Section Déroulement */}
             {accordionBlocks.deroulement.blockContent && (
               <div
                 id="faq-deroulement"
@@ -240,7 +237,6 @@ export default function BookingClient({
               </div>
             )}
 
-            {/* Section Cas Particuliers */}
             {accordionBlocks.casParticuliers.blockContent && (
               <div
                 id="faq-cas-particuliers"
@@ -273,7 +269,6 @@ export default function BookingClient({
         </div>
       </section>
 
-      {/* Contact CTA */}
       <section className="py-16 px-4">
         <div className="max-w-2xl mx-auto text-center scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
           <div className="bg-beige/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg">

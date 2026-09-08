@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
 
   const isAllowed = contactRateLimiter.check(ip);
   if (!isAllowed) {
-    logger.warn(`Rate limit dépassé pour IP: ${ip} sur /api/contact`);
+    logger.warn(`Rate limit exceeded for IP: ${ip} on /api/contact`);
     return NextResponse.json(
       { error: "Trop de requêtes, réessayez dans quelques instants" },
       { status: 429 },
@@ -112,8 +112,6 @@ export async function POST(request: NextRequest) {
         { status: 400 },
       );
     }
-
-    logger.info("POST /email - Turnstile validated");
 
     const result = await sendContactEmail({ name, email, message });
     if (!result.success) {

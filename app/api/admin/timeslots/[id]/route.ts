@@ -138,11 +138,11 @@ async function getTimeslotByIdRoute(
 ) {
   return withErrorHandler(req, async () => {
     const { id } = await params;
-    logger.info(`GET /api/admin/timeslots/${id} - Récupération créneau`);
+    logger.info(`GET /api/admin/timeslots/${id} - Fetching time slot`);
 
     const timeslot = await getTimeslotById(id);
 
-    logger.info(`GET /api/admin/timeslots/${id} - Créneau trouvé`);
+    logger.info(`GET /api/admin/timeslots/${id} - Time slot found`);
 
     return NextResponse.json({ timeslot });
   });
@@ -158,17 +158,16 @@ async function putTimeslot(
     const { id } = await params;
     const body = await req.json();
 
-    logger.info(`PUT /api/admin/timeslots/${id} - Mise à jour créneau`, {
+    logger.info(`PUT /api/admin/timeslots/${id} - Updating time slot`, {
       updates: body,
     });
 
-    // Valider les données avec Zod
     const validatedData = updateTimeslotSchema.parse(body);
 
     const updatedTimeslot = await updateTimeslot(id, validatedData);
 
     logger.info(
-      `PUT /api/admin/timeslots/${id} - Créneau mis à jour avec succès`,
+      `PUT /api/admin/timeslots/${id} - Time slot updated successfully`,
       {
         isActive: updatedTimeslot.isActive,
       },
@@ -189,12 +188,12 @@ export async function deleteTimeslot_(
 ) {
   return withErrorHandler(req, async () => {
     const { id } = await params;
-    logger.info(`DELETE /api/admin/timeslots/${id} - Tentative suppression`);
+    logger.info(`DELETE /api/admin/timeslots/${id} - Deletion attempt`);
 
     await checkNoLinkedBookings(id);
 
     await deleteTimeslot(id);
-    logger.info(`DELETE /api/admin/timeslots/${id} - Créneau supprimé`);
+    logger.info(`DELETE /api/admin/timeslots/${id} - Time slot deleted`);
 
     return new NextResponse(null, { status: 204 });
   });

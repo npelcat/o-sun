@@ -78,14 +78,12 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   return withErrorHandler(req, async () => {
-    logger.info(
-      "GET /booking/timeslots - Récupération des créneaux disponibles"
-    );
+    logger.info("GET /booking/timeslots - Fetching available slots");
 
     const availableSlots = await getAvailableSlots();
 
     logger.info(
-      `GET /booking/timeslots - ${availableSlots.length} créneaux disponibles`
+      `GET /booking/timeslots - ${availableSlots.length} available slots`,
     );
     return NextResponse.json({ slots: availableSlots });
   });

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { POST } from "@/app/api/booking/confirm-email/route";
 import { createRequest } from "./utils/test-utils";
 
-// Mock de Resend
+// Mock Resend
 const mockResendSend = vi.fn();
 vi.mock("resend", () => ({
   Resend: vi.fn().mockImplementation(() => ({
@@ -12,7 +12,7 @@ vi.mock("resend", () => ({
   })),
 }));
 
-// Mock du logger
+// Mock the logger
 vi.mock("@/utils/logger", () => ({
   default: {
     info: vi.fn(),
@@ -21,12 +21,12 @@ vi.mock("@/utils/logger", () => ({
   },
 }));
 
-// Mock de getBookingById
+// Mock getBookingById
 vi.mock("@/lib/bookings", () => ({
   getBookingById: vi.fn(),
 }));
 
-// Mock des fonctions de formatage de date
+// Mock date formatting functions
 vi.mock("@/lib/date", () => ({
   formatDate: vi.fn(() => "15 janvier 2025"),
   formatTime: vi.fn(() => "10:00"),
@@ -70,7 +70,7 @@ describe("POST /api/booking/confirm-email", () => {
 
   it("should send confirmation emails successfully", async () => {
     const req = createRequest("POST", {
-      bookingId: "550e8400-e29b-41d4-a716-446655440000", // UUID valide
+      bookingId: "550e8400-e29b-41d4-a716-446655440000", // valid UUID
     });
 
     const response = await POST(req);
@@ -79,15 +79,14 @@ describe("POST /api/booking/confirm-email", () => {
     const body = await response.json();
     expect(body.message).toBe("Emails de confirmation envoyés avec succès");
 
-    // Vérifier que getBookingById a été appelé
     expect(mockGetBookingById).toHaveBeenCalledWith(
       "550e8400-e29b-41d4-a716-446655440000",
     );
 
-    // Vérifier que 2 emails ont été envoyés (client + admin)
+    // Check 2 emails were sent (client + admin)
     expect(mockResendSend).toHaveBeenCalledTimes(2);
 
-    // Vérifier l'email client
+    // Check the client email
     expect(mockResendSend).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
@@ -100,7 +99,7 @@ describe("POST /api/booking/confirm-email", () => {
       }),
     );
 
-    // Vérifier l'email admin
+    // Check the admin email
     expect(mockResendSend).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
@@ -168,14 +167,14 @@ describe("POST /api/booking/confirm-email", () => {
       "Erreur lors de l'envoi de l'email de confirmation",
     );
 
-    // L'email admin ne devrait pas être envoyé si l'email client échoue
+    // Admin email shouldn't be sent if the client email failed
     expect(mockResendSend).toHaveBeenCalledTimes(1);
   });
 
   it("should still succeed when admin email fails", async () => {
-    // Premier appel (email client) réussit
+    // First call (client email) succeeds
     mockResendSend.mockResolvedValueOnce({ error: null });
-    // Deuxième appel (email admin) échoue
+    // Second call (admin email) fails
     mockResendSend.mockResolvedValueOnce({
       error: { message: "Admin email failed", name: "ResendError" },
     });
@@ -186,7 +185,7 @@ describe("POST /api/booking/confirm-email", () => {
 
     const response = await POST(req);
 
-    // La requête devrait quand même réussir
+    // The request should still succeed
     expect(response.status).toBe(202);
     expect(mockResendSend).toHaveBeenCalledTimes(2);
   });
@@ -204,7 +203,6 @@ describe("POST /api/booking/confirm-email", () => {
     const response = await POST(req);
 
     expect(response.status).toBe(202);
-    // Vérifier que l'email ne contient pas "(Chien)"
     const firstEmailCall = mockResendSend.mock.calls[0][0];
     expect(firstEmailCall.html).not.toContain("(Chien)");
   });
@@ -222,7 +220,6 @@ describe("POST /api/booking/confirm-email", () => {
     const response = await POST(req);
 
     expect(response.status).toBe(202);
-    // L'email ne devrait pas contenir la section "Informations supplémentaires"
     const firstEmailCall = mockResendSend.mock.calls[0][0];
     expect(firstEmailCall.html).not.toContain("Informations supplémentaires");
   });

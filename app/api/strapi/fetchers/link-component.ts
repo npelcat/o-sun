@@ -20,10 +20,7 @@ export const fetchLinkComponentById = async (
       slug: data.slug,
     };
   } catch (error) {
-    console.error(
-      `Erreur lors de la récupération du composant ID: ${id}`,
-      error,
-    );
+    console.error(`Failed to fetch link component with ID: ${id}`, error);
     return null;
   }
 };
@@ -57,7 +54,7 @@ export const fetchMultipleLinkComponents = async (
         slugs.indexOf(a.slug ?? "") - slugs.indexOf(b.slug ?? ""),
     );
   } catch (error) {
-    console.error("Erreur lors de la récupération des composants", error);
+    console.error("Failed to fetch link components", error);
     throw error;
   }
 };

@@ -37,12 +37,11 @@ export default function HomeClient({
         });
       },
       {
-        threshold: 0.1, // Triggers when 10% of the element is visible
-        rootMargin: "0px 0px -50px 0px", // Triggers a little before
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
       },
     );
 
-    // Observe all elements with the "scroll-animate" class
     const elements = document.querySelectorAll(".scroll-animate");
     elements.forEach((el) => observerRef.current?.observe(el));
 

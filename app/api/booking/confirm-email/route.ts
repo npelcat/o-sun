@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     const isAllowed = apiRateLimiter.check(ip);
     if (!isAllowed) {
       logger.warn(
-        `Rate limit dépassé pour IP: ${ip} sur /api/booking/confirm-email`,
+        `Rate limit exceeded for IP: ${ip} on /api/booking/confirm-email`,
       );
       return NextResponse.json(
         { error: "Trop de requêtes, réessayez dans quelques instants" },
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
     const result = await sendConfirmationEmail(booking);
 
     if (!result.success) {
-      logger.error("Échec envoi email confirmation", {
+      logger.error("Confirmation email failed to send", {
         error: result.error,
         bookingId,
       });
@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    logger.info("Emails envoyés avec succès", { bookingId });
+    logger.info("Emails sent successfully", { bookingId });
     return NextResponse.json(
       { message: "Emails de confirmation envoyés avec succès" },
       { status: 202 },

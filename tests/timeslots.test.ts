@@ -9,7 +9,7 @@ import {
 import { HttpError } from "@/utils/withErrorHandler";
 import { createMockTransaction, asTrx, minutesAgo } from "./utils/test-utils";
 
-// Mock de la DB
+// Mock the DB
 vi.mock("@/src/db/index", () => {
   const mockDb = {
     select: vi.fn().mockReturnThis(),
@@ -27,7 +27,6 @@ vi.mock("@/src/db/index", () => {
 
 import db from "@/src/db/index";
 
-// Typage utilitaire pour le mock
 const mockDb = db as unknown as {
   select: ReturnType<typeof vi.fn>;
   from: ReturnType<typeof vi.fn>;
@@ -105,7 +104,7 @@ describe("reserveSlot", () => {
       lockedAt: null,
     };
 
-    // Mock de la transaction avec un slot disponible
+    // Transaction mock with an available slot
     mockDb.transaction.mockImplementation(async (callback) => {
       const mockTrx = createMockTransaction();
       mockTrx.execute.mockResolvedValue([mockSlot]);
@@ -116,7 +115,7 @@ describe("reserveSlot", () => {
   });
 
   it("should throw error when slot is unavailable", async () => {
-    // Mock de la transaction avec aucun slot disponible
+    // Transaction mock with no slot available
     mockDb.transaction.mockImplementation(async (callback) => {
       const mockTrx = createMockTransaction();
       mockTrx.execute.mockResolvedValue([]);

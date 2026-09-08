@@ -123,9 +123,8 @@ import { withAdminAuth } from "@/lib/auth/with-admin-auth";
 
 async function getTimeslots(req: NextRequest) {
   return withErrorHandler(req, async () => {
-    logger.info("GET /api/admin/timeslots - Récupération créneaux admin");
+    logger.info("GET /api/admin/timeslots - Fetching admin time slots");
 
-    // Extraire et valider les paramètres de query
     const searchParams = req.nextUrl.searchParams;
     const filters = {
       month: searchParams.get("month") || undefined,
@@ -134,13 +133,12 @@ async function getTimeslots(req: NextRequest) {
       endDate: searchParams.get("endDate") || undefined,
     };
 
-    // Valider les filtres avec Zod
     const validatedFilters = timeslotFiltersSchema.parse(filters);
 
     const timeslots = await getAllTimeslotsAdmin(validatedFilters);
 
     logger.info(
-      `GET /api/admin/timeslots - ${timeslots.length} créneaux récupérés`,
+      `GET /api/admin/timeslots - ${timeslots.length} time slots fetched`,
       { filters: validatedFilters },
     );
 
@@ -152,16 +150,15 @@ export const GET = withAdminAuth(getTimeslots);
 
 async function createTimeslot_(req: NextRequest) {
   return withErrorHandler(req, async () => {
-    logger.info("POST /api/admin/timeslots - Création d'un créneau");
+    logger.info("POST /api/admin/timeslots - Creating a time slot");
 
     const body = await req.json();
 
-    // Valider les données avec Zod
     const validatedData = createTimeslotSchema.parse(body);
 
     const newTimeslot = await createTimeslot(validatedData);
 
-    logger.info("POST /api/admin/timeslots - Créneau créé avec succès", {
+    logger.info("POST /api/admin/timeslots - Time slot created successfully", {
       timeslotId: newTimeslot.id,
       startTime: newTimeslot.startTime,
       endTime: newTimeslot.endTime,

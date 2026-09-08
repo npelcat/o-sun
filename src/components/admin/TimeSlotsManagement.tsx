@@ -19,13 +19,11 @@ export default function TimeslotsManagement() {
   );
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  // Filtres
   const [monthFilter, setMonthFilter] = useState<string>(getCurrentMonth());
   const [isActiveFilter, setIsActiveFilter] = useState<"true" | "false" | "">(
     "",
   );
 
-  // Map pour savoir quels créneaux ont une réservation
   const [linkedBookings, setLinkedBookings] = useState<Set<string>>(new Set());
 
   const fetchTimeslots = useCallback(async () => {
@@ -41,7 +39,6 @@ export default function TimeslotsManagement() {
       const data = await response.json();
       setTimeslots(data.timeslots);
 
-      // Récupérer les réservations pour savoir quels créneaux sont liés
       const bookingsResponse = await fetch(
         `/api/admin/bookings?period=${BOOKING_PERIOD.ALL}`,
       );
@@ -83,7 +80,7 @@ export default function TimeslotsManagement() {
       setShowCreateModal(false);
       fetchTimeslots();
     } catch (err) {
-      throw err; // Remonter l'erreur au modal
+      throw err;
     }
   };
 
@@ -108,15 +105,13 @@ export default function TimeslotsManagement() {
       const data = await response.json();
       success("Créneau mis à jour !");
 
-      // Mettre à jour la liste
       setTimeslots(timeslots.map((t) => (t.id === id ? data.timeslot : t)));
 
-      // Mettre à jour le créneau sélectionné si c'est celui-ci
       if (selectedTimeslot?.id === id) {
         setSelectedTimeslot(data.timeslot);
       }
     } catch (err) {
-      throw err; // Remonter l'erreur au modal
+      throw err;
     }
   };
 
@@ -185,7 +180,6 @@ export default function TimeslotsManagement() {
         </button>
       </div>
 
-      {/* Filtres */}
       <TimeslotFilters
         monthFilter={monthFilter}
         isActiveFilter={isActiveFilter}
@@ -197,7 +191,6 @@ export default function TimeslotsManagement() {
         }}
       />
 
-      {/* Liste des créneaux */}
       {isLoading ? (
         <Loader />
       ) : (
@@ -216,7 +209,6 @@ export default function TimeslotsManagement() {
         </>
       )}
 
-      {/* Modal de création */}
       {showCreateModal && (
         <CreateTimeslotModal
           onClose={() => setShowCreateModal(false)}
@@ -224,7 +216,6 @@ export default function TimeslotsManagement() {
         />
       )}
 
-      {/* Modal de détail */}
       {selectedTimeslot && (
         <TimeslotDetailModal
           timeslot={selectedTimeslot}

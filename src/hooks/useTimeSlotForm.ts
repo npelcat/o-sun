@@ -12,7 +12,6 @@ export function useTimeslotForm({
   initialEndTime,
   initialIsActive = true,
 }: UseTimeslotFormProps = {}) {
-  // Initialisation des valeurs
   const getInitialDates = () => {
     if (initialStartTime && initialEndTime) {
       const startDT = DateTime.fromJSDate(
@@ -52,20 +51,19 @@ export function useTimeslotForm({
   const [isActive, setIsActive] = useState(initialIsActive);
   const [error, setError] = useState("");
 
-  // Synchroniser endDate avec startDate si endDate est vide
+  // Keep endDate in sync with startDate on change, since most slots are
+  // same-day (the admin can still edit endDate afterward for multi-day ones)
   const handleStartDateChange = (date: string) => {
     setStartDate(date);
     setEndDate(date);
   };
 
-  // Validation et conversion des dates
   const validateAndConvert = (): {
     isValid: boolean;
     startISO?: string;
     endISO?: string;
     error?: string;
   } => {
-    // Vérifier que tous les champs sont remplis
     if (!startDate || !startTime || !endDate || !endTime) {
       return {
         isValid: false,
@@ -73,7 +71,6 @@ export function useTimeslotForm({
       };
     }
 
-    // Construire les DateTime
     const startDT = DateTime.fromISO(`${startDate}T${startTime}`, {
       zone: "Europe/Paris",
     });
@@ -81,7 +78,6 @@ export function useTimeslotForm({
       zone: "Europe/Paris",
     });
 
-    // Vérifier que les dates sont valides
     if (!startDT.isValid || !endDT.isValid) {
       return {
         isValid: false,
@@ -89,7 +85,6 @@ export function useTimeslotForm({
       };
     }
 
-    // Vérifier que la fin est après le début
     if (endDT <= startDT) {
       return {
         isValid: false,
@@ -97,7 +92,8 @@ export function useTimeslotForm({
       };
     }
 
-    // Vérifier que c'est dans le futur (seulement pour la création)
+    // Future-date check only applies to creation — an existing slot being
+    // edited may legitimately be in the past
     if (!initialStartTime) {
       const now = DateTime.now();
       if (startDT <= now) {
@@ -108,7 +104,6 @@ export function useTimeslotForm({
       }
     }
 
-    // Convertir en ISO 8601 (UTC)
     const startISO = startDT.toUTC().toISO();
     const endISO = endDT.toUTC().toISO();
 
@@ -127,7 +122,6 @@ export function useTimeslotForm({
   };
 
   return {
-    // Valeurs
     startDate,
     startTime,
     endDate,
@@ -135,7 +129,6 @@ export function useTimeslotForm({
     isActive,
     error,
 
-    // Setters
     setStartDate: handleStartDateChange,
     setStartTime,
     setEndDate,
@@ -143,7 +136,6 @@ export function useTimeslotForm({
     setIsActive,
     setError,
 
-    // Utilitaires
     validateAndConvert,
   };
 }

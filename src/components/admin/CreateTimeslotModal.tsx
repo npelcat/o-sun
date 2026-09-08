@@ -53,7 +53,6 @@ export default function CreateTimeslotModal({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-lg w-full">
-        {/* Header */}
         <div className="bg-beige p-6 border-b border-dark-green/20">
           <div className="flex items-center justify-between">
             <h2 className="font-subtitle text-2xl text-black">
@@ -68,7 +67,6 @@ export default function CreateTimeslotModal({
           </div>
         </div>
 
-        {/* Formulaire */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
@@ -76,7 +74,6 @@ export default function CreateTimeslotModal({
             </div>
           )}
 
-          {/* Date et heure de début */}
           <div>
             <label className="block text-sm font-medium text-black mb-2">
               Début du créneau
@@ -99,7 +96,6 @@ export default function CreateTimeslotModal({
             </div>
           </div>
 
-          {/* Date et heure de fin */}
           <div>
             <label className="block text-sm font-medium text-black mb-2">
               Fin du créneau
@@ -122,7 +118,6 @@ export default function CreateTimeslotModal({
             </div>
           </div>
 
-          {/* Info */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
             <p className="text-sm text-blue-800">
               💡 Le créneau sera automatiquement vérifié pour éviter les
@@ -130,7 +125,6 @@ export default function CreateTimeslotModal({
             </p>
           </div>
 
-          {/* Actions */}
           <div className="flex space-x-3">
             <button
               type="button"

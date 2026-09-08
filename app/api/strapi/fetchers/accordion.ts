@@ -28,7 +28,7 @@ export const fetchMultipleAccordions = async (
         slugs.indexOf(a.slug ?? "") - slugs.indexOf(b.slug ?? ""),
     );
   } catch (error) {
-    console.error("Erreur lors de la récupération des accordions", error);
+    console.error("Failed to fetch accordions", error);
     throw error;
   }
 };

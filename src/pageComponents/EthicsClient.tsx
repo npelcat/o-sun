@@ -44,7 +44,6 @@ export default function EthicsClient({
         Mon éthique
       </h2>
 
-      {/* Table des matières */}
       {tocItems.length > 0 && <TableOfContents items={tocItems} />}
 
       <div className="flex justify-center">

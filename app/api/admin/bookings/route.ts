@@ -119,11 +119,8 @@ import { withAdminAuth } from "@/lib/auth/with-admin-auth";
 
 async function getBookings(req: NextRequest) {
   return withErrorHandler(req, async () => {
-    logger.info(
-      "GET /api/admin/bookings - Récupération des réservations admin",
-    );
+    logger.info("GET /api/admin/bookings - Fetching admin bookings");
 
-    // Extraire et valider les paramètres de query
     const searchParams = req.nextUrl.searchParams;
     const filters = {
       status: searchParams.get("status") || undefined,
@@ -132,13 +129,12 @@ async function getBookings(req: NextRequest) {
       period: searchParams.get("period") || undefined,
     };
 
-    // Valider les filtres avec Zod
     const validatedFilters = bookingFiltersSchema.parse(filters);
 
     const bookings = await getAllBookingsAdmin(validatedFilters);
 
     logger.info(
-      `GET /api/admin/bookings - ${bookings.length} réservations récupérées`,
+      `GET /api/admin/bookings - ${bookings.length} bookings fetched`,
       {
         hasEmailFilter: !!validatedFilters.clientEmail,
         month: validatedFilters.month,
@@ -153,16 +149,14 @@ export const GET = withAdminAuth(getBookings);
 
 async function createBookingRoute(req: NextRequest) {
   return withErrorHandler(req, async () => {
-    logger.info(
-      "POST /api/admin/bookings - Création manuelle d'une réservation",
-    );
+    logger.info("POST /api/admin/bookings - Manually creating a booking");
 
     const body = await req.json();
     const validatedData = createBookingAdminSchema.parse(body);
 
     const result = await createBookingAdmin(validatedData);
 
-    logger.info("POST /api/admin/bookings - Réservation créée avec succès", {
+    logger.info("POST /api/admin/bookings - Booking created successfully", {
       bookingId: result.booking.id,
     });
 

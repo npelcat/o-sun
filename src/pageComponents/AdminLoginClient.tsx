@@ -51,7 +51,7 @@ export default function AdminLogin() {
           onClick={handleGoogleLogin}
           className="w-full mb-6 bg-white border border-gray-300 text-gray-700 p-3 rounded hover:bg-gray-50 flex items-center justify-center gap-2"
         >
-          {/* Icône Google */}
+          {/* Google icon */}
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
               fill="#4285F4"

@@ -8,7 +8,6 @@ import {
 } from "@/lib/bookings";
 import { createMockTransaction, asTrx } from "./utils/test-utils";
 
-// Mock de la DB
 vi.mock("@/src/db/index", () => {
   const mockDb = {
     select: vi.fn().mockReturnThis(),

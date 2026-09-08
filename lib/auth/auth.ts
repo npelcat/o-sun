@@ -8,9 +8,8 @@ import { eq } from "drizzle-orm";
 import { verifyPassword } from "./password";
 import { loginRateLimiter } from "../security/rate-limit-simple";
 
-// Liste des providers de façon conditionnelle,
-// pour ne pas faire planter le build si une variable d'env
-// (comme GOOGLE_CLIENT_ID) n'est pas encore définie au moment du build
+// Providers are listed conditionally so the build doesn't fail if an env
+// var (like GOOGLE_CLIENT_ID) isn't set yet at build time.
 const providers: Array<unknown> = [
   Credentials({
     name: "credentials",
@@ -18,7 +17,7 @@ const providers: Array<unknown> = [
       email: { label: "Email", type: "email" },
       password: { label: "Password", type: "password" },
     },
-    // authorize() est appelée à chaque tentative de connexion par email/mdp.
+    // authorize() runs on every email/password login attempt.
     async authorize(credentials) {
       if (!credentials?.email || !credentials?.password) {
         return null;
@@ -28,18 +27,18 @@ const providers: Array<unknown> = [
           .toLowerCase()
           .trim();
 
-        // Anti brute-force : on vérifie qu'on n'a pas dépassé le nombre
-        // de tentatives autorisées pour cet email.
+        // Brute-force guard: check this email hasn't exceeded the allowed
+        // number of attempts.
         const isAllowed = loginRateLimiter.check(normalizedEmail);
 
         if (!isAllowed) {
-          console.warn(`Rate limit dépassé pour email: ${normalizedEmail}`);
-          // Important : on retourne null, exactement comme un login raté.
+          console.warn(`Rate limit exceeded for email: ${normalizedEmail}`);
+          // Important: return null, exactly like a failed login attempt.
           return null;
         }
 
-        // Import dynamique de la DB : évite de charger la connexion DB
-        // inutilement si on sort avant (ex: rate limit atteint).
+        // Dynamic DB import: avoids loading the DB connection unnecessarily
+        // when we bail out earlier (e.g. rate limit hit).
         const { default: db } = await import("@/src/db/index");
         const adminList = await db
           .select({
@@ -49,18 +48,18 @@ const providers: Array<unknown> = [
             passwordHash: admins.passwordHash,
           })
           .from(admins)
-          // Requête paramétrée via Drizzle (pas de concaténation SQL)
+          // Parameterized query via Drizzle (no SQL string concatenation)
           .where(eq(admins.email, credentials.email as string))
           .limit(1);
 
         if (adminList.length === 0) {
-          // Email inconnu : on retourne null sans préciser "email inconnu"
+          // Unknown email: return null without revealing "unknown email"
           return null;
         }
 
         const admin = adminList[0];
 
-        // Comparaison du mot de passe fourni avec le hash Argon2id stocké.
+        // Compare the supplied password against the stored Argon2id hash.
         const isPasswordValid = await verifyPassword(
           admin.passwordHash,
           credentials.password as string,
@@ -70,22 +69,21 @@ const providers: Array<unknown> = [
           return null;
         }
 
-        // Ce qui est retourné ici devient disponible dans le callback jwt()
-        // via le paramètre `user`. Pas de renvoi du hash du mot de passe.
+        // Whatever is returned here becomes available in the jwt() callback
+        // via the `user` param. Never return the password hash.
         return {
           id: admin.id,
           email: admin.email,
           name: admin.username,
         };
       } catch (error) {
-        console.error("Erreur auth:", error);
+        console.error("Auth error:", error);
         return null;
       }
     },
   }),
 ];
 
-// Le provider Google n'est ajouté que si les variables d'env sont présentes.
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   providers.unshift(
     Google({
@@ -98,9 +96,9 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 const config = {
   providers,
   callbacks: {
-    // signIn() est appelée juste après une authentification réussie par un provider.
-    // On l'utilise ici pour restreindre l'accès Google aux seules adresses
-    // déjà présentes dans la table `admins` (whitelist).
+    // signIn() runs right after a provider successfully authenticates a user.
+    // Used here to restrict Google login to addresses already present in
+    // the `admins` table (whitelist).
     async signIn({
       user,
       account,
@@ -122,25 +120,25 @@ const config = {
             .limit(1);
 
           if (adminList.length > 0) {
-            // On remplace les infos Google par celles de notre table admin
-            // (id interne, username interne) pour rester cohérent avec le
-            // login par credentials.
+            // Replace the Google profile info with our admin table's data
+            // (internal id, internal username) to stay consistent with the
+            // credentials login path.
             user.name = adminList[0].username;
             user.id = adminList[0].id;
-            return true; // connexion autorisée
+            return true;
           }
-          // Email Google non présent dans la table admins → accès refusé
+          // Google email not found in admins → access denied
           return false;
         } catch (error) {
-          console.error("Erreur signIn Google:", error);
+          console.error("Google signIn error:", error);
           return false;
         }
       }
-      // Pour le provider "credentials", authorize() a déjà fait le contrôle.
+      // For the "credentials" provider, authorize() already did the check.
       return true;
     },
 
-    // jwt() est appelée à chaque création/mise à jour du token.
+    // jwt() runs on every token creation/update.
     async jwt({
       token,
       user,
@@ -155,7 +153,7 @@ const config = {
       return token;
     },
 
-    // session() transforme le contenu du JWT en objet `session` exploitable
+    // session() turns the JWT payload into a usable `session` object
     async session({ session, token }: { session: Session; token: JWT }) {
       if (token && session.user) {
         session.user.id = token.sub!;
@@ -168,36 +166,35 @@ const config = {
     signIn: "/login",
   },
 
-  // Stratégie "jwt" = session stateless, tout est encodé dans le cookie signé.
-  // Pas de table "sessions" en DB
+  // "jwt" strategy = stateless session, everything is encoded in the signed
+  // cookie. No "sessions" table in the DB.
   session: {
     strategy: "jwt",
-    // Durée de vie max du cookie de session : 8h (nexthauth 30 jours par défaut)
+    // Max session cookie lifetime: 8h (NextAuth defaults to 30 days)
     maxAge: 60 * 60 * 8,
-    // "Session glissante" : si l'admin est active, le cookie est renouvelé
-    // silencieusement toutes les heures. Elle n'est déconnectée que si elle
-    // reste inactive plus de 8h.
+    // Sliding session: while the admin is active, the cookie is silently
+    // renewed every hour. They're only logged out after 8h of inactivity.
     updateAge: 60 * 60,
   },
 
-  // On sépare la lecture de la variable pour pouvoir la contrôler avant usage.
+  // Read into a local var so it can be validated before use.
   secret: (() => {
     const secret = process.env.NEXTAUTH_SECRET;
     if (!secret) {
       if (process.env.NODE_ENV === "production") {
-        // On préfère un crash explicite au déploiement plutôt qu'une prod
-        // qui tourne silencieusement avec un secret visible dans le code.
+        // Prefer an explicit crash at deploy time over a prod instance
+        // silently running with a secret hardcoded in the source.
         throw new Error("NEXTAUTH_SECRET missing: required in production.");
       }
-      // Fallback autorisé uniquement en dev/CI locale, jamais en prod.
+      // Fallback allowed in local dev/CI only, never in production.
       return "dev-only-secret-do-not-use-in-prod";
     }
     return secret;
   })(),
 };
 
-// Compatibilité ESM/CommonJS : selon la version/le bundler, NextAuth peut
-// être exporté en `default` ou directement comme fonction du module.
+// ESM/CommonJS compatibility: depending on the version/bundler, NextAuth may
+// be exported as `default` or directly as the module's function.
 const nextAuth =
   (NextAuthNS as unknown as { default?: (cfg: unknown) => unknown }).default ??
   (NextAuthNS as unknown as (cfg: unknown) => unknown);
@@ -212,7 +209,7 @@ const nextAuthResult = nextAuth(config) as {
   auth: (() => Promise<Session | null>) & ((...args: unknown[]) => unknown);
 };
 
-// handlers → utilisés dans app/api/auth/[...nextauth]/route.ts
-// signIn/signOut → utilisables côté serveur (Server Actions, etc.)
-// auth() → récupère la session côté serveur (Server Components, middleware...)
+// handlers → used in app/api/auth/[...nextauth]/route.ts
+// signIn/signOut → usable server-side (Server Actions, etc.)
+// auth() → fetches the session server-side (Server Components, middleware...)
 export const { handlers, signIn, signOut, auth } = nextAuthResult;

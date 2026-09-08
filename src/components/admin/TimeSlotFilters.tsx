@@ -18,7 +18,6 @@ export default function TimeslotFilters({
   return (
     <div className="bg-beige rounded-lg p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Filtre mois */}
         <div>
           <label className="block text-sm font-medium text-black mb-2">
             Mois
@@ -31,7 +30,6 @@ export default function TimeslotFilters({
           />
         </div>
 
-        {/* Filtre statut */}
         <div>
           <label className="block text-sm font-medium text-black mb-2">
             Statut
@@ -49,7 +47,6 @@ export default function TimeslotFilters({
           </select>
         </div>
 
-        {/* Bouton reset */}
         <div className="flex items-end">
           <button
             onClick={onReset}

@@ -113,7 +113,7 @@ describe("Admin Timeslots Service", () => {
         endTime: new Date("2026-02-15T11:00:00Z"),
         isActive: true,
       };
-      mockDb.execute.mockResolvedValue([]); // aucun chevauchement
+      mockDb.execute.mockResolvedValue([]);
       mockDb.returning.mockResolvedValue([newSlot]);
 
       const result = await createTimeslot({
@@ -146,8 +146,6 @@ describe("Admin Timeslots Service", () => {
       };
       const updatedSlot = { ...existingSlot, isActive: false };
 
-      // Premier execute : getTimeslotById (appelé en interne par updateTimeslot)
-      // Pas de second execute car on ne modifie pas les dates → pas de vérif chevauchement
       mockDb.execute.mockResolvedValue([existingSlot]);
       mockDb.returning.mockResolvedValue([updatedSlot]);
 
@@ -172,8 +170,6 @@ describe("Admin Timeslots Service", () => {
         endTime: new Date("2026-02-15T15:00:00Z"),
       };
 
-      // Premier execute : getTimeslotById
-      // Deuxième execute : vérification chevauchement → [] = pas de conflit
       mockDb.execute
         .mockResolvedValueOnce([existingSlot])
         .mockResolvedValueOnce([]);
@@ -195,8 +191,6 @@ describe("Admin Timeslots Service", () => {
         isActive: true,
       };
 
-      // Premier execute : getTimeslotById
-      // Deuxième execute : chevauchement détecté avec un autre créneau
       mockDb.execute
         .mockResolvedValueOnce([existingSlot])
         .mockResolvedValueOnce([{ id: "slot-autre" }]);
@@ -215,7 +209,6 @@ describe("Admin Timeslots Service", () => {
       };
 
       mockDb.execute.mockResolvedValue([existingSlot]);
-      // returning() vide → [updated] est undefined → throw
       mockDb.returning.mockResolvedValue([]);
 
       await expect(

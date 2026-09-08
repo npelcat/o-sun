@@ -21,7 +21,6 @@ export default function BookingsManagement() {
   const [selectedBooking, setSelectedBooking] =
     useState<BookingWithDetails | null>(null);
 
-  // Filtres
   const [statusFilter, setStatusFilter] = useState<BookingStatusFilter>("");
   const [monthFilter, setMonthFilter] = useState<string>(getCurrentMonth());
   const [emailFilter, setEmailFilter] = useState<string>("");
@@ -29,7 +28,6 @@ export default function BookingsManagement() {
   const fetchBookings = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Construire les paramètres de query
       const params = new URLSearchParams();
       params.append("period", BOOKING_PERIOD.UPCOMING);
       if (statusFilter) params.append("status", statusFilter);
@@ -53,12 +51,10 @@ export default function BookingsManagement() {
     fetchBookings();
   }, [fetchBookings]);
 
-  // Changement de statut avec update optimiste
   const handleStatusChange = async (
     bookingId: string,
     newStatus: BookingStatus,
   ) => {
-    // Update optimiste : changer le statut immédiatement dans l'UI
     const previousBookings = [...bookings];
     setBookings(
       bookings.map((b) =>
@@ -78,18 +74,15 @@ export default function BookingsManagement() {
       const data = await response.json();
       success("Statut mis à jour !");
 
-      // Mettre à jour avec le booking complet retourné par l'API
       if (selectedBooking?.id === bookingId) {
         setSelectedBooking(data.booking);
       }
     } catch (err) {
-      // Rollback en cas d'erreur
       setBookings(previousBookings);
       error(err instanceof Error ? err.message : "Erreur");
     }
   };
 
-  // Suppression d'une réservation
   const handleDelete = async (bookingId: string) => {
     if (!confirm("Êtes-vous sûr de vouloir supprimer cette réservation ?")) {
       return;
@@ -104,13 +97,12 @@ export default function BookingsManagement() {
 
       success("Réservation supprimée !");
       setSelectedBooking(null);
-      fetchBookings(); // Recharger la liste
+      fetchBookings();
     } catch (err) {
       error(err instanceof Error ? err.message : "Erreur");
     }
   };
 
-  // Sauvegarde des notes admin
   const handleSaveNotes = async (bookingId: string, notes: string) => {
     try {
       const response = await fetch(`/api/admin/bookings/${bookingId}`, {
@@ -124,7 +116,6 @@ export default function BookingsManagement() {
       const data = await response.json();
       success("Notes sauvegardées !");
 
-      // Mettre à jour avec le booking complet retourné (avec toutes les infos)
       setBookings(bookings.map((b) => (b.id === bookingId ? data.booking : b)));
 
       if (selectedBooking?.id === bookingId) {
@@ -141,7 +132,6 @@ export default function BookingsManagement() {
         Réservations à venir
       </h1>
 
-      {/* Filtres */}
       <BookingFilters
         statusFilter={statusFilter}
         monthFilter={monthFilter}
@@ -156,7 +146,6 @@ export default function BookingsManagement() {
         }}
       />
 
-      {/* Liste des réservations */}
       {isLoading ? (
         <Loader />
       ) : (
@@ -175,7 +164,6 @@ export default function BookingsManagement() {
         </>
       )}
 
-      {/* Modal de détails */}
       {selectedBooking && (
         <BookingDetailModal
           booking={selectedBooking}

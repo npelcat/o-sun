@@ -29,7 +29,6 @@ export default function AboutClient({
     ].includes(b.slug || ""),
   );
 
-  // Table des matières - uniquement les gros blocs
   const tocItems = [
     oceaneContent && {
       id: "oceane",
@@ -47,7 +46,6 @@ export default function AboutClient({
         Qui suis-je ?
       </h2>
 
-      {/* Table des matières */}
       <TableOfContents items={tocItems} />
 
       {oceaneContent && (

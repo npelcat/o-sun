@@ -129,7 +129,6 @@ export default function TimeslotsTable({
   );
 }
 
-// Badge de statut actif/inactif
 function StatusBadge({ isActive }: { isActive: boolean }) {
   return (
     <span

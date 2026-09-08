@@ -8,7 +8,6 @@ import {
 } from "@/lib/admin/bookings";
 import { createMockTransaction, asTrx } from "../utils/test-utils";
 
-// Mock de la DB
 vi.mock("@/src/db/index", () => {
   const mockQueryBuilder = () => ({
     select: vi.fn().mockReturnThis(),
@@ -85,7 +84,6 @@ describe("Admin Bookings Service", () => {
       const result = await getAllBookingsAdmin({ status: "confirmed" });
 
       expect(result).toEqual(mockBookings);
-      // Le filtre status doit avoir été appliqué via .where()
       expect(mockDb.where).toHaveBeenCalled();
     });
 
@@ -94,7 +92,6 @@ describe("Admin Bookings Service", () => {
 
       await getAllBookingsAdmin({ period: "upcoming" });
 
-      // Une condition gte(startTime, now) doit avoir été construite
       expect(mockDb.where).toHaveBeenCalled();
     });
 
@@ -141,8 +138,6 @@ describe("Admin Bookings Service", () => {
         adminNotes: "Virement reçu",
       };
 
-      // ⚠️ Drizzle retourne directement un tableau, pas via .execute()
-      // La chaîne se termine par .limit(1) qui retourne le tableau
       mockDb.limit.mockResolvedValue([mockBooking]);
 
       const result = await getBookingByIdAdmin("booking-1");
@@ -217,7 +212,6 @@ describe("Admin Bookings Service", () => {
     });
 
     it("should throw error when booking to update is not found", async () => {
-      // returning() retourne un tableau vide → le [updated] est undefined
       mockDb.returning.mockResolvedValue([]);
 
       await expect(
@@ -231,13 +225,9 @@ describe("Admin Bookings Service", () => {
       mockDb.transaction.mockImplementation(async (callback) => {
         const mockTrx = createMockTransaction();
 
-        // Premier appel : récupérer le timeSlotId
         mockTrx.limit.mockResolvedValueOnce([{ timeSlotId: "slot-1" }]);
 
-        // Deuxième appel : supprimer la réservation
         mockTrx.returning.mockResolvedValueOnce([{ id: "booking-1" }]);
-
-        // Troisième appel : réactiver le créneau
         mockTrx.execute.mockResolvedValueOnce(undefined);
 
         return callback(asTrx(mockTrx));
@@ -255,18 +245,13 @@ describe("Admin Bookings Service", () => {
       mockDb.transaction.mockImplementation(async (callback) => {
         const mockTrx = createMockTransaction();
 
-        // 1. Vérifier le créneau
         mockTrx.limit
           .mockResolvedValueOnce([{ id: "slot-1", isActive: true }])
-          // 2. Chercher client existant
-          .mockResolvedValueOnce([]); // Pas de client existant
+          .mockResolvedValueOnce([]);
 
-        // 3. Créer nouveau client
         mockTrx.returning
           .mockResolvedValueOnce([{ id: "client-1" }])
-          // 4. Créer formulaire
           .mockResolvedValueOnce([{ id: "form-1" }])
-          // 5. Créer réservation
           .mockResolvedValueOnce([{ id: "booking-1" }]);
 
         return callback(asTrx(mockTrx));
@@ -289,7 +274,7 @@ describe("Admin Bookings Service", () => {
     it("should throw error when timeslot not found", async () => {
       mockDb.transaction.mockImplementation(async (callback) => {
         const mockTrx = createMockTransaction();
-        mockTrx.limit.mockResolvedValue([]); // Aucun créneau trouvé
+        mockTrx.limit.mockResolvedValue([]);
         return callback(asTrx(mockTrx));
       });
 
@@ -308,7 +293,6 @@ describe("Admin Bookings Service", () => {
     it("should throw error when timeslot is unavailable", async () => {
       mockDb.transaction.mockImplementation(async (callback) => {
         const mockTrx = createMockTransaction();
-        // Créneau existe mais n'est pas actif
         mockTrx.limit.mockResolvedValue([{ id: "slot-1", isActive: false }]);
         return callback(asTrx(mockTrx));
       });
@@ -327,12 +311,9 @@ describe("Admin Bookings Service", () => {
 
     it("should update existing client and create booking", async () => {
       const mockTrx = createMockTransaction();
-      // Ce test couvre la branche "client déjà en base" dans createBookingAdmin.
       mockDb.transaction.mockImplementation(async (callback) => {
-        // 1. Vérifier le créneau → disponible
         mockTrx.limit
           .mockResolvedValueOnce([{ id: "slot-1", isActive: true }])
-          // 2. Chercher client existant → trouvé
           .mockResolvedValueOnce([
             {
               id: "client-existant-42",
@@ -342,11 +323,8 @@ describe("Admin Bookings Service", () => {
             },
           ]);
 
-        // Pas de returning pour le client (update sans returning dans cette branche)
         mockTrx.returning
-          // 3. Créer formulaire
           .mockResolvedValueOnce([{ id: "form-1" }])
-          // 4. Créer réservation
           .mockResolvedValueOnce([
             {
               id: "booking-1",
@@ -367,11 +345,9 @@ describe("Admin Bookings Service", () => {
         service: "Communication animale - Clarté",
       });
 
-      // L'ID du client existant doit être utilisé, pas un nouvel ID
       expect(result.client.id).toBe("client-existant-42");
       expect(result.booking.clientId).toBe("client-existant-42");
 
-      // update() doit avoir été appelé (mise à jour du client, pas insert)
       expect(mockTrx.update).toHaveBeenCalled();
     });
   });
