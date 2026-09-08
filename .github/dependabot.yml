@@ -7,15 +7,15 @@ updates:
     open-pull-requests-limit: 5
 
     groups:
-      # Groupe 1 : Les mises à jour mineures et patchs
+      # Group 1: minor and patch updates
       safe-updates:
         patterns:
-          - "*" # Applique à toutes les dépendances
+          - "*" # applies to all dependencies
         update-types:
           - "minor"
           - "patch"
 
-      # Groupe 2 : Les mises à jour risquées (majeures)
+      # Group 2: risky (major) updates
       breaking-updates:
         patterns:
           - "*"

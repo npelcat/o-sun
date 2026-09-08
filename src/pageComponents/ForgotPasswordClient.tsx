@@ -16,7 +16,6 @@ export default function ForgotPasswordClient() {
     setError("");
     setMessage("");
 
-    // ✨ Appel direct de la Server Action
     const result = await requestPasswordReset(email);
 
     if (result.error) {

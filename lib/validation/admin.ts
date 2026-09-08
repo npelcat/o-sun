@@ -2,12 +2,12 @@ import { z } from "zod";
 import { BOOKING_STATUS } from "../utils/constants";
 
 // ============================================
-// SCHÉMAS POUR LES TIMESLOTS (CRÉNEAUX)
+// TIMESLOT SCHEMAS
 // ============================================
 
 /**
- * Schéma pour créer un nouveau créneau horaire
- * L'admin peut créer des créneaux longs (journée, demi-journée, etc.)
+ * Schema to create a new time slot
+ * Admin can create long slots (full day, half day, etc.)
  */
 export const createTimeslotSchema = z
   .object({
@@ -28,8 +28,8 @@ export const createTimeslotSchema = z
   });
 
 /**
- * Schéma pour modifier un créneau existant
- * Permet de changer les dates ou de désactiver le créneau
+ * Schema to update an existing slot
+ * Allows changing dates or disabling the slot
  */
 export const updateTimeslotSchema = z
   .object({
@@ -45,7 +45,7 @@ export const updateTimeslotSchema = z
   })
   .refine(
     (data) => {
-      // Si les deux dates sont fournies, vérifier la cohérence
+      // If both dates are provided, check consistency
       if (data.startTime && data.endTime) {
         return new Date(data.endTime) > new Date(data.startTime);
       }
@@ -58,12 +58,12 @@ export const updateTimeslotSchema = z
   );
 
 // ============================================
-// SCHÉMAS POUR LES BOOKINGS (RÉSERVATIONS)
+// BOOKING SCHEMAS
 // ============================================
 
 /**
- * Schéma pour mettre à jour le statut d'une réservation
- * + ajouter des notes admin (invisibles du client)
+ * Schema to update a booking's status
+ * + add admin notes (not visible to the client)
  */
 export const updateBookingAdminSchema = z.object({
   status: z
@@ -86,8 +86,8 @@ export const updateBookingAdminSchema = z.object({
 });
 
 /**
- * Schéma pour créer manuellement une réservation (admin)
- * Utile si ma cliente veut ajouter une réservation hors système
+ * Schema to manually create a booking (admin)
+ * Useful when the practitioner wants to add a booking made outside the system
  */
 export const createBookingAdminSchema = z.object({
   timeSlotId: z.string().uuid("ID de créneau invalide"),
@@ -146,12 +146,12 @@ export const createBookingAdminSchema = z.object({
 });
 
 // ============================================
-// SCHÉMAS DE FILTRAGE (pour les queries)
+// FILTER SCHEMAS (for queries)
 // ============================================
 
 /**
- * Schéma pour filtrer les réservations
- * Filtre période (à venir / passées / toutes)
+ * Schema to filter bookings
+ * Period filter (upcoming / past / all)
  */
 export const bookingFiltersSchema = z.object({
   status: z
@@ -174,8 +174,8 @@ export const bookingFiltersSchema = z.object({
 });
 
 /**
- * Schéma pour filtrer les créneaux
- * Exemple: GET /api/admin/timeslots?month=2026-01&isActive=true
+ * Schema to filter time slots
+ * Example: GET /api/admin/timeslots?month=2026-01&isActive=true
  */
 export const timeslotFiltersSchema = z.object({
   month: z

@@ -17,7 +17,6 @@ export const useBookingFields = ({
 }: UseBookingFieldsProps) => {
   const [emailWarning, setEmailWarning] = useState<string | null>(null);
 
-  // Supprime l'erreur d'un champ donné
   const clearFieldError = useCallback(
     (fieldName: string) => {
       if (fieldErrors[fieldName]) {
@@ -31,7 +30,6 @@ export const useBookingFields = ({
     [fieldErrors, setFieldErrors],
   );
 
-  // Champs texte / select classiques
   const handleChange = useCallback(
     (
       e: React.ChangeEvent<
@@ -45,7 +43,7 @@ export const useBookingFields = ({
     [setFormData, clearFieldError],
   );
 
-  // Checkboxes (lit checked, pas value)
+  // Checkboxes read `checked`, not `value`
   const handleCheckboxChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { name, checked } = e.target;
@@ -55,7 +53,7 @@ export const useBookingFields = ({
     [setFormData, clearFieldError],
   );
 
-  // Changement de service : réinitialise les réponses spécifiques
+  // Changing the service resets its service-specific answers
   const handleServiceChange = useCallback(
     (
       e: React.ChangeEvent<
@@ -73,7 +71,6 @@ export const useBookingFields = ({
     [setFormData, clearFieldError],
   );
 
-  // Champs dynamiques spécifiques au service
   const handleServiceSpecificChange = useCallback(
     (fieldKey: string, value: string) => {
       setFormData((prev) => ({
@@ -88,7 +85,6 @@ export const useBookingFields = ({
     [setFormData, clearFieldError],
   );
 
-  // Validation au blur champ par champ
   const handleBlur = useCallback(
     (fieldName: string, value: string) => {
       const requiredFields = [

@@ -49,7 +49,7 @@ export async function withErrorHandler(
     return await handler();
   } catch (error: unknown) {
     if (error instanceof ZodError) {
-      logger.warn("Validation échouée", {
+      logger.warn("Validation failed", {
         ...context,
         errors: error.errors,
       });
@@ -60,7 +60,7 @@ export async function withErrorHandler(
     }
 
     if (error instanceof AdminBusinessError) {
-      logger.warn("Erreur métier admin", {
+      logger.warn("Admin business error", {
         ...context,
         message: error.message,
       });
@@ -82,7 +82,7 @@ export async function withErrorHandler(
       );
     }
 
-    logger.error("Erreur interne non gérée", {
+    logger.error("Unhandled internal error", {
       ...context,
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,

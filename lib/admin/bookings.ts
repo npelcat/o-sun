@@ -46,12 +46,12 @@ export interface BookingFilters {
 }
 
 // ============================================
-// FONCTIONS DE SERVICE
+// SERVICE FUNCTIONS
 // ============================================
 
 /**
- * Récupère toutes les réservations avec filtres optionnels
- * Version admin : inclut TOUTES les réservations (même annulées)
+ * Fetches all bookings with optional filters
+ * Admin version: includes every booking, even canceled ones
  */
 export async function getAllBookingsAdmin(
   filters?: BookingFilters,
@@ -65,12 +65,10 @@ export async function getAllBookingsAdmin(
 
   const conditions = [];
 
-  // Filtre par statut
   if (filters?.status) {
     conditions.push(eq(bookings.status, filters.status));
   }
 
-  // Filtre par période
   if (filters?.period === BOOKING_PERIOD.UPCOMING) {
     const now = new Date();
     conditions.push(gte(timeSlots.startTime, now));
@@ -79,7 +77,6 @@ export async function getAllBookingsAdmin(
     conditions.push(lt(timeSlots.startTime, now));
   }
 
-  // Filtre par mois
   if (filters?.month) {
     const monthDT = DateTime.fromFormat(filters.month, "yyyy-MM", {
       zone: "Europe/Paris",
@@ -91,7 +88,6 @@ export async function getAllBookingsAdmin(
     conditions.push(lte(timeSlots.startTime, endOfMonth));
   }
 
-  // Filtre par email client
   if (filters?.clientEmail) {
     conditions.push(ilike(clients.email, `%${filters.clientEmail}%`));
   }
@@ -106,7 +102,7 @@ export async function getAllBookingsAdmin(
 }
 
 /**
- * Récupère une réservation par ID (version admin avec adminNotes)
+ * Fetches a booking by ID (admin version, includes adminNotes)
  */
 export async function getBookingByIdAdmin(
   bookingId: string,
@@ -128,7 +124,7 @@ export async function getBookingByIdAdmin(
 }
 
 /**
- * Met à jour une réservation (statut et/ou notes admin)
+ * Updates a booking's status and/or admin notes
  */
 export async function updateBookingAdmin(
   bookingId: string,
@@ -162,10 +158,10 @@ export async function updateBookingAdmin(
 }
 
 /**
- * Supprime une réservation
- * → Supprime aussi le formData associé (cascade SQL)
- * → Conserve le client (indépendant de ses réservations)
- * → Libère le créneau horaire
+ * Deletes a booking
+ * → Also deletes the linked formData (SQL cascade)
+ * → Keeps the client (not tied to its bookings)
+ * → Releases the time slot
  */
 export async function deleteBookingAdmin(bookingId: string) {
   return await db.transaction(async (trx) => {
@@ -177,13 +173,11 @@ export async function deleteBookingAdmin(bookingId: string) {
 
     if (!booking) throw new HttpError(404, "Réservation non trouvée");
 
-    // La cascade supprime automatiquement le formData lié
     const [deleted] = await trx
       .delete(bookings)
       .where(eq(bookings.id, bookingId))
       .returning();
 
-    // Le créneau doit être réactivé manuellement
     await trx
       .update(timeSlots)
       .set({ isActive: true, lockedAt: null, updatedAt: new Date() })
@@ -194,12 +188,12 @@ export async function deleteBookingAdmin(bookingId: string) {
 }
 
 /**
- * Crée manuellement une réservation (admin)
- * Utile si ma cliente veut ajouter une réservation externe au système
+ * Manually creates a booking (admin)
+ * Useful when the practitioner wants to add a booking made outside the system
  */
 export async function createBookingAdmin(data: CreateBookingAdminData) {
   return await db.transaction(async (trx) => {
-    // 1. Vérifier que le créneau existe et est disponible
+    // 1. Check the slot exists and is available
     const [slot] = await trx
       .select()
       .from(timeSlots)
@@ -214,7 +208,7 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
       throw new AdminBusinessError("Ce créneau n'est pas disponible");
     }
 
-    // 2. Créer ou récupérer le client
+    // 2. Create or reuse the client
     let clientId: string;
     const existingClient = await trx
       .select()
@@ -224,7 +218,6 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
 
     if (existingClient.length > 0) {
       clientId = existingClient[0].id;
-      // Mettre à jour les infos si besoin
       await trx
         .update(clients)
         .set({
@@ -245,7 +238,7 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
       clientId = newClient.id;
     }
 
-    // 3. Créer le formulaire
+    // 3. Create the form
     const [form] = await trx
       .insert(formData)
       .values({
@@ -263,7 +256,7 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
       })
       .returning();
 
-    // 4. Créer la réservation
+    // 4. Create the booking
     const [booking] = await trx
       .insert(bookings)
       .values({
@@ -275,7 +268,7 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
       })
       .returning();
 
-    // 5. Désactiver le créneau
+    // 5. Deactivate the slot
     await trx
       .update(timeSlots)
       .set({
@@ -290,7 +283,7 @@ export async function createBookingAdmin(data: CreateBookingAdminData) {
 }
 
 /**
- * Compte les réservations par statut (pour stats dashboard)
+ * Counts bookings by status (dashboard stats)
  */
 export async function countBookingsByStatus() {
   const allBookings = await db

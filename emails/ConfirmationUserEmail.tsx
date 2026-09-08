@@ -55,7 +55,6 @@ export function ConfirmationUserEmail({
         . Je vous répondrai très bientôt !
       </Text>
 
-      {/* Récap réservation */}
       <Section
         style={{
           backgroundColor: "#e1d8d6",
@@ -131,7 +130,6 @@ export function ConfirmationUserEmail({
   );
 }
 
-// Composant interne pour une ligne d'info
 function InfoLine({ label, value }: { label: string; value: string }) {
   return (
     <div style={{ marginBottom: "10px" }}>
@@ -160,5 +158,5 @@ function InfoLine({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-// Export par défaut nécessaire pour la preview React Email
+
 export default ConfirmationUserEmail;

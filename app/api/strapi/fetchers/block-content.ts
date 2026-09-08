@@ -19,7 +19,7 @@ export const fetchBlockContentById = async (
       slug: data.slug,
     };
   } catch (error) {
-    console.error(`Erreur lors de la récupération du bloc ID: ${id}`, error);
+    console.error(`Failed to fetch block content with ID: ${id}`, error);
     return null;
   }
 };
@@ -48,7 +48,7 @@ export const fetchMultipleBlockContents = async (
       content: block.content,
     }));
   } catch (error) {
-    console.error("Erreur lors de la récupération des blocs", error);
+    console.error("Failed to fetch block contents", error);
     throw error;
   }
 };
@@ -75,10 +75,7 @@ export const fetchBlockContentBySlug = async (
       slug: block.slug,
     };
   } catch (error) {
-    console.error(
-      `Erreur lors de la récupération du bloc slug: ${slug}`,
-      error,
-    );
+    console.error(`Failed to fetch block content with slug: ${slug}`, error);
     return null;
   }
 };

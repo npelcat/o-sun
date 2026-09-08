@@ -7,7 +7,6 @@ export async function sendPasswordResetEmail(
   resetToken: string,
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    // Construis l'URL de reset
     const resetUrl = `${process.env.NEXTAUTH_URL || "http://localhost:4000"}/reset-password?token=${resetToken}`;
 
     const { error } = await resend.emails.send({
@@ -55,13 +54,13 @@ export async function sendPasswordResetEmail(
     });
 
     if (error) {
-      console.error("Erreur envoi email reset:", error);
+      console.error("Password reset email failed:", error);
       return { success: false, error: "Erreur lors de l'envoi de l'email" };
     }
 
     return { success: true };
   } catch (error) {
-    console.error("Erreur sendPasswordResetEmail:", error);
+    console.error("sendPasswordResetEmail failed:", error);
     return { success: false, error: "Erreur interne" };
   }
 }

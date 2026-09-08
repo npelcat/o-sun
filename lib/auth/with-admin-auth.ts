@@ -3,13 +3,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 /**
- * Vérifie qu'une session admin valide existe avant d'exécuter le handler.
+ * Checks a valid admin session exists before running the handler.
  *
- * → Défense en profondeur : le middleware reste la première ligne de défense,
- *   mais pas de dépendance à une seule couche. Si une route est un jour
- *   ajoutée sans être couverte par le matcher du middleware, ou si un futur
- *   bug de framework contourne le middleware, cette vérification reste active.
- *
+ * → Defense in depth: middleware stays the first line of defense, but this
+ *   avoids relying on a single layer. If a route is ever added without
+ *   being covered by the middleware matcher, or a future framework bug
+ *   bypasses the middleware, this check still holds.
  */
 export function withAdminAuth<T extends unknown[]>(
   handler: (req: NextRequest, ...args: T) => Promise<NextResponse>,

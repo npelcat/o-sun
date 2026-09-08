@@ -6,9 +6,6 @@ import { withAdminAuth } from "@/lib/auth/with-admin-auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-// ============================================================
-// Mock de next-auth pour getAdminUser.
-// ============================================================
 vi.mock("@/lib/auth/auth", () => ({
   auth: vi.fn(),
 }));

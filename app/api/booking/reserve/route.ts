@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
     const isAllowed = apiRateLimiter.check(ip);
 
     if (!isAllowed) {
-      logger.warn(`Rate limit dépassé pour IP: ${ip} sur /api/booking/reserve`);
+      logger.warn(`Rate limit exceeded for IP: ${ip} on /api/booking/reserve`);
       return NextResponse.json(
         { message: "Trop de requêtes, réessayez dans quelques instants" },
         { status: 429 },
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
 
     const body = await request.json();
     const { timeSlotId } = reserveSlotSchema.parse(body);
-    logger.info("POST /booking/reserve - Réservation provisoire demandée", {
+    logger.info("POST /booking/reserve - Temporary reservation requested", {
       timeSlotId,
     });
 
@@ -113,7 +113,7 @@ export async function POST(request: NextRequest) {
       ? new Date(new Date(slot.lockedAt).getTime() + 15 * 60 * 1000)
       : null;
 
-    logger.info("POST /booking/reserve - Créneau verrouillé provisoirement", {
+    logger.info("POST /booking/reserve - Slot temporarily locked", {
       timeSlotId,
       expiresAt,
     });

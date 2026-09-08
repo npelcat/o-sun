@@ -25,11 +25,11 @@ export const useBookingTimer = ({
         body: JSON.stringify({ timeSlotId }),
       });
     } catch (err) {
-      console.error("Erreur lors de la libération du créneau :", err);
+      console.error("Failed to release slot:", err);
     }
   }, [timeSlotId]);
 
-  // Timer countdown
+  // Countdown display
   useEffect(() => {
     if (!expiresAtParam) return;
 
@@ -37,7 +37,7 @@ export const useBookingTimer = ({
     const interval = setInterval(() => {
       const remaining = Math.max(
         0,
-        Math.floor((expiresAt.getTime() - Date.now()) / 1000)
+        Math.floor((expiresAt.getTime() - Date.now()) / 1000),
       );
       setTimeLeft(remaining);
       if (remaining === 0) clearInterval(interval);
@@ -46,7 +46,7 @@ export const useBookingTimer = ({
     return () => clearInterval(interval);
   }, [expiresAtParam]);
 
-  // Auto-release on timeout
+  // Auto-release when the lock expires
   useEffect(() => {
     if (!expiresAtParam || !timeSlotId) return;
 
@@ -56,7 +56,7 @@ export const useBookingTimer = ({
     if (timeUntilExpiry <= 0) {
       releaseSlot();
       onWarning(
-        "Le temps est écoulé. Veuillez sélectionner un nouveau créneau."
+        "Le temps est écoulé. Veuillez sélectionner un nouveau créneau.",
       );
       router.push("/contact/newbooking");
       return;

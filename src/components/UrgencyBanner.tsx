@@ -23,7 +23,6 @@ export function UrgencyBanner({
 }: UrgencyBannerProps) {
   return (
     <div className="rounded-2xl border border-green bg-beige backdrop-blur-sm p-6 space-y-4">
-      {/* Urgency block */}
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="flex-1">
           <p className="text-sm font-semibold text-dark-green mb-1">
@@ -38,7 +37,6 @@ export function UrgencyBanner({
         />
       </div>
 
-      {/* Conditions */}
       {conditions && conditions.length > 0 && (
         <ul className="text-xs text-black/70 space-y-1 pl-1 border-l-2 border-dark-green/15">
           {conditions.map((condition, index) => (

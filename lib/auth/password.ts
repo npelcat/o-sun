@@ -1,19 +1,19 @@
 import argon2 from "argon2";
 
 /**
- * Hash un mot de passe avec Argon2id
+ * Hashes a password with Argon2id
  */
 export async function hashPassword(password: string): Promise<string> {
   return argon2.hash(password, {
     type: argon2.argon2id,
-    memoryCost: 19456, // 19 MB de RAM (OWASP minimum)
-    timeCost: 2, // 2 itérations (équilibre perf/sécurité)
-    parallelism: 1, // 1 thread (adapté au serveur)
+    memoryCost: 19456, // 19 MB of RAM (OWASP minimum)
+    timeCost: 2, // 2 iterations (perf/security tradeoff)
+    parallelism: 1, // 1 thread (suited to the server)
   });
 }
 
 /**
- * Vérifie un mot de passe contre son hash
+ * Verifies a password against its hash
  */
 export async function verifyPassword(
   hash: string,
@@ -22,6 +22,6 @@ export async function verifyPassword(
   try {
     return await argon2.verify(hash, password);
   } catch {
-    return false; // Hash invalide ou erreur
+    return false; // Invalid hash or unexpected error
   }
 }

@@ -1,18 +1,18 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-// Mock de Turnstile - DOIT ÊTRE AVANT l'import du module qui l'utilise
+// Mock Turnstile - MUST come before importing the module that uses it
 vi.mock("@/lib/validation/turnstile", () => ({
   verifyTurnstileToken: vi.fn().mockResolvedValue({ success: true }),
 }));
 
-// Mock Rate limiter
+// Mock rate limiter
 vi.mock("@/lib/security/rate-limit-simple", () => ({
   contactRateLimiter: {
     check: vi.fn().mockReturnValue(true),
   },
 }));
 
-// Mock de Resend
+// Mock Resend
 const mockResendSend = vi.fn();
 vi.mock("resend", () => ({
   Resend: vi.fn().mockImplementation(() => ({
@@ -31,15 +31,13 @@ vi.mock("@/utils/logger", () => ({
   },
 }));
 
-// Imports APRÈS les mocks
+// Imports AFTER the mocks
 import { POST } from "@/app/api/email/route";
 import { createRequest } from "./utils/test-utils";
 import { verifyTurnstileToken } from "@/lib/validation/turnstile";
 
-// Récupérer la référence au mock
 const mockVerifyTurnstile = vi.mocked(verifyTurnstileToken);
 
-// Variables d'environnement
 vi.stubEnv("RESEND_API_KEY", "test-api-key");
 vi.stubEnv("RESEND_SENDER_EMAIL", "noreply@example.com");
 vi.stubEnv("MY_EMAIL", "oceane@example.com");
@@ -64,10 +62,10 @@ describe("POST /api/email", () => {
     const body = await response.json();
     expect(body.message).toContain("Votre e-mail a bien été envoyé");
 
-    // 2 appels : notification admin + accusé de réception utilisateur
+    // 2 calls: admin notification + user acknowledgment
     expect(mockResendSend).toHaveBeenCalledTimes(2);
 
-    // Premier appel : notification à l'admin
+    // First call: notification to the admin
     expect(mockResendSend).toHaveBeenNthCalledWith(
       1,
       expect.objectContaining({
@@ -78,7 +76,7 @@ describe("POST /api/email", () => {
       }),
     );
 
-    // Deuxième appel : accusé de réception à l'utilisateur
+    // Second call: acknowledgment to the user
     expect(mockResendSend).toHaveBeenNthCalledWith(
       2,
       expect.objectContaining({
@@ -163,8 +161,8 @@ describe("POST /api/email", () => {
 
     await POST(req);
 
-    // React Email utilise white-space: pre-wrap — les \n sont conservés tels quels,
-    // pas convertis en <br>. On vérifie que le contenu est bien présent.
+    // React Email uses white-space: pre-wrap — \n is preserved as-is,
+    // not converted to <br>. We're just checking the content made it through.
     const notificationCall = mockResendSend.mock.calls[0][0];
     expect(notificationCall.html).toContain("Ligne 1");
     expect(notificationCall.html).toContain("Ligne 2");

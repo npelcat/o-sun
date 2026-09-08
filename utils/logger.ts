@@ -15,7 +15,6 @@ const devFormat = combine(
   }),
 );
 
-// Format JSON structuré pour la prod
 const prodFormat = combine(timestamp(), errors({ stack: true }), json());
 
 const logger = createLogger({

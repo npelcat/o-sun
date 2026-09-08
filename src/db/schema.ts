@@ -15,7 +15,7 @@ export const bookingStatusEnum = bookingSchema.enum("booking_status", [
   "canceled",
 ]);
 
-// Table : Admin
+// Table: Admin
 export const admins = bookingSchema.table("admins", {
   id: uuid("admin_id").primaryKey().defaultRandom(),
   username: varchar("admin_name", { length: 255 }).notNull().unique(),
@@ -24,17 +24,17 @@ export const admins = bookingSchema.table("admins", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Table : Client
+// Table: Client
 export const clients = bookingSchema.table("clients", {
   id: uuid("client_id").primaryKey().defaultRandom(),
   name: varchar("client_name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
-  phone: varchar("phone", { length: 20 }), // Optionnel
+  phone: varchar("phone", { length: 20 }), // Optional
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Table : TimeSlot
+// Table: TimeSlot
 export const timeSlots = bookingSchema.table("time_slots", {
   id: uuid("time_slot_id").primaryKey().defaultRandom(),
   startTime: timestamp("start_time").notNull(),
@@ -45,7 +45,7 @@ export const timeSlots = bookingSchema.table("time_slots", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Table : FormData
+// Table: FormData
 export const formData = bookingSchema.table("form_data", {
   id: uuid("form_id").primaryKey().defaultRandom(),
   animalName: varchar("animal_name", { length: 255 }).notNull(),
@@ -65,7 +65,7 @@ export const formData = bookingSchema.table("form_data", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Table : Booking
+// Table: Booking
 export const bookings = bookingSchema.table("bookings", {
   id: uuid("booking_id").primaryKey().defaultRandom(),
   timeSlotId: uuid("time_slot_id")
@@ -84,7 +84,7 @@ export const bookings = bookingSchema.table("bookings", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Table : Password Reset Tokens
+// Table: Password Reset Tokens
 export const passwordResetTokens = bookingSchema.table(
   "password_reset_tokens",
   {

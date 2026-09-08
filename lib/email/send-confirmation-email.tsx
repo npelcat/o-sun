@@ -18,7 +18,6 @@ export async function sendConfirmationEmail(
     {},
   );
 
-  // Rendu HTML des composants React
   const userHtml = await render(
     <ConfirmationUserEmail
       clientName={booking.clientName}

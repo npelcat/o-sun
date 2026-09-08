@@ -30,7 +30,6 @@ export const SERVICES = [
   { value: "Urgence - Pack Traversée", label: "Urgence - Pack Traversée" },
 ] as const;
 
-// Helpers pour classifier les services
 const isCommunicationAnimale = (service: string) =>
   service.startsWith("Communication animale");
 
@@ -41,7 +40,6 @@ const isKinesiologie = (service: string) => service.startsWith("Kinésiologie");
 
 const isUrgence = (service: string) => service.startsWith("Urgence");
 
-// Nombre de sujets autorisés selon la formule de communication animale
 const getSubjectCount = (service: string): number => {
   if (service.includes("Clarté") || service.includes("Reconnexion")) return 1;
   if (service.includes("Équilibre")) return 2;
@@ -49,7 +47,6 @@ const getSubjectCount = (service: string): number => {
   return 1;
 };
 
-// Nombre de sujets autorisés pour les urgences
 const getUrgenceSubjectCount = (service: string): number => {
   if (service.includes("Clarté")) return 1;
   if (service.includes("Harmonie") || service.includes("Traversée")) return 3;
@@ -82,7 +79,6 @@ export const ServiceSpecificFields: React.FC<ServiceSpecificFieldsProps> = ({
 
     return (
       <div className="space-y-4">
-        {/* Sujets à explorer */}
         {Array.from({ length: subjectCount }, (_, i) => {
           const key = `sujet_${i + 1}`;
           const label =
@@ -109,7 +105,6 @@ export const ServiceSpecificFields: React.FC<ServiceSpecificFieldsProps> = ({
           );
         })}
 
-        {/* Date butoir */}
         <div>
           <label htmlFor="date_butoir" className="block mb-2 font-medium">
             Y a-t-il une date butoir à respecter pour l&apos;un des sujets ?{" "}
@@ -127,7 +122,6 @@ export const ServiceSpecificFields: React.FC<ServiceSpecificFieldsProps> = ({
           />
         </div>
 
-        {/* Message de cœur */}
         <div>
           <label htmlFor="message_coeur" className="block mb-2 font-medium">
             Message de cœur à cœur : quel message personnel souhaitez-vous
@@ -272,7 +266,6 @@ export const ServiceSpecificFields: React.FC<ServiceSpecificFieldsProps> = ({
 
     return (
       <div className="space-y-4">
-        {/* Description de la situation d'urgence */}
         <div>
           <label htmlFor="urgence_situation" className="block mb-2 font-medium">
             Décrivez la situation d&apos;urgence{" "}
@@ -294,7 +287,6 @@ export const ServiceSpecificFields: React.FC<ServiceSpecificFieldsProps> = ({
           )}
         </div>
 
-        {/* Sujets à aborder */}
         {Array.from({ length: subjectCount }, (_, i) => {
           const key = `urgence_sujet_${i + 1}`;
           const label =
@@ -321,7 +313,6 @@ export const ServiceSpecificFields: React.FC<ServiceSpecificFieldsProps> = ({
           );
         })}
 
-        {/* Message de cœur */}
         <div>
           <label
             htmlFor="urgence_message_coeur"

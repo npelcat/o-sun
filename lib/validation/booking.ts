@@ -1,20 +1,17 @@
 import { z } from "zod";
 
-// Regex pour téléphones francophones (France, Belgique, Suisse, Canada, etc.)
-// Accepte les formats avec ou sans indicatif international
+// Phone regex for francophone countries (France, Belgium, Switzerland, Canada, etc.)
+// Accepts formats with or without an international prefix
 const francophonesPhoneRegex = /^(?:0\d{9}|(?:\+|00)[1-9]\d{7,14})$/;
 
-// Validation pour réserver provisoirement un créneau
 export const reserveSlotSchema = z.object({
   timeSlotId: z.string().uuid("ID de créneau invalide"),
 });
 
-// Validation pour libérer un créneau
 export const releaseSlotSchema = z.object({
   timeSlotId: z.string().uuid("ID de créneau invalide"),
 });
 
-// Validation pour confirmer une réservation
 export const confirmBookingSchema = z.object({
   timeSlotId: z.string().uuid("ID de créneau invalide"),
   clientName: z
@@ -91,14 +88,12 @@ export const confirmBookingSchema = z.object({
   turnstileToken: z.string().min(1, "Token de sécurité requis"),
 });
 
-// Validation pour modifier le statut d'une réservation
 export const updateBookingStatusSchema = z.object({
   status: z.enum(["pending", "confirmed", "canceled"], {
     errorMap: () => ({ message: "Statut invalide" }),
   }),
 });
 
-// Validation pour envoyer l'email de confirmation
 export const confirmEmailSchema = z.object({
   bookingId: z.string().uuid("ID de réservation invalide"),
 });

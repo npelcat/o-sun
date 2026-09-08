@@ -30,7 +30,6 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
 }) => {
   return (
     <>
-      {/* Sélection du service */}
       <fieldset className="border-t pt-6">
         <legend className="text-xl font-subtitle mb-4">Service souhaité</legend>
 
@@ -62,7 +61,6 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
         </div>
       </fieldset>
 
-      {/* Champs dynamiques selon le service choisi */}
       {formData.service && (
         <fieldset className="border-t pt-6">
           <legend className="text-xl font-subtitle mb-4">
@@ -77,7 +75,6 @@ export const ServiceSection: React.FC<ServiceSectionProps> = ({
         </fieldset>
       )}
 
-      {/* Champ libre */}
       <div className="border-t pt-6">
         <label htmlFor="answers" className="block mb-2 font-medium">
           Informations complémentaires{" "}

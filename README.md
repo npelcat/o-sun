@@ -1,443 +1,136 @@
-# ☀️ O'Sun - Animal Voice
+# O'Sun – Voix Animale
 
-## 📜 Description
+Booking platform for a self-employed animal communication practitioner: service pages, an online booking flow, and an admin area for managing appointments and availability.
 
-Showcase website and booking platform for a self-employed professional offering animal communication services. The site includes service presentations, an online booking system, and an admin area for managing appointments and time slots.
+Live: https://www.osun-voixanimale.com/
 
----
+## Contents
 
-## 🎉 Current Features
+1. [Features](#1-features)
+2. [Tech stack](#2-tech-stack)
+3. [Getting started](#3-getting-started)
+4. [Database](#4-database)
+5. [Testing](#5-testing)
+6. [Security](#6-security)
+7. [RGPD data deletion](#7-rgpd-data-deletion)
+8. [Deployment](#8-deployment)
+9. [Git workflow](#9-git-workflow)
 
-### Client Side
+## 1. Features
 
-- **Presentation pages**: services, ethics, testimonials
-- **Booking system**: select time slots and submit detailed forms
-- **Contact form**: send messages with automatic email confirmation
-- **Legal pages**: terms & conditions, legal notices
+**Client**
 
-### Admin Side (in development)
+- Service, ethics and testimonial pages
+- Booking flow: pick a slot, fill a detailed form
+- Contact form with automatic confirmation email
+- Legal notices / T&Cs
 
-- **Secure authentication**: admin login via NextAuth.js with Google OAuth
-- **Booking management**: view, confirm, cancel, and add private notes
-- **Time slot management**: create, edit, and disable availability _(in development)_
+**Admin**
 
-### Technical
+- Google OAuth login via NextAuth
+- View, confirm, cancel bookings, add private notes
+- Slot management (create/edit/disable)
 
-- **REST API**: secure routes for data management
-- **API documentation**: integrated Swagger accessible via `/api-docs`
-- **Data validation**: Zod schemas on client and server side
-- **Email notifications**: automatic emails via Resend (client confirmations and admin alerts)
+**API**
 
----
+- REST endpoints, documented with Swagger at `/api-docs`
+- Zod validation on both client and server
 
-## ⏳ Upcoming Features
+## 2. Tech stack
 
-- **Online payment**: integration of secure payment solution (Stripe/PayPal)
-- **Google reviews integration**: display customer testimonials
+| Layer    | Choices                                                        |
+| -------- | -------------------------------------------------------------- |
+| Frontend | Next.js 16 (App Router), React, TypeScript, Tailwind + DaisyUI |
+| Backend  | Next.js API routes, PostgreSQL (Supabase), Drizzle ORM, Zod    |
+| Services | Strapi CMS (Koyeb), Resend (email), NextAuth (Google OAuth)    |
+| Tooling  | Docker, Vitest, Swagger, GitHub Actions                        |
 
----
+## 3. Getting started
 
-## 🔬 Technologies Used
-
-### Frontend
-
-- **Next.js 16**: App Router for server rendering and page management
-- **React**: interactive and responsive user interface
-- **TypeScript**: static typing for robust and maintainable code
-- **Tailwind CSS**: custom design system with DaisyUI
-
-### Backend & Database
-
-- **Next.js API Routes**: backend endpoint management
-- **PostgreSQL**: database hosted on Supabase (production and test)
-- **Drizzle ORM**: SQL migrations and query management
-- **Zod**: data validation in frontend and backend
-
-### External Services
-
-- **Strapi CMS**: content management (hosted on Koyeb)
-- **Resend**: transactional email service
-- **NextAuth.js**: authentication with Google OAuth
-- **Supabase**: PostgreSQL database hosting
-
-### Development Tools
-
-- **Docker**: containerization for easy installation and development
-- **Swagger**: interactive API documentation
-- **Vitest**: unit testing framework
-
----
-
-## 💿 Installation and Setup
-
-### 🔧 Prerequisites
-
-- **Node.js** (v22+ recommended)
-- **npm** or **pnpm**
-- **Docker** (optional but recommended for development)
-
----
-
-### 📦 Option 1 – Installation Without Docker
-
-#### 1. Clone the repository
+**Prerequisites:** Node 22+, npm (or pnpm), Docker (optional)
 
 ```bash
 git clone https://github.com/npelcat/o-sun.git
 cd o-sun
+cp .env.example .env.local   # fill in the values below
 ```
 
-#### 2. Install dependencies
+**Without Docker** — `npm install && npm run dev` → http://localhost:4000
+**With Docker** — `docker-compose up` → http://localhost:4001
 
-```bash
-npm install
-```
-
-#### 3. Configure environment variables
-
-Create a `.env.local` file at the project root:
-
-```bash
-cp .env.example .env.local
-```
-
-Then fill in the required values (see **Environment Variables** section below).
-
-#### 4. Run the development server
-
-```bash
-npm run dev
-```
-
-#### 5. Access the application
-
-Open your browser at: **http://localhost:4000**
-
----
-
-### 🐳 Option 2 – Installation With Docker (Recommended)
-
-#### 1. Clone the repository
-
-```bash
-git clone https://github.com/npelcat/o-sun.git
-cd o-sun
-```
-
-#### 2. Configure environment variables
-
-```bash
-cp .env.example .env.local
-```
-
-Fill in the values in `.env.local` (see **Environment Variables** section).
-
-#### 3. Start the container
-
-```bash
-docker-compose up
-```
-
-#### 4. Access the application
-
-The app will be available at: **http://localhost:4001**
-
-#### 5. Stop the container
-
-```bash
-docker-compose down
-```
-
----
-
-### 🔑 Environment Variables
-
-Create a `.env.local` file based on `.env.example`:
+**Environment variables** (`.env.local`)
 
 ```env
-# Environment
-NODE_ENV=development  # development | production | test
+NODE_ENV=development
 NEXTAUTH_URL=http://localhost:4000
-NEXTAUTH_SECRET=your-secret-here
+NEXTAUTH_SECRET=
 
-# Strapi CMS API
-NEXT_PUBLIC_API_URL=http://localhost:1337
+NEXT_PUBLIC_API_URL=http://localhost:1337        # Strapi
 
-# Supabase Database
-DATABASE_URL=postgresql://user:password@host:5432/database
-NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+DATABASE_URL=
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
 
-# Email Service (Resend)
-RESEND_API_KEY=re_xxxxx
-RESEND_SENDER_EMAIL=sender@domain.com
+RESEND_API_KEY=
+RESEND_SENDER_EMAIL=
 
-# Google OAuth Authentication
-GOOGLE_CLIENT_ID=xxxxx.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=your-secret
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 
-# CRON JOB (user data deleted after two years.)
-CRON_SECRET=
+CRON_SECRET=            # RGPD cleanup job, see §7
 CRON_DATABASE_URL=
-
 ```
 
----
+**Scripts**
 
-## 💾 Database
+| Command                                        | What it does                                                                                     |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `npm run dev` / `build` / `start`              | Standard Next.js lifecycle                                                                       |
+| `npm run test`                                 | Run the Vitest suite                                                                             |
+| `npm run lint`                                 | ESLint                                                                                           |
+| `npm run drizzle:generate` / `drizzle:migrate` | Create / apply DB migrations                                                                     |
+| `npm run db:seed` / `db:seed:test`             | Seed local or test DB with fake data (Faker) — requires `SEED_ALLOWED=true`, never in production |
 
-### Architecture
+## 4. Database
 
-- **Production**: PostgreSQL hosted on Supabase
-- **Test**: Dedicated Supabase database to validate migrations
-- **Development**: Local database with test data
+PostgreSQL on Supabase, one instance for production and one for tests, local dev points at a database with sample data. Schema and migrations live under `/drizzle`, managed with Drizzle ORM (see scripts above). The seed script populates clients, slots and bookings — it never touches the `admins` table.
 
-### Migration Management
-
-Migrations are managed via **Drizzle ORM**. Files are located in the `/drizzle` folder.
-
-#### Generate a migration
-
-```bash
-npm run drizzle:generate
-```
-
-#### Apply migrations
-
-```bash
-npm run drizzle:migrate
-```
-
-#### Seed the database with test data
-
-> ⚠️ Only available in environments where `SEED_ALLOWED=true` is set.
-> Never enable this in production.
-
-```bash
-npm run db:seed        # Seeds the local database (.env.local)
-npm run db:seed:test   # Seeds the test database (.env.test)
-```
-
-The seed script populates the following tables with realistic fake data (via Faker.js):
-
-- 20 clients
-- 50 time slots
-- 30 form entries and their associated bookings
-
-The `admins` table is never touched by the seed.
-
----
-
-## 🛠️ Available Scripts
-
-- `npm run dev` – Start development server
-- `npm run build` – Build the application for production
-- `npm run start` – Start the production application
-- `npm run test` – Run unit tests
-- `npm run lint` – Check code quality with ESLint
-- `npm run drizzle:generate` – Generate a Drizzle migration
-- `npm run drizzle:migrate` – Apply Drizzle migrations
-- `npm run db:seed` – Seed the local database with test data
-- `npm run db:seed:test` – Seed the test database with test data
-
----
-
-## 🌱 Deployment
-
-### Production
-
-The site is deployed on **Vercel**:  
-👉 **https://www.osun-voixanimale.com/**
-
-### Connected Services
-
-- **Database**: Supabase (PostgreSQL)
-- **CMS**: Strapi hosted on Koyeb
-- **Emails**: Resend
-- **Automated cleanup**: GitHub Actions (monthly RGPD data deletion)
-
----
-
-## 📂 Project Structure
-
-```
-/app
-  /about              # Static pages (ethics, testimonials)
-  /admin              # Admin interface (protected)
-  /api                # API routes
-    /admin            # Time slots and bookings management
-    /auth             # NextAuth authentication
-    /bookings         # Client bookings
-    /email            # Contact form
-    /strapi           # Strapi CMS connection
-    /swagger          # API documentation
-  /api-docs           # Swagger interface
-  /booking            # Booking process
-  /contact            # Contact form
-  /login              # Admin login page
-  /services           # Services presentation
-  /cgv                # Terms and conditions
-  /mentions-legales   # Legal notices
-
-/drizzle              # Drizzle ORM migrations
-/lib                  # Services and business logic
-  /admin              # Admin functions
-  /validation         # Zod validation schemas
-
-/src
-  /components         # Reusable React components
-  /db                 # Drizzle + Supabase configuration
-  /hooks              # Custom hooks
-  /styles             # Global styles
-
-/tests                # Unit tests
-/utils                # Utilities (logger, emails, error handler)
-```
-
----
-
-## 🧪 Testing
-
-Unit tests are organized in the `/tests` folder:
+## 5. Testing
 
 ```bash
 npm run test
 ```
 
----
+Unit tests live in `/tests`, written with Vitest.
 
-## 🔒 Security
+## 6. Security
 
-- **Admin authentication**: NextAuth.js with Google OAuth
-- **Data validation**: Zod (frontend + backend)
-- **Environment variables**: never exposed client-side (except `NEXT_PUBLIC_*`)
-- **Secure APIs**: JWT session verification via NextAuth middleware for `/api/admin/*` routes
+- Admin routes protected by NextAuth session checks in middleware
+- Zod validation on every input, client and server side
+- Secrets never exposed client-side (only `NEXT_PUBLIC_*` vars are)
+- Regular dependency audits (Dependabot)
 
----
+## 7. RGPD data deletion
 
-## 🗑️ Automated Data Deletion (RGPD)
+A GitHub Actions cron runs monthly (1st, 2am UTC) and deletes client accounts inactive for over two years, cascading to their bookings and form data.
 
-A monthly CRON job automatically deletes client data inactive for more than 2 years,
-in compliance with the site's privacy policy.
+- Route: `GET /api/cron/cleanup`, authenticated with `CRON_SECRET`
+- Manual run: GitHub → Actions → "Suppression automatique des données RGPD"
+- A response of `{"success":true,"deletedCount":0}` is normal — it just means nothing was old enough
 
-### How it works
+## 8. Deployment
 
-- **Scheduler**: GitHub Actions (runs on the 1st of each month at 2am UTC)
-- **Route**: `GET /api/cron/cleanup`
-- **Authentication**: Bearer token (`CRON_SECRET`)
-- **Database connection**: dedicated role with full rights (`CRON_DATABASE_URL`)
+Hosted on Vercel, with Strapi on Koyeb and email via Resend.
 
-Deleting a client automatically removes associated bookings and form data
-via cascades defined in the schema.
+To roll back: Vercel → Deployments → pick the last stable one → Redeploy. This only reverts the app code — a database migration already applied stays applied, which is why migrations are written to be additive (new columns, not dropped ones) whenever possible.
 
-### Manual trigger
+## 9. Git workflow
 
-From GitHub → Actions → "Suppression automatique des données RGPD" → Run workflow.
-Expected response: `{"success":true,"deletedCount":0}` (0 is normal if no data is old enough).
-
-### Required environment variables
-
-| Variable            | Where                   |
-| ------------------- | ----------------------- |
-| `CRON_SECRET`       | Vercel + GitHub Secrets |
-| `CRON_DATABASE_URL` | Vercel only             |
-| `APP_URL`           | GitHub Secrets only     |
+- **Branching** — GitHub Flow: `main` is always deployable, one `feature/*` branch per change, merged via PR once lint/build/tests pass in CI. Direct pushes to `main` are blocked.
+- **Commits** — [Gitmoji](https://gitmoji.dev/), e.g. `✨ Add booking form with Zod validation`, `🐛 Fix slot not releasing after timeout`.
+- **Releases** — SemVer (`vMAJOR.MINOR.PATCH`): patch for fixes, minor for features, major for breaking changes. Tag from `main` and publish a GitHub release.
 
 ---
 
-## 🌿 Versioning Strategy
-
-This project follows the **GitHub Flow** branching strategy:
-
-- `main` — production branch, always stable and deployed
-- `feature/feature-name` — one branch per feature or fix, branched from `main`
-
-> Direct pushes to `main` are blocked by a branch protection rule.
-> Every change must go through a **Pull Request**, and the CI pipeline
-> (lint, build, tests) must pass before merging.
-
-## 🏷️ Releases and Versioning
-
-This project follows **SemVer** (Semantic Versioning): `vMAJOR.MINOR.PATCH`
-
-| Type of change  | Example  |
-| --------------- | -------- |
-| Bug fix         | `v1.0.1` |
-| New feature     | `v1.1.0` |
-| Breaking change | `v2.0.0` |
-
-### Creating a new release
-
-From `main`, after a merge:
-
-```bash
-git tag -a v1.x.x -m "Short description of the version"
-git push origin v1.x.x
-```
-
-Then on GitHub: **Releases → Draft a new release → select the tag → Publish**.
-
-### Application rollback
-
-If something goes wrong in production:
-
-1. Go to **Vercel → Deployments**
-2. Identify the last stable deployment
-3. Click **"Redeploy"** to reactivate it
-
-> ⚠️ Vercel rollback covers the application code only.
-> If a database migration has already been applied,
-> it is not automatically reversed. Migrations should therefore
-> be designed to be non-destructive (adding columns
-> rather than deleting them).
-
----
-
-## ✍️ Commit Conventions
-
-Commits follow the **[Gitmoji](https://gitmoji.dev/)** convention.
-Each commit starts with an emoji that indicates the type of change at a glance,
-followed by a clear and explicit message.
-
-| Emoji | Code                 | Meaning                 |
-| ----- | -------------------- | ----------------------- |
-| ✨    | `:sparkles:`         | New feature             |
-| 🐛    | `:bug:`              | Bug fix                 |
-| ♻️    | `:recycle:`          | Refactoring             |
-| 🔒    | `:lock:`             | Security fix            |
-| 📝    | `:memo:`             | Documentation           |
-| 🚀    | `:rocket:`           | Deployment              |
-| 💄    | `:lipstick:`         | UI / styles             |
-| ✅    | `:white_check_mark:` | Tests                   |
-| 🗃️    | `:card_file_box:`    | Database                |
-| 🔧    | `:wrench:`           | Configuration           |
-| ⬆️    | `:arrow_up:`         | Upgrade dependencies    |
-| 🎨    | `:art:`              | Code structure / format |
-
-**Example:**
-
-```
-✨ Add booking form with Zod validation and email confirmation
-🐛 Fix time slot not releasing after 15min timeout
-📝 Update README with versioning and commit conventions
-```
-
----
-
-## 📫 Contributing
-
-Feedback, improvement suggestions, and contributions are welcome!  
-Feel free to open an **issue** or submit a **pull request**.
-
----
-
-## 👩‍💻 Author
-
-**@nad_cat** – Passionate Full Stack Developer, France  
-📧 [LinkedIn](https://www.linkedin.com/in/nadege-pelcat)
-
----
-
-## 📄 License
-
-This project is under private license. All rights reserved.
+**@nad_cat** — [LinkedIn](https://www.linkedin.com/in/nadege-pelcat)
+Private license, all rights reserved.

@@ -15,13 +15,8 @@ export function createRequest(
 import { vi, Mock } from "vitest";
 
 /**
- * Type représentant une transaction mockée pour les tests.
- * Contient uniquement les méthodes nécessaires pour tester nos services.
- *
- * Cette approche permet de :
- * - Garder les tests lisibles et maintenables
- * - Ne mocker que ce qui est réellement utilisé
- * - Faciliter la compréhension des dépendances de chaque service
+ * Mocked transaction shape for tests — only the methods our services
+ * actually use.
  */
 export interface MockTransaction {
   select: Mock;
@@ -39,19 +34,9 @@ export interface MockTransaction {
 }
 
 /**
- * Crée une transaction mockée avec des valeurs par défaut.
- * Chaque méthode retourne `this` pour permettre le chaînage,
- * sauf les méthodes terminales (limit, returning, execute).
- *
- * @returns Une transaction mockée prête à être configurée pour les tests
- *
- * @example
- * ```typescript
- * const mockTrx = createMockTransaction();
- * mockTrx.returning.mockResolvedValue([{ id: "123", name: "Test" }]);
- *
- * const result = await createClient(mockTrx, { name: "Test", email: "test@example.com" });
- * ```
+ * Creates a mocked transaction with sensible defaults. Every method
+ * returns `this` for chaining, except the terminal ones (limit,
+ * returning, execute).
  */
 export function createMockTransaction(): MockTransaction {
   return {
@@ -71,22 +56,11 @@ export function createMockTransaction(): MockTransaction {
 }
 
 /**
- * Helper pour typer correctement les mocks de transaction
- * dans les appels aux fonctions de service.
- *
- * Utilise un cast via 'any' de manière contrôlée et documentée.
- * Ce cast est nécessaire car les mocks ne peuvent pas implémenter
- * complètement l'interface complexe de Drizzle (qui contient des
- * dizaines de méthodes et propriétés internes non utilisées).
- *
- * @param mockTrx La transaction mockée
- * @returns La même transaction, typée pour être acceptée par les services
+ * Casts a mocked transaction to `any` so it satisfies Drizzle's real
+ * (much larger) transaction type, which our mocks don't fully implement.
  *
  * @example
- * ```typescript
- * const mockTrx = createMockTransaction();
  * const result = await createClient(asTrx(mockTrx), data);
- * ```
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function asTrx(mockTrx: MockTransaction): any {
@@ -94,27 +68,19 @@ export function asTrx(mockTrx: MockTransaction): any {
 }
 
 /**
- * Vérifie qu'un mock a été appelé avec des valeurs partielles.
- * Utile pour les assertions où je ne veux vérifier que certains champs.
- *
- * @example
- * ```typescript
- * expect(mockTrx.values).toHaveBeenCalledWith(
- *   expectPartial({ name: "John", email: "john@example.com" })
- * );
- * ```
+ * Asserts a mock was called with a partial match on specific fields.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function expectPartial(partial: Record<string, any>) {
   return expect.objectContaining(partial);
 }
 
-// Helper pour créer des dates relatives (pratique pour les tests de timeout)
+// Helper for relative dates (handy for timeout tests)
 export function minutesAgo(minutes: number): Date {
   return new Date(Date.now() - minutes * 60 * 1000);
 }
 
-// Helper pour créer un mock de slot
+// Helper to create a mock slot
 export function createMockSlot(overrides = {}) {
   return {
     id: "slot-123",

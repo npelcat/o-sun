@@ -27,19 +27,18 @@ export interface TimeslotFilters {
 }
 
 // ============================================
-// FONCTIONS DE SERVICE
+// SERVICE FUNCTIONS
 // ============================================
 
 /**
- * Récupère tous les créneaux avec filtres optionnels
- * Utilisé par l'admin pour voir tous ses créneaux (même les inactifs)
+ * Fetches all time slots with optional filters
+ * Used by the admin to see every slot, including inactive ones
  */
 export async function getAllTimeslotsAdmin(filters?: TimeslotFilters) {
   let query = db.select().from(timeSlots);
 
   const conditions = [];
 
-  // Filtre par mois
   if (filters?.month) {
     const monthDT = DateTime.fromFormat(filters.month, "yyyy-MM", {
       zone: "Europe/Paris",
@@ -51,7 +50,6 @@ export async function getAllTimeslotsAdmin(filters?: TimeslotFilters) {
     conditions.push(lte(timeSlots.startTime, endOfMonth));
   }
 
-  // Filtre par plage de dates
   if (filters?.startDate) {
     conditions.push(gte(timeSlots.startTime, new Date(filters.startDate)));
   }
@@ -59,7 +57,6 @@ export async function getAllTimeslotsAdmin(filters?: TimeslotFilters) {
     conditions.push(lte(timeSlots.startTime, new Date(filters.endDate)));
   }
 
-  // Filtre par statut actif/inactif
   if (filters?.isActive !== undefined) {
     conditions.push(eq(timeSlots.isActive, filters.isActive));
   }
@@ -72,9 +69,6 @@ export async function getAllTimeslotsAdmin(filters?: TimeslotFilters) {
   return slots;
 }
 
-/**
- * Récupère un créneau par son ID
- */
 export async function getTimeslotById(id: string) {
   const [slot] = await db
     .select()
@@ -91,21 +85,20 @@ export async function getTimeslotById(id: string) {
 }
 
 /**
- * Crée un nouveau créneau horaire
- * Utilisé par l'admin pour ajouter des disponibilités
+ * Creates a new time slot
+ * Used by the admin to add availability
  */
 export async function createTimeslot(data: CreateTimeslotData) {
   const { startTime, endTime } = data;
 
-  // Vérification : pas de chevauchement avec un créneau existant actif
+  // Guard: no overlap with an existing active slot
   const overlapping = await db
     .select()
     .from(timeSlots)
     .where(
       and(
         eq(timeSlots.isActive, true),
-        // Chevauchement si :
-        // nouveau start < existing end ET nouveau end > existing start
+        // Overlap when: new start < existing end AND new end > existing start
         lt(timeSlots.startTime, new Date(endTime)),
         gt(timeSlots.endTime, new Date(startTime)),
       ),
@@ -133,31 +126,28 @@ export async function createTimeslot(data: CreateTimeslotData) {
 }
 
 /**
- * Met à jour un créneau existant
- * L'admin peut modifier les dates ou désactiver le créneau
+ * Updates an existing time slot
+ * The admin can change the dates or deactivate the slot
  */
 export async function updateTimeslot(id: string, data: UpdateTimeslotData) {
   const { startTime, endTime, isActive } = data;
 
-  // Vérifier que le créneau existe
   const existingSlot = await getTimeslotById(id);
 
-  // Vérifier le chevauchement si on modifie les dates
   if (startTime || endTime) {
-    // Utiliser les nouvelles valeurs si fournies, sinon garder les anciennes
+    // Fall back to the existing values for whichever date wasn't provided
     const newStart = startTime ? new Date(startTime) : existingSlot.startTime;
     const newEnd = endTime ? new Date(endTime) : existingSlot.endTime;
 
-    // Vérifier qu'il n'y a pas de chevauchement avec un autre créneau actif
     const overlapping = await db
       .select()
       .from(timeSlots)
       .where(
         and(
           eq(timeSlots.isActive, true),
-          // Exclure le créneau qu'on est en train de modifier
+          // Exclude the slot currently being edited
           not(eq(timeSlots.id, id)),
-          // Chevauchement si :
+          // Overlap when:
           lt(timeSlots.startTime, newEnd),
           gt(timeSlots.endTime, newStart),
         ),
@@ -199,9 +189,6 @@ export async function updateTimeslot(id: string, data: UpdateTimeslotData) {
   return updated;
 }
 
-/**
- * Supprime un créneau
- */
 export async function deleteTimeslot(id: string) {
   const [deleted] = await db
     .delete(timeSlots)
@@ -216,8 +203,8 @@ export async function deleteTimeslot(id: string) {
 }
 
 /**
- * Compte le nombre de créneaux disponibles pour un mois donné
- * Utile pour afficher des stats dans le dashboard admin
+ * Counts available slots for a given month
+ * Used for the admin dashboard stats
  */
 export async function countAvailableSlotsForMonth(month: string) {
   const monthDT = DateTime.fromFormat(month, "yyyy-MM", {
@@ -242,8 +229,8 @@ export async function countAvailableSlotsForMonth(month: string) {
 }
 
 /**
- * Vérifie qu'aucune réservation n'est liée à ce créneau
- * Lève une erreur métier si c'est le cas
+ * Checks that no booking is linked to this slot
+ * Throws a business error if one is found
  */
 export async function checkNoLinkedBookings(timeslotId: string): Promise<void> {
   const linkedBookings = await db

@@ -83,11 +83,11 @@ export async function reserveSlot(timeSlotId: string): Promise<void> {
 }
 
 /**
- * Vérifie qu'un slot est valide pour la confirmation
- * - Existe
- * - Est actif
- * - Est verrouillé
- * - Le verrou n'a pas expiré (< 15 min)
+ * Checks that a slot is valid for confirmation
+ * - Exists
+ * - Is active
+ * - Is locked
+ * - The lock has not expired (< 15 min)
  */
 export async function validateSlotForConfirmation(
   trx: DbTransaction,
@@ -106,17 +106,14 @@ export async function validateSlotForConfirmation(
 
   const slot = rows[0];
 
-  // Vérifier que le slot est actif
   if (!slot.isActive) {
     throw new HttpError(409, "Créneau déjà confirmé ou annulé");
   }
 
-  // Vérifier que le slot est verrouillé
   if (!slot.lockedAt) {
     throw new HttpError(409, "Créneau non réservé précédemment");
   }
 
-  // Vérifier l'expiration du verrou (15 min max)
   const now = Date.now();
   const lockedTime = new Date(slot.lockedAt).getTime();
   const elapsed = now - lockedTime;

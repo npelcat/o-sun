@@ -4,21 +4,21 @@ import { useBookingFields } from "./useBookingFields";
 import { useBookingSubmit } from "./useBookingSubmit";
 
 export interface FormData {
-  // Infos client
+  // Client info
   clientName: string;
   clientEmail: string;
   clientPhone: string;
-  // Infos animal
+  // Animal info
   animalName: string;
   animalType: string;
   animalInfo: string;
-  // Infos foyer
+  // Household info
   householdInfo: string;
   // Service
   service: string;
   serviceSpecificAnswers: Record<string, string>;
   answers: string;
-  // Consentements & préférences
+  // Consents & preferences
   preferredPronoun: "tutoiement" | "vouvoiement" | "";
   socialMediaConsent: boolean;
   monthlyPlanningAck: boolean;

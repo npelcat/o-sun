@@ -94,7 +94,6 @@ export default function ServicePageClient({
         </div>
       </section>
 
-      {/* Dans quelles situations */}
       {useCasesBlock && (
         <section className="py-16 px-4 scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
           <div className="max-w-3xl mx-auto">
@@ -116,7 +115,6 @@ export default function ServicePageClient({
 
       {beforePricing}
 
-      {/* Formules */}
       <section
         id="formules"
         className="py-20 px-4 bg-gradient-to-b from-transparent via-green/20 to-transparent scroll-mt-24"
@@ -187,7 +185,6 @@ export default function ServicePageClient({
         </div>
       </section>
 
-      {/* Blocs explicatifs */}
       {infoBlocks.length > 0 && (
         <section id="a-propos" className="py-16 px-4 scroll-mt-24">
           <div className="max-w-7xl mx-auto">
@@ -234,7 +231,6 @@ export default function ServicePageClient({
         </section>
       )}
 
-      {/* Infos pratiques */}
       {accordions.length > 0 && (
         <section
           id="infos-pratiques"
@@ -255,7 +251,6 @@ export default function ServicePageClient({
         </section>
       )}
 
-      {/* CTA final */}
       <section className="py-16 px-4">
         <div className="max-w-2xl mx-auto text-center scroll-animate opacity-0 translate-y-8 transition-all duration-700 ease-out">
           <div className="bg-dark-green rounded-2xl p-8 shadow-lg text-white">

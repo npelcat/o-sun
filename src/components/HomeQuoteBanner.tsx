@@ -19,7 +19,6 @@ export function HomeQuoteBanner({
 }: HomeQuoteBannerProps) {
   return (
     <section className="mt-16 space-y-8">
-      {/* Section Citation */}
       {quoteBlock && (
         <div className="bg-dark-green/50 overflow-hidden">
           <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row md:items-center md:gap-8 lg:gap-12">
@@ -40,12 +39,10 @@ export function HomeQuoteBanner({
         </div>
       )}
 
-      {/* Card Instagram avec les couleurs du thème */}
       <div className="max-w-4xl mx-auto px-4 -mt-4">
         <div className="bg-white backdrop-blur-sm border-2 border-beige rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
           <div className="p-8 lg:p-10">
             <div className="flex flex-col md:flex-row items-center gap-8">
-              {/* Icône Instagram + info */}
               <div className="flex-shrink-0 text-center md:text-left">
                 <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-dark-green to-green shadow-lg mb-4 ring-4 ring-green/30">
                   <Instagram className="w-12 h-12 text-white" />
@@ -55,7 +52,6 @@ export function HomeQuoteBanner({
                 </p>
               </div>
 
-              {/* Contenu */}
               <div className="flex-1 text-center md:text-left">
                 <h2 className="text-xl lg:text-2xl font-subtitle font-bold text-black mb-3">
                   Suivez mon parcours de communicante animale

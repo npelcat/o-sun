@@ -24,7 +24,6 @@ export default function BookingFilters({
   return (
     <div className="bg-beige rounded-lg p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        {/* Filtre statut */}
         <div>
           <label className="block text-sm font-medium text-black mb-2">
             Statut
@@ -43,7 +42,6 @@ export default function BookingFilters({
           </select>
         </div>
 
-        {/* Filtre mois */}
         <div>
           <label className="block text-sm font-medium text-black mb-2">
             Mois
@@ -56,7 +54,6 @@ export default function BookingFilters({
           />
         </div>
 
-        {/* Filtre email */}
         <div>
           <label className="block text-sm font-medium text-black mb-2">
             Email client
@@ -70,7 +67,6 @@ export default function BookingFilters({
           />
         </div>
 
-        {/* Bouton reset */}
         <div className="flex items-end">
           <button
             onClick={onReset}

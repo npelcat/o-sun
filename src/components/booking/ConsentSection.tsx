@@ -24,7 +24,6 @@ export const ConsentSection: React.FC<ConsentSectionProps> = ({
       </legend>
 
       <div className="space-y-6">
-        {/* Tutoiement / vouvoiement */}
         <div>
           <p className="block mb-3 font-medium">
             Pour nos échanges, êtes-vous plus à l&apos;aise avec le tutoiement
@@ -61,7 +60,6 @@ export const ConsentSection: React.FC<ConsentSectionProps> = ({
           )}
         </div>
 
-        {/* Consentement réseaux sociaux */}
         <div>
           <label className="flex items-start gap-3 cursor-pointer">
             <input
@@ -80,7 +78,6 @@ export const ConsentSection: React.FC<ConsentSectionProps> = ({
           </label>
         </div>
 
-        {/* Fonctionnement du planning mensuel */}
         <div>
           <label className="flex items-start gap-3 cursor-pointer">
             <input
@@ -105,7 +102,6 @@ export const ConsentSection: React.FC<ConsentSectionProps> = ({
           )}
         </div>
 
-        {/* CGV */}
         <div>
           <label className="flex items-start gap-3 cursor-pointer">
             <input

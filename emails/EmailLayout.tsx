@@ -23,7 +23,6 @@ export function EmailLayout({ children }: EmailLayoutProps) {
             backgroundColor: "#f9f5f3",
           }}
         >
-          {/* Header avec le nom du site */}
           <div
             style={{
               textAlign: "center" as const,
@@ -60,7 +59,6 @@ export function EmailLayout({ children }: EmailLayoutProps) {
 
           {children}
 
-          {/* Footer */}
           <Hr
             style={{
               border: "none",

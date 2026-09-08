@@ -161,7 +161,7 @@ export async function POST(req: NextRequest) {
     const isAllowed = apiRateLimiter.check(ip);
 
     if (!isAllowed) {
-      logger.warn(`Rate limit dépassé pour IP: ${ip} sur /api/booking/confirm`);
+      logger.warn(`Rate limit exceeded for IP: ${ip} on /api/booking/confirm`);
       return NextResponse.json(
         { message: "Trop de requêtes, réessayez dans quelques instants" },
         { status: 429 },
@@ -191,7 +191,7 @@ export async function POST(req: NextRequest) {
       turnstileToken,
     } = validatedData;
 
-    logger.info("POST /booking/confirm - Tentative de confirmation", {
+    logger.info("POST /booking/confirm - Confirmation attempt", {
       timeSlotId,
       animalName,
     });
@@ -206,19 +206,17 @@ export async function POST(req: NextRequest) {
     const turnstileCheck = await verifyTurnstileToken(turnstileToken);
 
     if (!turnstileCheck.success) {
-      logger.warn("POST /booking/confirm - Turnstile échoué");
+      logger.warn("POST /booking/confirm - Turnstile check failed");
       return NextResponse.json(
         { message: turnstileCheck.error || "Vérification de sécurité échouée" },
         { status: 400 },
       );
     }
 
-    logger.info("POST /booking/confirm - Turnstile validé ✅");
-
     const emailValidation = await validateEmail(clientEmail);
 
     if (!emailValidation.isValid) {
-      logger.warn("POST /booking/confirm - Email invalide", {
+      logger.warn("POST /booking/confirm - Invalid email", {
         domain: clientEmail.split("@")[1],
         reason: emailValidation.message,
       });
@@ -230,17 +228,15 @@ export async function POST(req: NextRequest) {
     }
 
     if (emailValidation.message) {
-      logger.info("POST /booking/confirm - Email accepté avec avertissement", {
+      logger.info("POST /booking/confirm - Email accepted with warning", {
         domain: clientEmail.split("@")[1],
         warning: emailValidation.message,
       });
     }
 
-    logger.info("POST /booking/confirm - Email validé");
-
     const result = await db.transaction(async (trx) => {
       await validateSlotForConfirmation(trx, timeSlotId);
-      logger.info("POST /booking/confirm - Créneau validé", { timeSlotId });
+      logger.info("POST /booking/confirm - Slot validated", { timeSlotId });
 
       const { client, isNew } = await createOrUpdateClient(trx, {
         name: clientName,
@@ -248,7 +244,7 @@ export async function POST(req: NextRequest) {
         phone: clientPhone,
       });
       logger.info(
-        `POST /booking/confirm - Client ${isNew ? "créé" : "mis à jour"}`,
+        `POST /booking/confirm - Client ${isNew ? "created" : "updated"}`,
         { clientId: client.id },
       );
 
@@ -265,7 +261,7 @@ export async function POST(req: NextRequest) {
         monthlyPlanningAck,
         cgvAccepted,
       });
-      logger.info("POST /booking/confirm - FormData créé", {
+      logger.info("POST /booking/confirm - FormData created", {
         formId: form.id,
       });
 
@@ -275,12 +271,12 @@ export async function POST(req: NextRequest) {
         formId: form.id,
         status: "pending",
       });
-      logger.info("POST /booking/confirm - Booking créé", {
+      logger.info("POST /booking/confirm - Booking created", {
         bookingId: booking.id,
       });
 
       await confirmSlotPermanently(trx, timeSlotId);
-      logger.info("POST /booking/confirm - Créneau confirmé", { timeSlotId });
+      logger.info("POST /booking/confirm - Slot confirmed", { timeSlotId });
 
       return {
         booking,
@@ -289,7 +285,7 @@ export async function POST(req: NextRequest) {
       };
     });
 
-    logger.info("POST /booking/confirm - Réservation confirmée avec succès", {
+    logger.info("POST /booking/confirm - Booking confirmed successfully", {
       bookingId: result.booking.id,
     });
 

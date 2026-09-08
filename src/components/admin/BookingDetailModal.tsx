@@ -53,9 +53,7 @@ export default function BookingDetailModal({
           </div>
         </div>
 
-        {/* Contenu */}
         <div className="p-6 space-y-6">
-          {/* Informations créneau */}
           <div>
             <h3 className="font-medium text-black mb-3 text-lg">
               📅 Créneau réservé
@@ -67,7 +65,6 @@ export default function BookingDetailModal({
             </div>
           </div>
 
-          {/* Statut avec actions rapides */}
           <div>
             <h3 className="font-medium text-black mb-3 text-lg">🏷️ Statut</h3>
             <div className="flex space-x-2">
@@ -101,7 +98,6 @@ export default function BookingDetailModal({
             </div>
           </div>
 
-          {/* Informations client */}
           <div>
             <h3 className="font-medium text-black mb-3 text-lg">
               👤 Informations client
@@ -124,7 +120,6 @@ export default function BookingDetailModal({
             </div>
           </div>
 
-          {/* Informations animal */}
           <div>
             <h3 className="font-medium text-black mb-3 text-lg">
               🐾 Informations animal
@@ -145,7 +140,6 @@ export default function BookingDetailModal({
             </div>
           </div>
 
-          {/* Réponses formulaire */}
           {booking.serviceSpecificAnswers && (
             <div>
               <h3 className="font-medium text-black mb-3 text-lg">
@@ -181,7 +175,6 @@ export default function BookingDetailModal({
             </div>
           )}
 
-          {/* Notes admin */}
           <div>
             <h3 className="font-medium text-black mb-3 text-lg">
               📝 Notes privées (admin uniquement)
@@ -202,14 +195,12 @@ export default function BookingDetailModal({
             </button>
           </div>
 
-          {/* Métadonnées */}
           <div className="text-xs text-black/60 space-y-1">
             <p>Réservation créée le : {formatDateTime(booking.createdAt)}</p>
             <p>Dernière modification : {formatDateTime(booking.updatedAt)}</p>
             <p className="font-mono">ID: {booking.id}</p>
           </div>
 
-          {/* Actions dangereuses */}
           <div className="pt-4 border-t border-beige">
             <button
               onClick={handleDelete}
@@ -227,7 +218,6 @@ export default function BookingDetailModal({
   );
 }
 
-// Composant pour les boutons de statut
 function StatusButton({
   label,
   isActive,
@@ -253,7 +243,6 @@ function StatusButton({
   );
 }
 
-// Composant pour afficher une ligne d'info
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex">

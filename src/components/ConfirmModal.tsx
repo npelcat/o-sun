@@ -19,7 +19,6 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   confirmText = "Confirmer",
   cancelText = "Annuler",
 }) => {
-  // Fermer avec la touche Échap
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === "Escape" && isOpen) onCancel();
@@ -28,7 +27,6 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
     return () => document.removeEventListener("keydown", handleEscape);
   }, [isOpen, onCancel]);
 
-  // Bloquer le scroll du body quand la modale est ouverte
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";

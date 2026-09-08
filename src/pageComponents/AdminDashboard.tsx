@@ -9,9 +9,6 @@ import BookingsArchive from "../components/admin/BookingArchives";
 
 type AdminTab = "dashboard" | "bookings" | "archives" | "timeslots";
 
-/**
- * Composant principal du dashboard admin
- */
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<AdminTab>("dashboard");
 
@@ -68,7 +65,6 @@ export default function AdminDashboard() {
           </button>
         </nav>
 
-        {/* Déconnexion */}
         <button
           onClick={() => signOut({ callbackUrl: "/login" })}
           className="w-full mt-4 px-4 py-3 bg-black/10 hover:bg-black/20 rounded-lg text-black transition-colors text-sm"
@@ -77,7 +73,6 @@ export default function AdminDashboard() {
         </button>
       </aside>
 
-      {/* Contenu principal */}
       <main className="flex-1 p-8 overflow-auto">
         {activeTab === "dashboard" && <DashboardOverview key="dashboard" />}
         {activeTab === "bookings" && <BookingsManagement key="bookings" />}

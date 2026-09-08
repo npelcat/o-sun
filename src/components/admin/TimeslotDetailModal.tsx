@@ -86,7 +86,6 @@ export default function TimeslotDetailModal({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        {/* Header */}
         <div className="sticky top-0 bg-beige p-6 border-b border-dark-green/20">
           <div className="flex items-center justify-between">
             <h2 className="font-subtitle text-2xl text-black">
@@ -101,9 +100,7 @@ export default function TimeslotDetailModal({
           </div>
         </div>
 
-        {/* Contenu */}
         <div className="p-6 space-y-6">
-          {/* Avertissement si réservé */}
           {isLocked && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800 font-medium">
@@ -120,7 +117,6 @@ export default function TimeslotDetailModal({
           )}
 
           {!isEditing ? (
-            /* Mode lecture */
             <>
               <div>
                 <h3 className="font-medium text-black mb-3 text-lg">
@@ -189,7 +185,6 @@ export default function TimeslotDetailModal({
               )}
             </>
           ) : (
-            /* Mode édition */
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-black mb-2">

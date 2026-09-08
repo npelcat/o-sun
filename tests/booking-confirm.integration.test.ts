@@ -2,14 +2,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { POST } from "@/app/api/booking/confirm/route";
 import { createRequest, minutesAgo } from "./utils/test-utils";
 
-// --- Mocks des dépendances externes uniquement ---
+// --- Mocking external dependencies only ---
 
 // Turnstile
 vi.mock("@/lib/validation/turnstile", () => ({
   verifyTurnstileToken: vi.fn().mockResolvedValue({ success: true }),
 }));
 
-// Validation d'email : mock Resend
+// Email validation: mocks Resend
 vi.mock("@/lib/validation/email", () => ({
   validateEmail: vi.fn().mockResolvedValue({ isValid: true }),
 }));
@@ -19,13 +19,13 @@ vi.mock("@/lib/security/rate-limit-simple", () => ({
   apiRateLimiter: { check: vi.fn().mockReturnValue(true) },
 }));
 
-// Logger (éviter le bruit)
+// Logger (keep test output quiet)
 vi.mock("@/utils/logger", () => ({
   default: { info: vi.fn(), warn: vi.fn(), error: vi.fn() },
 }));
 
-// La base de données (seule couche infrastructure mockée)
-// `transaction` = point d'entrée de tout le flux de réservation
+// Database (the only infra layer mocked)
+// `transaction` is the entry point of the whole booking flow
 vi.mock("@/src/db/index", () => {
   const mockDb = { transaction: vi.fn() };
   return { default: mockDb };
@@ -34,7 +34,7 @@ vi.mock("@/src/db/index", () => {
 import db from "@/src/db/index";
 const mockDb = db as unknown as { transaction: ReturnType<typeof vi.fn> };
 
-// Payload valide
+// Valid payload
 const validPayload = {
   timeSlotId: "550e8400-e29b-41d4-a716-446655440001",
   clientName: "Marie Dupont",
@@ -55,7 +55,7 @@ const validPayload = {
 };
 
 /**
- * Construit une fausse transaction Drizzle adaptée au flux de /confirm.
+ * Builds a fake Drizzle transaction tailored to the /confirm flow.
  */
 function buildTrxMock({
   slotData,
@@ -70,7 +70,7 @@ function buildTrxMock({
   formResult?: object;
   bookingResult?: object;
 }) {
-  // Valeurs par défaut - cas nominal
+  // Default values - happy path
   const defaultClient = {
     id: "client-123",
     name: "Marie Dupont",
@@ -91,23 +91,23 @@ function buildTrxMock({
 
   const trx = {} as Record<string, ReturnType<typeof vi.fn>>;
 
-  //   Appel 1 — validateSlotForConfirmation
-  //   Appel 2 — confirmSlotPermanently
+  // Call 1 — validateSlotForConfirmation
+  // Call 2 — confirmSlotPermanently
   trx.execute = vi
     .fn()
     .mockResolvedValueOnce(slotData ? [slotData] : [])
     .mockResolvedValueOnce(undefined);
 
-  //   Appel 1 — validateSlotForConfirmation
-  //   Appel 2 — createOrUpdateClient
+  // Call 1 — validateSlotForConfirmation
+  // Call 2 — createOrUpdateClient
   trx.limit = vi
     .fn()
     .mockReturnValueOnce(trx)
     .mockResolvedValueOnce(existingClient ? [existingClient] : []);
 
-  //   Appel 1 — insert ou update du client
-  //   Appel 2 — insert du formulaire (createFormData)
-  //   Appel 3 — insert de la réservation (createBooking)
+  // Call 1 — insert or update the client
+  // Call 2 — insert the form (createFormData)
+  // Call 3 — insert the booking (createBooking)
   trx.returning = vi
     .fn()
     .mockResolvedValueOnce([clientResult ?? defaultClient])

@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
 
     if (!isAllowed) {
       logger.warn(
-        `Rate limit dépassé pour IP: ${ip} sur /api/booking/release-slot`,
+        `Rate limit exceeded for IP: ${ip} on /api/booking/release-slot`,
       );
       return NextResponse.json(
         { message: "Trop de requêtes, réessayez dans quelques instants" },
@@ -87,13 +87,13 @@ export async function POST(req: NextRequest) {
 
     const { timeSlotId } = releaseSlotSchema.parse(body);
 
-    logger.info("POST /booking/release-slot - Libération du créneau", {
+    logger.info("POST /booking/release-slot - Releasing slot", {
       timeSlotId,
     });
 
     await releaseSlot(timeSlotId);
 
-    logger.info("POST /booking/release-slot - Créneau libéré avec succès", {
+    logger.info("POST /booking/release-slot - Slot released successfully", {
       timeSlotId,
     });
 

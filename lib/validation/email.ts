@@ -54,7 +54,7 @@ export function validateEmail(email: string): {
     };
   }
 
-  // 1. Bloque les emails jetables (strict)
+  // 1. Block disposable emails (strict)
   if (DISPOSABLE_DOMAINS.includes(domain)) {
     return {
       isValid: false,
@@ -64,15 +64,15 @@ export function validateEmail(email: string): {
     };
   }
 
-  // 2. Accepte les domaines populaires (rapide)
+  // 2. Accept popular domains (fast path)
   if (POPULAR_DOMAINS.includes(domain)) {
     return { isValid: true, shouldBlock: false };
   }
 
-  // 3. Pour les autres : on accepte mais on log
+  // 3. Everything else: accept, but flag for review
   return {
     isValid: true,
     shouldBlock: false,
-    message: `Domaine inhabituel: ${domain}`,
+    message: `Unusual domain: ${domain}`,
   };
 }

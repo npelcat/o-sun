@@ -20,7 +20,6 @@ export default function BookingsArchive() {
   const [selectedBooking, setSelectedBooking] =
     useState<BookingWithDetails | null>(null);
 
-  // Filtres
   const [statusFilter, setStatusFilter] = useState<BookingStatusFilter>("");
   const [monthFilter, setMonthFilter] = useState<string>("");
   const [emailFilter, setEmailFilter] = useState<string>("");
@@ -137,7 +136,6 @@ export default function BookingsArchive() {
         </span>
       </div>
 
-      {/* Filtres */}
       <BookingFilters
         statusFilter={statusFilter}
         monthFilter={monthFilter}
@@ -152,7 +150,6 @@ export default function BookingsArchive() {
         }}
       />
 
-      {/* Liste des archives */}
       {isLoading ? (
         <Loader />
       ) : (
@@ -170,7 +167,6 @@ export default function BookingsArchive() {
         </>
       )}
 
-      {/* Modal de détails */}
       {selectedBooking && (
         <BookingDetailModal
           booking={selectedBooking}

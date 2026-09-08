@@ -40,7 +40,6 @@ export function PricingCard({
         }
       `}
     >
-      {/* Badge */}
       {badge && (
         <span
           className={`
@@ -53,7 +52,6 @@ export function PricingCard({
         </span>
       )}
 
-      {/* Header */}
       <div className="mb-4 text-center">
         <h3 className={`text-xl font-subtitle font-bold mb-1 text-dark-green`}>
           {title}
@@ -64,7 +62,6 @@ export function PricingCard({
         </p>
       </div>
 
-      {/* Image */}
       {picture?.url && (
         <div className="relative w-full rounded-2xl h-44 shrink-0 overflow-hidden">
           <Image
@@ -77,17 +74,14 @@ export function PricingCard({
         </div>
       )}
 
-      {/* Divider */}
       <div className={`h-px my-4 bg-dark-green/15`} />
 
-      {/* Description (rich text — inclus list) */}
       <div
         className={`flex-1 text-sm leading-relaxed prose prose-sm max-w-none mb-6 prose-li:marker:text-dark-green`}
       >
         <BlockRendererClient content={description} />
       </div>
 
-      {/* CTA */}
       <div className="mt-auto text-center">
         <Button
           titleButton={titleButton}
