@@ -11,10 +11,6 @@
 /.next/
 /out/
 
-# drizzle
-drizzle/*.sql
-drizzle/meta/
-
 # production
 /build
 
@@ -40,9 +36,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-#logs and automatic drizzle generation
+#logs
 /logs
-/drizzle
 
 # Scripts
 /scripts/create-admin*.ts
