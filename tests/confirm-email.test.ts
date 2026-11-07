@@ -5,11 +5,12 @@ import { createRequest } from "./utils/test-utils";
 // Mock Resend
 const mockResendSend = vi.fn();
 vi.mock("resend", () => ({
-  Resend: vi.fn().mockImplementation(() => ({
-    emails: {
-      send: mockResendSend,
+   // Resend is used with "new", so the mock must be a class
+  Resend: vi.fn(
+    class {
+      emails = { send: mockResendSend };
     },
-  })),
+  ),
 }));
 
 // Mock the logger
