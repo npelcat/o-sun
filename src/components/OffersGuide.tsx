@@ -2,26 +2,27 @@ const offers = [
   {
     label: "CLARTÉ",
     description:
-      "Si vous avez un besoin unique : une question précise, une situation ciblée, un check up de son état actuel ou un message important à faire passer à votre animal.",
+      "Si un événement ou un changement approche et que vous souhaitez y préparer votre animal, lui expliquer ce qui va se passer et accueillir ses ressentis ainsi que ses besoins.",
   },
   {
     label: "ÉQUILIBRE",
     description:
-      "Si vous voulez à la fois accueillir son état intérieur actuel et approfondir un ou deux sujets.",
+      "Si vous souhaitez savoir comment votre animal se sent dans sa globalité, mieux comprendre son équilibre actuel et accueillir ses besoins du moment, sans avoir de question particulière à lui poser.",
   },
   {
     label: "HARMONIE",
     description:
-      "Si vous désirez une vision globale et approfondie de votre animal. Un accompagnement riche et complet.",
+      "Si vous souhaitez mieux comprendre ce que votre animal vit autour d’une situation, d’un comportement ou d’une problématique, et lui poser les questions qui vous tiennent à cœur.",
   },
   {
     label: "RECONNEXION",
     description:
-      "Si votre animal est décédé et que vous ressentez le besoin de vous reconnecter à votre lien.",
+      "Si votre animal est décédé et que vous ressentez le besoin de lui transmettre un message, d’accueillir ceux qu’il souhaite vous confier, de savoir comment il se sent et de lui poser les questions qui vous tiennent à cœur.",
   },
   {
     label: "URGENCE & FIN DE VIE",
-    description: "Si la situation est pressante.",
+    description:
+      "Si votre animal traverse une situation pressante ou une période de fin de vie et que vous souhaitez accueillir son vécu, ses besoins et ses messages afin de l’accompagner avec douceur et justesse.",
   },
 ];
 
